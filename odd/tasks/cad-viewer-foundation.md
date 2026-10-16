@@ -19,11 +19,11 @@ Design reference: `docs/architecture.md` (written in T1, refined per task).
 | ID | Specs | Task | Route | Status | Commit |
 | --- | --- | --- | --- | --- | --- |
 | T1 | S1 S2 S7 | Bootstrap: pnpm workspace, TS/Vitest/Biome tooling, licenses, README with seal, CI, architecture doc; create public GitHub repo and push `main` | inline | done | `865518e` (main, pushed), `17e7fbf` (CI, local: push needs `workflow` token scope) |
-| T2 | S1 S3 S4 | Core contracts: document model, format-loader plugin API, viewer public API types | inline | done | `d2e8970` (branch `feat/t2-core-contracts`) |
-| T3 | S3 | Core DXF parser (ASCII) → document model | worker (parallel) | in progress | |
-| T4 | S3 S4 | Core display list + Canvas2D renderer + `CadViewer` (pan/zoom/fit, layers, layouts, theme, pick, measure, PNG export) | worker (parallel) | in progress | |
-| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | worker (parallel) | in progress | |
-| T6 | S1 | `cad-viewer-vue` and `cad-viewer-react` components | worker (parallel) | in progress | |
+| T2 | S1 S3 S4 | Core contracts: document model, format-loader plugin API, viewer public API types | inline | done | `c80a044` (branch `feat/t2-core-contracts`) |
+| T3 | S3 | Core DXF parser (ASCII) → document model | inline (worker unavailable) | in progress | |
+| T4 | S3 S4 | Core display list + Canvas2D renderer + `CadViewer` (pan/zoom/fit, layers, layouts, theme, pick, measure, PNG export) | inline (worker unavailable) | pending | |
+| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | inline (worker unavailable) | pending | |
+| T6 | S1 | `cad-viewer-vue` and `cad-viewer-react` components | inline (worker unavailable) | pending | |
 | T7 | S1 S2 S4 | Playground (vanilla/Vue/React), README usage docs, seam check, full suite | inline | pending | |
 
 Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (one slice per task T2–T7).
@@ -39,3 +39,4 @@ Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (
 - **L5** (decision, design): Canvas2D renderer behind a `Renderer` interface (zero runtime deps in core, native text rendering for any script); WebGL is a later option. Wrappers written as plain-TS components (Vue `defineComponent` + `h`, React function component) so no SFC/JSX toolchain is needed in libraries. TypeScript 6.0.x (TS 7 native compiler skipped for tooling compatibility).
 - **L6** (evidence, T1): lint/typecheck/test/build green on empty skeletons. `gh repo create --push` rejected `.github/workflows/ci.yml` ("refusing to allow an OAuth App to create or update workflow ... without `workflow` scope"); CI split into local commit `17e7fbf`. RDD assess on `17e7fbf`: high (shell_source); native START stopped `managed_assets_outdated` (continuation `gentle-ai sync`, writes outside the project → held for user decision).
 - **L7** (evidence, T2): RED (missing modules) → GREEN 34/34 (`vitest --project core`); one wrong expected value in my test (ACI 249 is 0x4C262F, not 0x4C264C) fixed. Assess `d2e8970`: medium → deferred to slice; caught an accidentally committed `.vitest/json/output.json`, removed and ignored.
+- **L8** (evidence): the four parallel `gentle-ai-worker` runs (T3–T6) all failed with "assistant reported an error" after 10–29 turns and wrote no files (clean tree). Per policy the unavailable subagents are not retried; T3–T6 are implemented inline, sequentially (T3 → T4 → T5 → T6).
