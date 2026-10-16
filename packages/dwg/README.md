@@ -77,6 +77,8 @@ line types, line weights, text styles and layouts.
   counted in `document.unsupported` but not drawn.
 - True colors that also carry an ACI index are shown with their true color only when
   LibreDWG reports them as true colors.
+- Tables (`ACAD_TABLE`) in R2010+ DWG files are not decoded by libredwg-web 0.8; they are
+  counted as unsupported. Tables in DXF files are drawn.
 - External references (xrefs) are not resolved.
 - Parsing runs on the main thread; very large drawings can block the UI while loading.
 

@@ -342,6 +342,9 @@ function entityOf(entity: Raw): CadEntity | undefined {
         }),
       };
     case "ACAD_TABLE": {
+      // libredwg-web 0.8 leaves R2010+ tables empty (no block, no position): report
+      // them as unsupported instead of drawing nothing at the origin.
+      if (!str(entity.name)) return undefined;
       const direction = raw(entity.directionVector);
       return {
         type: "insert",

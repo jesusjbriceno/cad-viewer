@@ -585,6 +585,12 @@ describe("convertDwgDatabase: entities", () => {
     expect(table.rotation).toBeCloseTo(Math.PI / 2);
   });
 
+  it("ACAD_TABLE without a block (not decoded by LibreDWG for R2010+) is counted as unsupported", () => {
+    const document = convertDwgDatabase(database([entity("ACAD_TABLE", { name: "", startPoint: { x: 0, y: 0, z: 0 }, blockRecordHandle: "" })]));
+    expect(document.layouts[0]?.entities[0]).toMatchObject({ type: "unsupported", sourceType: "ACAD_TABLE" });
+    expect(document.unsupported.get("ACAD_TABLE")).toBe(1);
+  });
+
   it("SOLID, TRACE and 3DFACE", () => {
     const corners = {
       corner1: { x: 0, y: 0 },

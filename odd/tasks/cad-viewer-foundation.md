@@ -23,8 +23,8 @@ Design reference: `docs/architecture.md` (written in T1, refined per task).
 | T2 | S1 S3 S4 | Core contracts: document model, format-loader plugin API, viewer public API types | inline | done | `c80a044` (branch `feat/t2-core-contracts`) |
 | T3 | S3 | Core DXF parser (ASCII) → document model | inline (worker unavailable) | done | `d5c7fc4` (branch `feat/t3-dxf-parser`) |
 | T4 | S3 S4 | Core display list + Canvas2D renderer + `CadViewer` (pan/zoom/fit, layers, layouts, theme, pick, measure, PNG export) | inline (worker unavailable) | done | `0f6b4a4` (branch `feat/t4-viewer`) |
-| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | inline (worker unavailable) | in progress | |
-| T6 | S1 | `cad-viewer-vue` and `cad-viewer-react` components | inline (worker unavailable) | pending | |
+| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | inline (worker unavailable) | done | `18c449c` (core fix), `37ad9a8` (test alias), `e0befe2` (branch `feat/t5-dwg`) |
+| T6 | S1 | `cad-viewer-vue` and `cad-viewer-react` components | inline (worker unavailable) | in progress | |
 | T7 | S1 S2 S4 S8 | Astro static sandbox (vanilla/Vue/React islands, sample DXF/DWG, file picker), README usage docs, seam check, full suite | inline | pending | |
 
 Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (one slice per task T2–T7).
@@ -44,4 +44,4 @@ Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (
 - **L9** (evidence, T3): RED (missing modules + 54 failing) → GREEN 117/117 core tests incl. end-to-end over hand-written fixture `sample-r2000.dxf` (CRLF, kept with `*.dxf -text`). Bug found by a test: the tokenizer trimmed trailing spaces, corrupting MTEXT chunks — values are now verbatim. Assess `d5c7fc4`: medium → deferred to slice.
 - **L10** (user, verbatim): "por cierto, tenemos que tener algún sandbox para probar el módulo. Si es necesario, se puede montar un sitio estático en Astro para pruebas. Ten esto es cuenta, si no, no voy a poder validar el componente" → S8 added; T7 becomes an Astro sandbox (replaces the planned Vite playground).
 - **L11** (evidence, T4/T5 prep): T4 `0f6b4a4` 216/216, medium → deferred to slice (commit also carries Biome reformatting of T3 files). Real-world smoke: LibreDWG `example_2000.dxf` (1.4 MB) parses in 94 ms. DWG probe on `example_2013.dwg`: read returns non-fatal error bitmask 68 (only ≥128 is critical), angles in radians, lineweight is the DWG enum (29 ByLayer, 30 ByBlock, 31 Default), LWPOLYLINE may carry a zero normal (core fixed in follow-up commit), `db.entities` also contains ATTRIB/ATTDEF and paper VIEWPORTs → route by `ownerBlockRecordSoftId`.
-
+- **L12** (evidence, T5): RED (missing modules) → GREEN 261/261 across core+dwg, incl. end-to-end read of LibreDWG `example_2013.dwg` (AC1027, 3 layouts, block `bloko`). Found: Vitest node env ignores `resolve.conditions` (SSR resolution), so the dwg tests silently ran against a stale core `dist` → replaced by an explicit `test.alias` to core sources. Assess `e0befe2` range: medium → deferred to slice.
