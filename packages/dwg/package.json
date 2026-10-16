@@ -39,7 +39,13 @@
     "libredwg"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
   },
   "peerDependencies": {
     "@jesusjbriceno/cad-viewer-core": "workspace:^"
