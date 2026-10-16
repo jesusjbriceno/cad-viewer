@@ -15,7 +15,8 @@
     "typecheck": "pnpm -r --filter ./packages/** run typecheck",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "dev": "pnpm --filter playground dev"
+    "dev": "pnpm --filter sandbox dev",
+    "sandbox:build": "pnpm --filter sandbox build"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

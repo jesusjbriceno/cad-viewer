@@ -6,7 +6,19 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/coverage", "!**/*.dxf", "!**/*.dwg", "!odd", "!.atl"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/coverage",
+      "!**/*.dxf",
+      "!**/*.dwg",
+      "!odd",
+      "!.atl",
+      "!**/*.vue",
+      "!**/*.astro",
+      "!**/.astro",
+      "!examples/sandbox/public"
+    ]
   },
   "formatter": {
     "enabled": true,

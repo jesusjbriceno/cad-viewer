@@ -1,0 +1,29 @@
+{
+  "name": "sandbox",
+  "private": true,
+  "type": "module",
+  "description": "Static Astro sandbox to try the CAD viewer core, Vue and React components with DXF and DWG files.",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "prepare-assets": "node scripts/prepare-assets.mjs",
+    "dev": "node scripts/prepare-assets.mjs && astro dev",
+    "build": "node scripts/prepare-assets.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@jesusjbriceno/cad-viewer-core": "workspace:*",
+    "@jesusjbriceno/cad-viewer-dwg": "workspace:*",
+    "@jesusjbriceno/cad-viewer-react": "workspace:*",
+    "@jesusjbriceno/cad-viewer-vue": "workspace:*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "vue": "^3.5.44"
+  },
+  "devDependencies": {
+    "@astrojs/react": "^7.1.0",
+    "@astrojs/vue": "^7.1.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "astro": "^7.4.0"
+  }
+}
