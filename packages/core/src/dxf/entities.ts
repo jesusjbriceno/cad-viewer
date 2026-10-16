@@ -403,6 +403,7 @@ function simpleEntity(record: DxfRecord): CadEntity | undefined {
     case "HATCH":
       return hatch(record);
     case "DIMENSION":
+    case "ARC_DIMENSION":
       return {
         type: "dimension",
         ...base(record, true),
@@ -435,6 +436,21 @@ function simpleEntity(record: DxfRecord): CadEntity | undefined {
         viewHeight: record.num(45, 1),
         twist: record.num(51, 0) * DEG,
         ...(record.has(69) ? { id: record.num(69, 0) } : {}),
+      };
+    case "ACAD_TABLE":
+      // A table is a block reference to its anonymous "*T" block (scale 1).
+      return {
+        type: "insert",
+        ...base(record, true),
+        blockName: record.str(2)?.trim() ?? "",
+        position: record.point(10),
+        scale: { x: 1, y: 1, z: 1 },
+        rotation: record.has(11) ? Math.atan2(record.num(21, 0), record.num(11, 1)) : 0,
+        columnCount: 1,
+        rowCount: 1,
+        columnSpacing: 0,
+        rowSpacing: 0,
+        attributes: [],
       };
     case "RAY":
     case "XLINE":

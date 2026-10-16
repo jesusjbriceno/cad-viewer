@@ -76,6 +76,8 @@ function normalize(v: Vec3): Vec3 {
  */
 export function ocsMatrix(normal: Vec3 | undefined, elevation = 0): Matrix {
   if (!normal || (normal.x === 0 && normal.y === 0 && normal.z > 0)) return IDENTITY;
+  // Some writers store a zero normal; treat it as the default (0, 0, 1).
+  if (Math.hypot(normal.x, normal.y, normal.z) < 1e-12) return IDENTITY;
   const n = normalize(normal);
   const limit = 1 / 64;
   const ax = normalize(

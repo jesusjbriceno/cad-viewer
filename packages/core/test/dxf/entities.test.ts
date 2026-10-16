@@ -736,6 +736,36 @@ describe("HATCH", () => {
   });
 });
 
+describe("block-backed entities", () => {
+  it("ARC_DIMENSION is drawn through its block like DIMENSION", () => {
+    const dimension = parseOne([
+      [0, "ARC_DIMENSION"],
+      [2, "*D3"],
+      [42, 3.5],
+    ]) as DimensionEntity;
+    expect(dimension).toMatchObject({ type: "dimension", blockName: "*D3", measurement: 3.5 });
+  });
+
+  it("ACAD_TABLE is drawn as an insert of its table block", () => {
+    const table = parseOne([
+      [0, "ACAD_TABLE"],
+      [8, "Tables"],
+      [2, "*T1"],
+      [10, 5],
+      [20, 6],
+    ]) as InsertEntity;
+    expect(table).toMatchObject({
+      type: "insert",
+      layer: "Tables",
+      blockName: "*T1",
+      position: { x: 5, y: 6 },
+      scale: { x: 1, y: 1, z: 1 },
+      rotation: 0,
+      attributes: [],
+    });
+  });
+});
+
 describe("unsupported entities", () => {
   it("are kept with their source type and counted", () => {
     const document = parseEntities(

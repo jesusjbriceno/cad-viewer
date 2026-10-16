@@ -46,6 +46,10 @@ describe("ocsMatrix (arbitrary axis algorithm)", () => {
     expect(ocsMatrix({ x: 0, y: 0, z: 1 })).toEqual(IDENTITY);
   });
 
+  it("treats a zero-length normal as the default (seen in real DWG files)", () => {
+    expect(ocsMatrix({ x: 0, y: 0, z: 0 })).toEqual(IDENTITY);
+  });
+
   it("mirrors X for the (0, 0, -1) normal", () => {
     close(apply(ocsMatrix({ x: 0, y: 0, z: -1 }), 2, 3), -2, 3);
   });
