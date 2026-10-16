@@ -1,0 +1,53 @@
+{
+  "name": "@jesusjbriceno/cad-viewer-dwg",
+  "version": "0.1.0",
+  "description": "DWG format plugin for @jesusjbriceno/cad-viewer-core, powered by LibreDWG (GPL-3.0).",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "@jesusjbriceno/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusjbriceno/cad-viewer.git",
+    "directory": "packages/dwg"
+  },
+  "homepage": "https://github.com/jesusjbriceno/cad-viewer#readme",
+  "bugs": "https://github.com/jesusjbriceno/cad-viewer/issues",
+  "keywords": [
+    "cad",
+    "dwg",
+    "dxf",
+    "viewer",
+    "canvas",
+    "libredwg"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@jesusjbriceno/cad-viewer-core": "workspace:^"
+  },
+  "dependencies": {
+    "@mlightcad/libredwg-web": "^0.8.0"
+  },
+  "devDependencies": {
+    "@jesusjbriceno/cad-viewer-core": "workspace:*"
+  }
+}

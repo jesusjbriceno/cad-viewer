@@ -1,0 +1,43 @@
+{
+  "name": "@jesusjbriceno/cad-viewer-core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic, view-only 2D CAD viewer engine (DXF built in, pluggable formats).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "@jesusjbriceno/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusjbriceno/cad-viewer.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/jesusjbriceno/cad-viewer#readme",
+  "bugs": "https://github.com/jesusjbriceno/cad-viewer/issues",
+  "keywords": [
+    "cad",
+    "dwg",
+    "dxf",
+    "viewer",
+    "canvas"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
