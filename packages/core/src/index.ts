@@ -1,5 +1,6 @@
 export { dxfLoader, parseDxf } from "./dxf";
-export { CadLoadError, type CadLoadErrorCode } from "./loaders/errors";
+export { decodeTextValue, decodeUnicodeEscapes } from "./dxf/text";
+export { abortError, CadLoadError, type CadLoadErrorCode } from "./loaders/errors";
 export { FormatRegistry } from "./loaders/registry";
 export type { FormatLoader, LoaderProbe, LoadOptions, LoadProgress } from "./loaders/types";
 export { aciToRgb, colorToCss, rgbToCss } from "./model/colors";

@@ -12,6 +12,7 @@ Design reference: `docs/architecture.md` (written in T1, refined per task).
 - **S4** — "Debe tener diferentes capacidades de visualización pero no de edición."
 - **S5** — "Para ser lo más flexible posible, se puede tomar como referencia algún componente comercial u opensource." Decision: "mlightcad/cad-viewer, leyendo el código (Recomendado)".
 - **S6** — "Si es necesario usa REA para hacer `reverse engineering` del módulo o componente que tengamos de referencia." Decision: not necessary; the reference is open source, read as source.
+- **S8** — "por cierto, tenemos que tener algún sandbox para probar el módulo. Si es necesario, se puede montar un sitio estático en Astro para pruebas. Ten esto es cuenta, si no, no voy a poder validar el componente" Decision: static Astro site with vanilla, Vue and React islands.
 - **S7** — Licensing decision: "Núcleo MIT + plugin DWG GPL-3 (Recomendado)" — core/vue/react MIT; optional DWG plugin GPL-3.0 (`@mlightcad/libredwg-web`).
 
 ## Tasks
@@ -21,10 +22,10 @@ Design reference: `docs/architecture.md` (written in T1, refined per task).
 | T1 | S1 S2 S7 | Bootstrap: pnpm workspace, TS/Vitest/Biome tooling, licenses, README with seal, CI, architecture doc; create public GitHub repo and push `main` | inline | done | `865518e` (main, pushed), `17e7fbf` (CI, local: push needs `workflow` token scope) |
 | T2 | S1 S3 S4 | Core contracts: document model, format-loader plugin API, viewer public API types | inline | done | `c80a044` (branch `feat/t2-core-contracts`) |
 | T3 | S3 | Core DXF parser (ASCII) → document model | inline (worker unavailable) | done | `d5c7fc4` (branch `feat/t3-dxf-parser`) |
-| T4 | S3 S4 | Core display list + Canvas2D renderer + `CadViewer` (pan/zoom/fit, layers, layouts, theme, pick, measure, PNG export) | inline (worker unavailable) | in progress | |
-| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | inline (worker unavailable) | pending | |
+| T4 | S3 S4 | Core display list + Canvas2D renderer + `CadViewer` (pan/zoom/fit, layers, layouts, theme, pick, measure, PNG export) | inline (worker unavailable) | done | `0f6b4a4` (branch `feat/t4-viewer`) |
+| T5 | S3 S7 | `cad-viewer-dwg` GPL-3 plugin: libredwg-web → document model | inline (worker unavailable) | in progress | |
 | T6 | S1 | `cad-viewer-vue` and `cad-viewer-react` components | inline (worker unavailable) | pending | |
-| T7 | S1 S2 S4 | Playground (vanilla/Vue/React), README usage docs, seam check, full suite | inline | pending | |
+| T7 | S1 S2 S4 S8 | Astro static sandbox (vanilla/Vue/React islands, sample DXF/DWG, file picker), README usage docs, seam check, full suite | inline | pending | |
 
 Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (one slice per task T2–T7).
 
@@ -41,3 +42,6 @@ Delivery forecast: ~4500 authored lines → chained PRs into `feat/foundation` (
 - **L7** (evidence, T2): RED (missing modules) → GREEN 34/34 (`vitest --project core`); one wrong expected value in my test (ACI 249 is 0x4C262F, not 0x4C264C) fixed. Assess `d2e8970`: medium → deferred to slice; caught an accidentally committed `.vitest/json/output.json`, removed and ignored.
 - **L8** (evidence): the four parallel `gentle-ai-worker` runs (T3–T6) all failed with "assistant reported an error" after 10–29 turns and wrote no files (clean tree). Per policy the unavailable subagents are not retried; T3–T6 are implemented inline, sequentially (T3 → T4 → T5 → T6).
 - **L9** (evidence, T3): RED (missing modules + 54 failing) → GREEN 117/117 core tests incl. end-to-end over hand-written fixture `sample-r2000.dxf` (CRLF, kept with `*.dxf -text`). Bug found by a test: the tokenizer trimmed trailing spaces, corrupting MTEXT chunks — values are now verbatim. Assess `d5c7fc4`: medium → deferred to slice.
+- **L10** (user, verbatim): "por cierto, tenemos que tener algún sandbox para probar el módulo. Si es necesario, se puede montar un sitio estático en Astro para pruebas. Ten esto es cuenta, si no, no voy a poder validar el componente" → S8 added; T7 becomes an Astro sandbox (replaces the planned Vite playground).
+- **L11** (evidence, T4/T5 prep): T4 `0f6b4a4` 216/216, medium → deferred to slice (commit also carries Biome reformatting of T3 files). Real-world smoke: LibreDWG `example_2000.dxf` (1.4 MB) parses in 94 ms. DWG probe on `example_2013.dwg`: read returns non-fatal error bitmask 68 (only ≥128 is critical), angles in radians, lineweight is the DWG enum (29 ByLayer, 30 ByBlock, 31 Default), LWPOLYLINE may carry a zero normal (core fixed in follow-up commit), `db.entities` also contains ATTRIB/ATTDEF and paper VIEWPORTs → route by `ownerBlockRecordSoftId`.
+
