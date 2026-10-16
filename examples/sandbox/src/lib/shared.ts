@@ -1,7 +1,9 @@
 import type { MeasureResult, PickResult } from "@jesusjbriceno/cad-viewer-core";
 import { createDwgLoader } from "@jesusjbriceno/cad-viewer-dwg";
 
-const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 
 export interface Sample {
   label: string;
@@ -10,7 +12,10 @@ export interface Sample {
 
 /** Sample drawings copied into public/samples by scripts/prepare-assets.mjs. */
 export const SAMPLES: Sample[] = [
-  { label: "DXF · hand-written R2000 sample (layers, block, layouts)", url: `${base}samples/sample-r2000.dxf` },
+  {
+    label: "DXF · hand-written R2000 sample (layers, block, layouts)",
+    url: `${base}samples/sample-r2000.dxf`,
+  },
   {
     // This test drawing contains a block inserted at scale ~3000: the regular content is the
     // small cluster at the center after "Fit" (zoom window into it).

@@ -1,7 +1,13 @@
-import { CadViewer, type CadTheme, type LayerInfo, type ViewerTool } from "@jesusjbriceno/cad-viewer-core";
+import {
+  type CadTheme,
+  CadViewer,
+  type LayerInfo,
+  type ViewerTool,
+} from "@jesusjbriceno/cad-viewer-core";
 import { describeMeasure, describePick, downloadBlob, LOADERS, SAMPLES } from "../lib/shared";
 
-const $ = <T extends HTMLElement>(root: ParentNode, selector: string) => root.querySelector(selector) as T;
+const $ = <T extends HTMLElement>(root: ParentNode, selector: string) =>
+  root.querySelector(selector) as T;
 
 /** Mounts the vanilla sandbox UI (toolbar, panels, status) around a core CadViewer. */
 export function mountVanillaSandbox(root: HTMLElement): CadViewer {
@@ -67,14 +73,20 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     );
   };
   const renderLayouts = () => {
-    layouts.replaceChildren(...viewer.getLayouts().map((layout) => new Option(layout.name, layout.name, false, layout.active)));
+    layouts.replaceChildren(
+      ...viewer
+        .getLayouts()
+        .map((layout) => new Option(layout.name, layout.name, false, layout.active)),
+    );
   };
   layouts.addEventListener("change", () => viewer.setLayout(layouts.value));
 
   viewer.on("load-start", ({ fileName }) => setStatus(`Loading ${fileName ?? "drawing"}…`));
   viewer.on("load-progress", ({ phase }) => setStatus(`Loading… (${phase})`));
   viewer.on("loaded", ({ document, fileName }) => {
-    const unsupported = [...document.unsupported].map(([type, count]) => `${type}×${count}`).join(", ");
+    const unsupported = [...document.unsupported]
+      .map(([type, count]) => `${type}×${count}`)
+      .join(", ");
     setStatus(
       `${fileName ?? "Drawing"} · ${document.format.toUpperCase()} ${document.header.version ?? ""} · ${document.layers.size} layers · ${document.blocks.size} blocks` +
         (unsupported ? ` · not drawn: ${unsupported}` : ""),
@@ -93,7 +105,8 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
 
   const toolButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-tool]")];
   const syncTools = (tool: ViewerTool) => {
-    for (const button of toolButtons) button.setAttribute("aria-pressed", String(button.dataset.tool === tool));
+    for (const button of toolButtons)
+      button.setAttribute("aria-pressed", String(button.dataset.tool === tool));
   };
   viewer.on("tool-change", ({ tool }) => syncTools(tool));
   syncTools(viewer.tool);
@@ -110,7 +123,8 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
       theme = theme === "dark" ? "light" : "dark";
       viewer.setTheme(theme);
       renderLayers(viewer.getLayers());
-    } else if (action === "png") viewer.exportImage({ scale: 2 }).then((blob) => downloadBlob(blob, "drawing.png"));
+    } else if (action === "png")
+      viewer.exportImage({ scale: 2 }).then((blob) => downloadBlob(blob, "drawing.png"));
     else if (action === "show-all") viewer.setAllLayersVisible(true);
     else if (action === "hide-all") viewer.setAllLayersVisible(false);
   });

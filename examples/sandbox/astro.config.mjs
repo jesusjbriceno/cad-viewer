@@ -3,7 +3,8 @@ import react from "@astrojs/react";
 import vue from "@astrojs/vue";
 import { defineConfig } from "astro/config";
 
-const source = (pkg) => fileURLToPath(new URL(`../../packages/${pkg}/src/index.ts`, import.meta.url));
+const source = (pkg) =>
+  fileURLToPath(new URL(`../../packages/${pkg}/src/index.ts`, import.meta.url));
 
 // Static sandbox. SANDBOX_BASE sets the base path when hosted under a sub-path
 // (e.g. "/cad-viewer/" on GitHub Pages).

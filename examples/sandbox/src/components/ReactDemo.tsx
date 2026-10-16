@@ -1,7 +1,7 @@
 import {
-  CadViewer,
   type CadSource,
   type CadTheme,
+  CadViewer,
   type LayerInfo,
   type LayoutInfo,
   type MeasureResult,
@@ -34,7 +34,9 @@ export default function ReactDemo() {
   const hidden = useMemo(() => new Set(hiddenLayers), [hiddenLayers]);
 
   const toggleLayer = (name: string, visible: boolean) =>
-    setHiddenLayers((current) => (visible ? current.filter((layer) => layer !== name) : [...current, name]));
+    setHiddenLayers((current) =>
+      visible ? current.filter((layer) => layer !== name) : [...current, name],
+    );
   const exportPng = async () => {
     const blob = await viewer.current?.exportImage({ scale: 2 });
     if (blob) downloadBlob(blob, "drawing.png");
@@ -67,7 +69,11 @@ export default function ReactDemo() {
         </section>
         <section>
           <h2>Layout</h2>
-          <select aria-label="Layout" value={layouts.find((entry) => entry.active)?.name ?? ""} onChange={(event) => setLayout(event.target.value)}>
+          <select
+            aria-label="Layout"
+            value={layouts.find((entry) => entry.active)?.name ?? ""}
+            onChange={(event) => setLayout(event.target.value)}
+          >
             {layouts.map((entry) => (
               <option key={entry.name} value={entry.name}>
                 {entry.name}
@@ -83,7 +89,11 @@ export default function ReactDemo() {
             {layers.map((layer) => (
               <li key={layer.name}>
                 <label>
-                  <input type="checkbox" checked={!hidden.has(layer.name)} onChange={(event) => toggleLayer(layer.name, event.target.checked)} />
+                  <input
+                    type="checkbox"
+                    checked={!hidden.has(layer.name)}
+                    onChange={(event) => toggleLayer(layer.name, event.target.checked)}
+                  />
                   <span className="swatch" style={{ background: layer.color }} />
                   <span>{layer.name}</span>
                   <span className="count">{layer.entityCount}</span>
@@ -95,7 +105,10 @@ export default function ReactDemo() {
             <button type="button" onClick={() => setHiddenLayers([])}>
               Show all
             </button>
-            <button type="button" onClick={() => setHiddenLayers(layers.map((layer) => layer.name))}>
+            <button
+              type="button"
+              onClick={() => setHiddenLayers(layers.map((layer) => layer.name))}
+            >
               Hide all
             </button>
           </div>
@@ -111,7 +124,11 @@ export default function ReactDemo() {
       </aside>
       <main className="stage">
         <div className="toolbar" role="toolbar" aria-label="Viewer tools">
-          <button type="button" title="Zoom to extents (0)" onClick={() => viewer.current?.zoomExtents()}>
+          <button
+            type="button"
+            title="Zoom to extents (0)"
+            onClick={() => viewer.current?.zoomExtents()}
+          >
             Fit
           </button>
           <button type="button" title="Zoom in (+)" onClick={() => viewer.current?.zoomIn()}>
@@ -121,7 +138,12 @@ export default function ReactDemo() {
             −
           </button>
           {TOOLS.map((entry) => (
-            <button type="button" key={entry.id} aria-pressed={tool === entry.id} onClick={() => setTool(entry.id)}>
+            <button
+              type="button"
+              key={entry.id}
+              aria-pressed={tool === entry.id}
+              onClick={() => setTool(entry.id)}
+            >
               {entry.label}
             </button>
           ))}

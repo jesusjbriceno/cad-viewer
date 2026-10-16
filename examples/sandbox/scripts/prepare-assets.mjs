@@ -7,9 +7,26 @@ const sandbox = join(dirname(fileURLToPath(import.meta.url)), "..");
 const packages = join(sandbox, "..", "..", "packages");
 
 const assets = [
-  [join(packages, "dwg", "node_modules", "@mlightcad", "libredwg-web", "wasm", "libredwg-web.wasm"), join("libredwg", "libredwg-web.wasm")],
-  [join(packages, "core", "test", "fixtures", "dxf", "sample-r2000.dxf"), join("samples", "sample-r2000.dxf")],
-  [join(packages, "dwg", "test", "fixtures", "example_2013.dwg"), join("samples", "example_2013.dwg")],
+  [
+    join(
+      packages,
+      "dwg",
+      "node_modules",
+      "@mlightcad",
+      "libredwg-web",
+      "wasm",
+      "libredwg-web.wasm",
+    ),
+    join("libredwg", "libredwg-web.wasm"),
+  ],
+  [
+    join(packages, "core", "test", "fixtures", "dxf", "sample-r2000.dxf"),
+    join("samples", "sample-r2000.dxf"),
+  ],
+  [
+    join(packages, "dwg", "test", "fixtures", "example_2013.dwg"),
+    join("samples", "example_2013.dwg"),
+  ],
 ];
 
 for (const [from, to] of assets) {

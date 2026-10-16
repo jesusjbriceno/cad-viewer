@@ -586,8 +586,15 @@ describe("convertDwgDatabase: entities", () => {
   });
 
   it("ACAD_TABLE without a block (not decoded by LibreDWG for R2010+) is counted as unsupported", () => {
-    const document = convertDwgDatabase(database([entity("ACAD_TABLE", { name: "", startPoint: { x: 0, y: 0, z: 0 }, blockRecordHandle: "" })]));
-    expect(document.layouts[0]?.entities[0]).toMatchObject({ type: "unsupported", sourceType: "ACAD_TABLE" });
+    const document = convertDwgDatabase(
+      database([
+        entity("ACAD_TABLE", { name: "", startPoint: { x: 0, y: 0, z: 0 }, blockRecordHandle: "" }),
+      ]),
+    );
+    expect(document.layouts[0]?.entities[0]).toMatchObject({
+      type: "unsupported",
+      sourceType: "ACAD_TABLE",
+    });
     expect(document.unsupported.get("ACAD_TABLE")).toBe(1);
   });
 
