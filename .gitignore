@@ -9,3 +9,4 @@ coverage/
 .pi/
 .pi-lens/
 .engram/
+.vitest/
