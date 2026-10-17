@@ -19,6 +19,7 @@ export interface CadErrorParams {
   "dxf-missing-value": { groupCode: number; line: number };
   "no-model-layout": NoParams;
   "dwg-read-failed": NoParams;
+  "dwg-missing-point": NoParams;
 }
 
 /** Stable identifier of a library error; use it for logic, never `message`. */

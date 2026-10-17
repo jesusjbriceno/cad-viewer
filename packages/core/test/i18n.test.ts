@@ -1,3 +1,6 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { tokenize } from "../src/dxf/tokenizer";
 import {
@@ -39,6 +42,8 @@ describe("resolveLocale", () => {
     ["es", "es-ES"],
     ["ES_es", "es-ES"],
     ["es-MX", "es-ES"],
+    [" ", "es-ES"],
+    ["	", "es-ES"],
     ["en", "en"],
     ["en-GB", "en"],
     ["EN-us", "en"],
@@ -151,6 +156,11 @@ describe("formatCadError", () => {
       "No se ha podido descargar «https://x/a.dxf»: Failed to fetch",
       'Failed to fetch "https://x/a.dxf": Failed to fetch',
     ],
+    [
+      new CadLoadError("fetch-failed", "-", { params: { url: "https://x/a.dxf" } }),
+      "No se ha podido descargar «https://x/a.dxf».",
+      'Failed to fetch "https://x/a.dxf".',
+    ],
     [new CadLoadError("aborted", "-"), "Se ha cancelado la carga.", "Loading was aborted."],
     [
       new CadViewerError("unknown-layer", "-", { params: { name: "Muros" } }),
@@ -231,5 +241,35 @@ describe("formatCadError", () => {
   it("returns the message of foreign errors and stringifies anything else", () => {
     expect(formatCadError(new TypeError("boom"), "es-ES")).toBe("boom");
     expect(formatCadError("plain", "es-ES")).toBe("plain");
+  });
+});
+
+describe("locale and catalog invariants", () => {
+  it("resolves a non-string tag to the default instead of throwing", () => {
+    expect(resolveLocale(42 as unknown as string)).toBe("es-ES");
+    expect(resolveLocale({} as unknown as string)).toBe("es-ES");
+  });
+
+  it("keeps every library error catalog-backed (no bare new Error in packages)", () => {
+    const root = fileURLToPath(new URL("../../../packages/", import.meta.url));
+    const sources = ["core", "dwg", "vue", "react"].map((pkg) => join(root, pkg, "src"));
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const path = join(dir, entry.name);
+        if (entry.isDirectory()) walk(path);
+        else if (path.endsWith(".ts")) {
+          readFileSync(path, "utf8")
+            .split("\n")
+            .forEach((line, index) => {
+              // CadViewer normalizes whatever a caller or an event listener throws.
+              if (/new Error\(/.test(line) && !line.includes("new Error(String(error))"))
+                offenders.push(`${path.replace(root, "")}:${index + 1}`);
+            });
+        }
+      }
+    };
+    for (const dir of sources) walk(dir);
+    expect(offenders).toEqual([]);
   });
 });

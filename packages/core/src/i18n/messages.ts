@@ -13,6 +13,13 @@ export interface Messages {
   errors: ErrorMessages;
 }
 
+/** ": HTTP 404" / ": reason" when known, "." when the cause is unknown. */
+const fetchDetail = (status: number | undefined, reason: string | undefined): string => {
+  if (status !== undefined) return `: HTTP ${status}`;
+  if (reason) return `: ${reason}`;
+  return ".";
+};
+
 const en: Messages = {
   canvasLabel: "CAD drawing",
   measureLabel: (distance) => `Distance: ${distance}`,
@@ -21,7 +28,7 @@ const en: Messages = {
     "parse-error": ({ fileName, format, reason }) =>
       `Could not read "${fileName ?? "file"}" as ${format}: ${reason}`,
     "fetch-failed": ({ url, status, reason }) =>
-      `Failed to fetch "${url}": ${status !== undefined ? `HTTP ${status}` : (reason ?? "")}`,
+      `Failed to fetch "${url}"${fetchDetail(status, reason)}`,
     aborted: () => "Loading was aborted.",
     "unknown-layer": ({ name }) => `Unknown layer "${name}".`,
     "unknown-layout": ({ name }) => `Unknown layout "${name}".`,
@@ -33,6 +40,7 @@ const en: Messages = {
       `Missing value for group code ${groupCode} at line ${line}.`,
     "no-model-layout": () => "Document has no model layout.",
     "dwg-read-failed": () => "LibreDWG could not read the file.",
+    "dwg-missing-point": () => "Missing point.",
   },
 };
 
@@ -45,7 +53,7 @@ const esES: Messages = {
     "parse-error": ({ fileName, format, reason }) =>
       `No se ha podido leer ${fileName !== undefined ? `«${fileName}»` : "el archivo"} como ${format}: ${reason}`,
     "fetch-failed": ({ url, status, reason }) =>
-      `No se ha podido descargar «${url}»: ${status !== undefined ? `HTTP ${status}` : (reason ?? "")}`,
+      `No se ha podido descargar «${url}»${fetchDetail(status, reason)}`,
     aborted: () => "Se ha cancelado la carga.",
     "unknown-layer": ({ name }) => `La capa «${name}» no existe.`,
     "unknown-layout": ({ name }) => `La presentación «${name}» no existe.`,
@@ -58,6 +66,7 @@ const esES: Messages = {
       `Falta el valor del código de grupo ${groupCode} en la línea ${line}.`,
     "no-model-layout": () => "El documento no tiene espacio modelo.",
     "dwg-read-failed": () => "LibreDWG no ha podido leer el archivo.",
+    "dwg-missing-point": () => "Falta un punto.",
   },
 };
 

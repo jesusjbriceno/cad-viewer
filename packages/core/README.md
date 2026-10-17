@@ -73,7 +73,7 @@ Errors carry machine-readable fields, so a UI can react without parsing prose:
 
 | Field | Meaning |
 | --- | --- |
-| `code` | Stable identifier (`"unsupported-format"`, `"parse-error"`, `"fetch-failed"`, `"aborted"`, `"unknown-layer"`, `"unknown-layout"`, `"destroyed"`, `"image-export-failed"`, `"dxf-binary-unsupported"`, `"dxf-invalid-group-code"`, `"dxf-missing-value"`, `"no-model-layout"`, `"dwg-read-failed"`). |
+| `code` | Stable identifier (`"unsupported-format"`, `"parse-error"`, `"fetch-failed"`, `"aborted"`, `"unknown-layer"`, `"unknown-layout"`, `"destroyed"`, `"image-export-failed"`, `"dxf-binary-unsupported"`, `"dxf-invalid-group-code"`, `"dxf-missing-value"`, `"no-model-layout"`, `"dwg-read-failed"`, `"dwg-missing-point"`). |
 | `params` | The values behind the message (`{ name }`, `{ url, status }`, `{ fileName, format, reason }`, …). |
 | `message` | English text for logs. Stable across locales. |
 

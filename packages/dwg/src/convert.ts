@@ -4,6 +4,7 @@ import {
   type CadEntity,
   type CadLayer,
   type CadLayout,
+  CadViewerError,
   type Color,
   createDefaultLayer,
   createEmptyDocument,
@@ -65,7 +66,8 @@ const raw = (value: unknown): Raw => (value && typeof value === "object" ? (valu
 const list = (value: unknown): Raw[] => (Array.isArray(value) ? (value as Raw[]) : []);
 
 function point(value: unknown, required = true): Point {
-  if (required && (value === null || value === undefined)) throw new Error("Missing point.");
+  if (required && (value === null || value === undefined))
+    throw new CadViewerError("dwg-missing-point", "Missing point.", { params: {} });
   const p = raw(value);
   const result: Point = { x: num(p.x), y: num(p.y) };
   if (typeof p.z === "number") result.z = p.z;

@@ -1,6 +1,6 @@
 {
   "name": "@jesusjbriceno/cad-viewer-dwg",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DWG format plugin for @jesusjbriceno/cad-viewer-core, powered by LibreDWG (GPL-3.0).",
   "license": "GPL-3.0-only",
   "type": "module",

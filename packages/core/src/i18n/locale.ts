@@ -14,8 +14,10 @@ export const FALLBACK_LOCALE: CadLocale = "en";
  * `es-ES`, any Spanish tag gives `es-ES`, anything else gives `en`.
  */
 export function resolveLocale(locale?: string | null): CadLocale {
-  if (!locale) return DEFAULT_LOCALE;
-  const language = locale.trim().split(/[-_]/)[0]?.toLowerCase();
+  // A missing, blank or non-string tag means "no preference", not "foreign language".
+  const tag = typeof locale === "string" ? locale.trim() : "";
+  if (!tag) return DEFAULT_LOCALE;
+  const language = tag.split(/[-_]/)[0]?.toLowerCase();
   if (language === "es") return "es-ES";
   return FALLBACK_LOCALE;
 }
