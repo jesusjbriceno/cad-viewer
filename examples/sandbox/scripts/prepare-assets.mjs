@@ -1,5 +1,6 @@
-// Copies the LibreDWG wasm and the sample drawings and 3D models into public/ before dev/build.
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
+// Copies the LibreDWG wasm, the sample drawings and 3D models, and the real third-party
+// sample assets into public/ before dev/build.
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,6 +31,12 @@ const assets = [
   [join(packages, "3d", "test", "fixtures", "flange.stl"), join("samples", "flange.stl")],
   [join(packages, "3d", "test", "fixtures", "house.obj"), join("samples", "house.obj")],
 ];
+
+// Real third-party assets: every file in samples/ (with its manifest and attribution file).
+const samplesDir = join(sandbox, "samples");
+assets.push(
+  ...readdirSync(samplesDir).map((name) => [join(samplesDir, name), join("samples", name)]),
+);
 
 for (const [from, to] of assets) {
   if (!existsSync(from)) {

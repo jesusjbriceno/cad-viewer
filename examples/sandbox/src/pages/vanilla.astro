@@ -14,6 +14,7 @@ const t = messages(DEFAULT_LOCALE);
         <select data-samples aria-label={t.samples.label} data-i18n-aria="samples.label"></select>
         <div class="row"><input data-file type="file" accept=".dxf,.dwg" aria-label={t.openFile} data-i18n-aria="openFile" /></div>
         <p class="drop-hint" data-i18n="dropHint">{t.dropHint}</p>
+        <p class="drop-hint"><a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/credits/`} data-i18n="samples.credits">{t.samples.credits}</a></p>
       </section>
       <section>
         <h2 data-i18n="layout">{t.layout}</h2>

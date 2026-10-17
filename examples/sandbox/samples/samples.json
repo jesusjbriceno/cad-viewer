@@ -1,0 +1,53 @@
+{
+  "$comment": "Real third-party sample assets for the sandbox. Every file here is redistributed under CC0 1.0 or CC BY. SHA-256 is checked by test/samples.test.ts; SOURCES.md must list every entry.",
+  "files": [
+    {
+      "file": "pump-house-plan.dxf",
+      "format": "dxf",
+      "title": "Pump house floor plan and section",
+      "author": "Innerscene",
+      "license": "CC0-1.0",
+      "sourceUrl": "https://www.innerscene.com/api/library/pump-house-plan-and-section-abe0da16/download?format=dxf",
+      "sourcePage": "https://www.innerscene.com/tools/library/drawings",
+      "sha256": "c24bc3c00a781222925dd4429d2d9b30c39a2910f2cc6ad2f4408f0d5b02bc9b",
+      "bytes": 175150,
+      "note": "R2010 (AC1024), 18 layers, 240 entities in a named block; a real plan with texts and a hatch."
+    },
+    {
+      "file": "bolt-circle-plate.dxf",
+      "format": "dxf",
+      "title": "Bolt-circle plate drawing",
+      "author": "Falcon",
+      "license": "CC0-1.0",
+      "sourceUrl": "https://falcon.so/resources/samples/plate-sample.dxf",
+      "sourcePage": "https://falcon.so/resources/samples",
+      "sha256": "9cc5eaa6eb766ec3acd23e40a7313d207fd4fc7cb9d3ac92e8a4d44b676f563d",
+      "bytes": 545,
+      "note": "Minimal hand-checkable DXF: a few LINE entities on layer OUTLINE."
+    },
+    {
+      "file": "torus-knot.stl",
+      "format": "stl",
+      "title": "Torus knot (binary STL)",
+      "author": "Falcon",
+      "license": "CC0-1.0",
+      "sourceUrl": "https://falcon.so/resources/samples/torus-knot.stl",
+      "sourcePage": "https://falcon.so/resources/samples",
+      "sha256": "341a34bbb05d6c8862b880903570a3faecb38995b98c4f93238001097b7894e5",
+      "bytes": 307284,
+      "note": "6144 triangles, one solid; exercises large binary parsing."
+    },
+    {
+      "file": "torus-knot.obj",
+      "format": "obj",
+      "title": "Torus knot (OBJ)",
+      "author": "Falcon",
+      "license": "CC0-1.0",
+      "sourceUrl": "https://falcon.so/resources/samples/torus-knot.obj",
+      "sourcePage": "https://falcon.so/resources/samples",
+      "sha256": "8a49ddde0e2fc37c1b15b64751cbfc3e60526c77fe55d9db2224ded72e7d0a89",
+      "bytes": 743723,
+      "note": "3225 vertices, 6144 faces, one object named 'torus knot'."
+    }
+  ]
+}
