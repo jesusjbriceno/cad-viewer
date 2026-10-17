@@ -20,6 +20,11 @@ export interface CadErrorParams {
   "no-model-layout": NoParams;
   "dwg-read-failed": NoParams;
   "dwg-missing-point": NoParams;
+  "stl-truncated": { triangles: number; bytes: number };
+  "stl-invalid-number": { line: number };
+  "obj-invalid-number": { line: number };
+  "obj-invalid-index": { index: string; line: number };
+  "webgl-unavailable": NoParams;
 }
 
 /** Stable identifier of a library error; use it for logic, never `message`. */

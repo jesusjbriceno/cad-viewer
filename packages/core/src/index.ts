@@ -29,5 +29,7 @@ export {
   MODEL_LAYOUT,
 } from "./model/document";
 export type * from "./model/types";
+export { createEmptyScene, DEFAULT_MATERIAL, meshBounds, sceneBounds } from "./scene/scene";
+export type * from "./scene/types";
 export { CadViewer } from "./viewer/CadViewer";
 export type * from "./viewer/types";

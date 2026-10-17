@@ -41,6 +41,13 @@ const en: Messages = {
     "no-model-layout": () => "Document has no model layout.",
     "dwg-read-failed": () => "LibreDWG could not read the file.",
     "dwg-missing-point": () => "Missing point.",
+    "stl-truncated": ({ triangles, bytes }) =>
+      `Binary STL declares ${triangles} triangles but has only ${bytes} bytes.`,
+    "stl-invalid-number": ({ line }) => `Invalid number in STL at line ${line}.`,
+    "obj-invalid-number": ({ line }) => `Invalid number in OBJ at line ${line}.`,
+    "obj-invalid-index": ({ index, line }) =>
+      `Invalid vertex index "${index}" in OBJ at line ${line}.`,
+    "webgl-unavailable": () => "WebGL is not available in this browser.",
   },
 };
 
@@ -67,6 +74,13 @@ const esES: Messages = {
     "no-model-layout": () => "El documento no tiene espacio modelo.",
     "dwg-read-failed": () => "LibreDWG no ha podido leer el archivo.",
     "dwg-missing-point": () => "Falta un punto.",
+    "stl-truncated": ({ triangles, bytes }) =>
+      `El STL binario declara ${triangles} triángulos pero solo tiene ${bytes} bytes.`,
+    "stl-invalid-number": ({ line }) => `Número no válido en el STL en la línea ${line}.`,
+    "obj-invalid-number": ({ line }) => `Número no válido en el OBJ en la línea ${line}.`,
+    "obj-invalid-index": ({ index, line }) =>
+      `Índice de vértice «${index}» no válido en el OBJ en la línea ${line}.`,
+    "webgl-unavailable": () => "WebGL no está disponible en este navegador.",
   },
 };
 

@@ -20,15 +20,16 @@ export interface LoaderProbe {
 }
 
 /**
- * A file format plugin. Loaders turn raw bytes into a `CadDocument` and never
- * touch the DOM, so they can run in a worker.
+ * A file format plugin. Loaders turn raw bytes into a `CadDocument` (2D) or a
+ * `CadScene` (3D, `FormatLoader<CadScene>`) and never touch the DOM, so they
+ * can run in a worker.
  */
-export interface FormatLoader {
-  /** Stable id, also used as `CadDocument.format` ("dxf", "dwg"). */
+export interface FormatLoader<T = CadDocument> {
+  /** Stable id, also used as the result's `format` ("dxf", "dwg", "stl"). */
   readonly id: string;
   /** Lower-case extensions including the dot, e.g. [".dxf"]. */
   readonly extensions: readonly string[];
   /** Content sniffing used when the extension is missing or unknown. */
   canLoad(probe: LoaderProbe): boolean;
-  load(bytes: Uint8Array, options: LoadOptions): Promise<CadDocument>;
+  load(bytes: Uint8Array, options: LoadOptions): Promise<T>;
 }

@@ -10,6 +10,10 @@ const REQUIRED_PARAMS: Partial<Record<CadErrorCode, readonly string[]>> = {
   "unknown-layout": ["name"],
   "dxf-invalid-group-code": ["value", "line"],
   "dxf-missing-value": ["groupCode", "line"],
+  "stl-truncated": ["triangles", "bytes"],
+  "stl-invalid-number": ["line"],
+  "obj-invalid-number": ["line"],
+  "obj-invalid-index": ["index", "line"],
 };
 
 /**
