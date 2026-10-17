@@ -30,6 +30,7 @@ const picked = ref<PickResult | null>(null);
       ref="viewer"
       src="/drawings/plan.dwg"
       theme="dark"
+      locale="es-ES"
       :loaders="loaders"
       :hidden-layers="['Furniture']"
       @select="picked = $event.pick"
@@ -50,6 +51,7 @@ The component fills its parent, so **give the parent a size**. Register it globa
 | `src` | `string \| URL \| File \| Blob \| ArrayBuffer \| Uint8Array \| null` | yes | Changing it loads the new drawing. |
 | `file-name` | `string` | yes | Picks the format when `src` has no name (raw bytes). |
 | `theme` | `"dark" \| "light"` | yes | |
+| `locale` | `string` (default `"es-ES"`) | yes | Language of the viewer's own texts; `en` available, unsupported tags fall back to it. |
 | `tool` | `"pan" \| "zoom-window" \| "measure"` | yes | |
 | `layout` | `string` | yes | Controlled active layout, re-applied after each load. |
 | `hidden-layers` | `string[]` | yes | When set, these layers are hidden and every other layer is shown. |

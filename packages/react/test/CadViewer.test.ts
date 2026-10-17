@@ -109,6 +109,21 @@ describe("<CadViewer> (React)", () => {
     expect(viewer().callsTo("setLayout").at(-1)).toEqual(["Sheet"]);
   });
 
+  it("passes locale at creation and applies changes without recreating the viewer", () => {
+    const { rerender, container } = render(createElement(CadViewer, { locale: "en" }));
+    expect(viewer().options.locale).toBe("en");
+    rerender(createElement(CadViewer, { locale: "es-ES" }));
+    expect(FakeViewer.instances).toHaveLength(1);
+    expect(viewer().callsTo("setLocale").at(-1)).toEqual(["es-ES"]);
+    expect((container.firstElementChild as HTMLElement).hasAttribute("locale")).toBe(false);
+  });
+
+  it("leaves the locale to the core default (es-ES) when the prop is absent", () => {
+    render(createElement(CadViewer, {}));
+    expect("locale" in viewer().options).toBe(false);
+    expect(viewer().callsTo("setLocale")).toEqual([]);
+  });
+
   it("applies hiddenLayers by content (not array identity) and after each load", () => {
     const { rerender } = render(createElement(CadViewer, { hiddenLayers: ["A", "Missing"] }));
     expect(viewer().callsTo("setLayerVisible")).toEqual([["A", false]]);

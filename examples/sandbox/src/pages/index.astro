@@ -4,27 +4,54 @@ import Base from "../layouts/Base.astro";
 const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
-<Base title="Overview" active="home">
+<Base active="home">
   <main class="overview">
-    <h1>cad-viewer sandbox</h1>
-    <p>
-      A static test bench for the view-only CAD viewer. Every page loads the same sample drawings and accepts your own
-      <code>.dxf</code> and <code>.dwg</code> files (file picker or drag &amp; drop). Files never leave your browser.
-    </p>
-    <ul>
-      <li><a href={`${base}vanilla/`}>Vanilla</a> — <code>@jesusjbriceno/cad-viewer-core</code> used directly, no framework.</li>
-      <li><a href={`${base}vue/`}>Vue</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-vue</code>.</li>
-      <li><a href={`${base}react/`}>React</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-react</code>.</li>
-    </ul>
-    <h2>What to try</h2>
-    <ul>
-      <li>Drag to pan, wheel or pinch to zoom, double-click (or <kbd>0</kbd>) to fit the drawing.</li>
-      <li>Toggle layers, switch layouts (model / paper space), change the background theme.</li>
-      <li>Click an entity to inspect it, use <em>Zoom window</em> and <em>Measure</em>, export a PNG.</li>
-    </ul>
-    <p>
-      DWG support comes from the optional GPL-3.0 plugin (LibreDWG compiled to WebAssembly). The wasm (~10 MB) downloads
-      the first time you open a DWG.
-    </p>
+    <div data-locale-block="es-ES" lang="es-ES">
+      <h1>Sandbox de cad-viewer</h1>
+      <p>
+        Banco de pruebas estático del visor CAD de solo lectura. Todas las páginas cargan los mismos dibujos de muestra y
+        aceptan tus propios archivos <code>.dxf</code> y <code>.dwg</code> (selector de archivos o arrastrar y soltar). Los
+        archivos nunca salen de tu navegador.
+      </p>
+      <ul>
+        <li><a href={`${base}vanilla/`}>Vanilla</a> — <code>@jesusjbriceno/cad-viewer-core</code> usado directamente, sin framework.</li>
+        <li><a href={`${base}vue/`}>Vue</a> — el componente <code>&lt;CadViewer&gt;</code> de <code>@jesusjbriceno/cad-viewer-vue</code>.</li>
+        <li><a href={`${base}react/`}>React</a> — el componente <code>&lt;CadViewer&gt;</code> de <code>@jesusjbriceno/cad-viewer-react</code>.</li>
+      </ul>
+      <h2>Qué probar</h2>
+      <ul>
+        <li>Arrastra para desplazar, usa la rueda o pellizca para hacer zoom, doble clic (o <kbd>0</kbd>) para encuadrar el dibujo.</li>
+        <li>Activa y desactiva capas, cambia de presentación (espacio modelo / papel) y el tema de fondo.</li>
+        <li>Haz clic en una entidad para inspeccionarla, usa <em>Zoom ventana</em> y <em>Medir</em>, exporta un PNG.</li>
+        <li>Cambia el idioma arriba a la derecha: el visor (etiqueta del lienzo, medición, errores) y esta interfaz pasan a español o inglés.</li>
+      </ul>
+      <p>
+        El soporte DWG viene del plugin opcional GPL-3.0 (LibreDWG compilado a WebAssembly). El wasm (~10 MB) se descarga
+        la primera vez que abres un DWG.
+      </p>
+    </div>
+    <div data-locale-block="en" lang="en" hidden>
+      <h1>cad-viewer sandbox</h1>
+      <p>
+        A static test bench for the view-only CAD viewer. Every page loads the same sample drawings and accepts your own
+        <code>.dxf</code> and <code>.dwg</code> files (file picker or drag &amp; drop). Files never leave your browser.
+      </p>
+      <ul>
+        <li><a href={`${base}vanilla/`}>Vanilla</a> — <code>@jesusjbriceno/cad-viewer-core</code> used directly, no framework.</li>
+        <li><a href={`${base}vue/`}>Vue</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-vue</code>.</li>
+        <li><a href={`${base}react/`}>React</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-react</code>.</li>
+      </ul>
+      <h2>What to try</h2>
+      <ul>
+        <li>Drag to pan, wheel or pinch to zoom, double-click (or <kbd>0</kbd>) to fit the drawing.</li>
+        <li>Toggle layers, switch layouts (model / paper space), change the background theme.</li>
+        <li>Click an entity to inspect it, use <em>Zoom window</em> and <em>Measure</em>, export a PNG.</li>
+        <li>Switch the language at the top right: the viewer (canvas label, measure label, errors) and this UI change to Spanish or English.</li>
+      </ul>
+      <p>
+        DWG support comes from the optional GPL-3.0 plugin (LibreDWG compiled to WebAssembly). The wasm (~10 MB) downloads
+        the first time you open a DWG.
+      </p>
+    </div>
   </main>
 </Base>

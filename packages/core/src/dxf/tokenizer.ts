@@ -1,3 +1,5 @@
+import { viewerError } from "../loaders/errors";
+
 /** One DXF group: an integer group code and its raw string value. */
 export interface DxfPair {
   code: number;
@@ -23,9 +25,10 @@ export function tokenize(text: string): DxfPair[] {
   const pairs: DxfPair[] = [];
   for (let index = 0; index < end; index += 2) {
     const raw = (lines[index] ?? "").trim();
-    if (!GROUP_CODE.test(raw)) throw new Error(`Invalid group code "${raw}" at line ${index + 1}.`);
+    if (!GROUP_CODE.test(raw))
+      throw viewerError("dxf-invalid-group-code", { value: raw, line: index + 1 });
     if (index + 1 >= end)
-      throw new Error(`Missing value for group code ${Number(raw)} at line ${index + 1}.`);
+      throw viewerError("dxf-missing-value", { groupCode: Number(raw), line: index + 1 });
     pairs.push({ code: Number(raw), value: lines[index + 1] ?? "", line: index + 1 });
   }
   return pairs;

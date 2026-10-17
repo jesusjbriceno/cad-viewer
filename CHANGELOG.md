@@ -4,6 +4,39 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/) (`0.x`: APIs may change between minor versions).
 
+## [0.2.0] - 2026-10-17
+
+Internationalization: **Spanish (Spain) is the default language**, English is the fallback.
+
+### Added
+
+- **Language catalogs** in the core (`es-ES`, `en`, `DEFAULT_LOCALE = "es-ES"`,
+  `FALLBACK_LOCALE = "en"`, `resolveLocale()`): any Spanish tag (`es`, `es-MX`) resolves to
+  `es-ES`, any other tag to `en`.
+- **`locale` option on `CadViewer`**, plus the reactive `locale` getter, `setLocale()` and
+  `formatError()`.
+- **Localized viewer texts**: the canvas `aria-label` and `lang`, and the measure label
+  (`Distancia: 12,5` / `Distance: 12.5` — the number now follows the locale separator).
+- **Stable error codes**: every library error is a `CadViewerError` (`CadLoadError` for
+  loads) with `code` and `params`, and `formatCadError(error, locale)` / `viewer.formatError()`
+  return its text in the chosen language.
+- **`locale` prop** on the Vue and React components (reactive; passed to the viewer at
+  creation and applied through `setLocale()` on later changes).
+- **Sandbox language selector** (Spanish/English), remembered in `localStorage`; the whole
+  UI and the viewer follow it.
+
+### Changed
+
+- **Behavior:** the viewer is in Spanish (Spain) unless you pass `locale`. Canvas texts and
+  the measure label are no longer hardcoded English.
+- Error `message` strings remain in English for logs and are now also the fallback text of
+  `formatCadError()` when a translation needs parameters that were not supplied.
+
+### Unchanged
+
+- `error.message`, error classes' inheritance (`CadLoadError extends CadViewerError extends
+  Error`) and every existing option, prop, method and event stay source compatible.
+
 ## [0.1.0] - 2026-10-17
 
 First public release: a view-only 2D CAD viewer for the web.
@@ -38,4 +71,5 @@ First public release: a view-only 2D CAD viewer for the web.
 - R2010+ DWG tables are not decoded by libredwg-web 0.8.
 - External references are not resolved; parsing runs on the main thread.
 
+[0.2.0]: https://github.com/jesusjbriceno/cad-viewer/releases/tag/v0.2.0
 [0.1.0]: https://github.com/jesusjbriceno/cad-viewer/releases/tag/v0.1.0

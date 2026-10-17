@@ -71,6 +71,13 @@ MINSERT grids), tables, solids, traces, 3D faces (outline), hatches (solid and p
 dimensions, leaders, rays, construction lines and paper-space viewports, with layers,
 line types, line weights, text styles and layouts.
 
+## Errors
+
+A file LibreDWG cannot read is reported as a `CadViewerError` with `code: "dwg-read-failed"`
+(`message: "LibreDWG could not read the file."`, unchanged for compatibility). Show it in
+the user's language with `formatCadError(error, "es-ES")`, or go through the viewer, which
+already does it in its own `locale`.
+
 ## Known limitations
 
 - 3D solids, regions, meshes, multileaders, multilines, tolerances, images and wipeouts are

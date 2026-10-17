@@ -1,5 +1,5 @@
 import type { CadDocument } from "../model/types";
-import { abortError, CadLoadError } from "./errors";
+import { abortError, CadLoadError, loadError } from "./errors";
 import type { FormatLoader, LoaderProbe, LoadOptions } from "./types";
 
 function extensionOf(fileName: string | undefined): string | undefined {
@@ -45,22 +45,16 @@ export class FormatRegistry {
   /** Resolves a loader and runs it, normalizing every failure to `CadLoadError`. */
   async load(bytes: Uint8Array, options: LoadOptions = {}): Promise<CadDocument> {
     if (options.signal?.aborted) throw abortError();
-    const label = options.fileName ?? "file";
+    const name = options.fileName !== undefined ? { fileName: options.fileName } : {};
     const loader = this.resolve({ fileName: options.fileName, bytes });
-    if (!loader) throw new CadLoadError("unsupported-format", `No loader can open "${label}".`);
+    if (!loader) throw loadError("unsupported-format", name);
     try {
       return await loader.load(bytes, options);
     } catch (error) {
       if (error instanceof CadLoadError) throw error;
       if (options.signal?.aborted) throw abortError();
       const reason = error instanceof Error ? error.message : String(error);
-      throw new CadLoadError(
-        "parse-error",
-        `Could not read "${label}" as ${loader.id}: ${reason}`,
-        {
-          cause: error,
-        },
-      );
+      throw loadError("parse-error", { ...name, format: loader.id, reason }, error);
     }
   }
 }

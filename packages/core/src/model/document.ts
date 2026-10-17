@@ -1,3 +1,4 @@
+import { viewerError } from "../loaders/errors";
 import type { CadDocument, CadLayer, CadLayout } from "./types";
 
 export const MODEL_LAYOUT = "Model";
@@ -27,6 +28,6 @@ export function createEmptyDocument(format: string): CadDocument {
 
 export function getModelLayout(document: CadDocument): CadLayout {
   const model = document.layouts.find((layout) => layout.isModel);
-  if (!model) throw new Error("Document has no model layout.");
+  if (!model) throw viewerError("no-model-layout", {});
   return model;
 }

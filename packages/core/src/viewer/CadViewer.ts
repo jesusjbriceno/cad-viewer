@@ -1,5 +1,8 @@
 import { dxfLoader } from "../dxf";
-import { abortError, CadLoadError } from "../loaders/errors";
+import { formatCadError, formatLength } from "../i18n/format";
+import { type CadLocale, resolveLocale } from "../i18n/locale";
+import { MESSAGES } from "../i18n/messages";
+import { abortError, CadLoadError, viewerError } from "../loaders/errors";
 import { FormatRegistry } from "../loaders/registry";
 import { colorToCss } from "../model/colors";
 import type { Bounds, CadDocument, CadLayout, Color, Point } from "../model/types";
@@ -54,10 +57,6 @@ function sourceName(source: CadSource): string | undefined {
   return undefined;
 }
 
-function formatLength(value: number): string {
-  return Number(value.toPrecision(6)).toString();
-}
-
 /**
  * View-only CAD viewer bound to a container element. It renders into its own
  * `<canvas>`, sized to the container, and never modifies the loaded drawing:
@@ -75,6 +74,7 @@ export class CadViewer implements CadViewerApi {
   private currentDocument: CadDocument | null = null;
   private layout: CadLayout | null = null;
   private currentTheme: CadTheme;
+  private currentLocale: CadLocale;
   private currentTool: ViewerTool;
   private currentSelection: PickResult | null = null;
   private selectedTarget: PickTarget | null = null;
@@ -99,13 +99,13 @@ export class CadViewer implements CadViewerApi {
   ) {
     this.registry = new FormatRegistry([dxfLoader, ...(options.loaders ?? [])]);
     this.currentTheme = options.theme ?? "dark";
+    this.currentLocale = resolveLocale(options.locale);
     this.currentTool = options.tool ?? "pan";
     this.pixelRatio = options.pixelRatio ?? (globalThis.devicePixelRatio || 1);
 
     const canvas = container.ownerDocument.createElement("canvas");
     canvas.tabIndex = 0;
     canvas.setAttribute("role", "img");
-    canvas.setAttribute("aria-label", "CAD drawing");
     Object.assign(canvas.style, {
       display: "block",
       width: "100%",
@@ -116,6 +116,7 @@ export class CadViewer implements CadViewerApi {
     container.appendChild(canvas);
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
+    this.applyLocale();
 
     if (options.interactive !== false) {
       this.detachInput = attachPointerInput(canvas, {
@@ -146,6 +147,10 @@ export class CadViewer implements CadViewerApi {
 
   get theme(): CadTheme {
     return this.currentTheme;
+  }
+
+  get locale(): CadLocale {
+    return this.currentLocale;
   }
 
   get tool(): ViewerTool {
@@ -356,7 +361,7 @@ export class CadViewer implements CadViewerApi {
 
   setLayerVisible(name: string, visible: boolean): void {
     this.assertAlive();
-    if (!this.currentDocument?.layers.has(name)) throw new Error(`Unknown layer "${name}".`);
+    if (!this.currentDocument?.layers.has(name)) throw viewerError("unknown-layer", { name });
     this.layerVisible.set(name, visible);
     this.layersChanged();
   }
@@ -374,7 +379,7 @@ export class CadViewer implements CadViewerApi {
   setLayout(name: string): void {
     this.assertAlive();
     const layout = this.currentDocument?.layouts.find((candidate) => candidate.name === name);
-    if (!layout) throw new Error(`Unknown layout "${name}".`);
+    if (!layout) throw viewerError("unknown-layout", { name });
     if (layout === this.layout) return;
     this.layout = layout;
     this.currentSelection = null;
@@ -420,12 +425,30 @@ export class CadViewer implements CadViewerApi {
     return cache[chain] ?? true;
   };
 
-  // ── Theme, tools, picking ────────────────────────────────────────────────
+  // ── Theme, language, tools, picking ──────────────────────────────────────
 
   setTheme(theme: CadTheme): void {
     this.assertAlive();
     this.currentTheme = theme;
     this.requestRender();
+  }
+
+  setLocale(locale: string): void {
+    this.assertAlive();
+    const resolved = resolveLocale(locale);
+    if (resolved === this.currentLocale) return;
+    this.currentLocale = resolved;
+    this.applyLocale();
+    this.requestRender();
+  }
+
+  formatError(error: unknown): string {
+    return formatCadError(error, this.currentLocale);
+  }
+
+  private applyLocale(): void {
+    this.canvas.setAttribute("lang", this.currentLocale);
+    this.canvas.setAttribute("aria-label", MESSAGES[this.currentLocale].canvasLabel);
   }
 
   setTool(tool: ViewerTool): void {
@@ -583,7 +606,7 @@ export class CadViewer implements CadViewerApi {
     canvas.width = Math.max(1, Math.round(this.width * scale));
     canvas.height = Math.max(1, Math.round(this.height * scale));
     const context = canvas.getContext("2d");
-    if (!context) return Promise.reject(new Error("Image export failed."));
+    if (!context) return Promise.reject(viewerError("image-export-failed", {}));
     drawFrame(context, {
       ...this.frame(),
       pixelRatio: scale,
@@ -593,7 +616,7 @@ export class CadViewer implements CadViewerApi {
     });
     return new Promise((resolve, reject) => {
       canvas.toBlob(
-        (blob) => (blob ? resolve(blob) : reject(new Error("Image export failed."))),
+        (blob) => (blob ? resolve(blob) : reject(viewerError("image-export-failed", {}))),
         options.type ?? "image/png",
       );
     });
@@ -624,10 +647,13 @@ export class CadViewer implements CadViewerApi {
     const model = this.currentDocument?.layouts.find((layout) => layout.isModel);
     const measureLabel =
       this.measure.from && this.measure.to
-        ? formatLength(
-            Math.hypot(
-              this.measure.to.x - this.measure.from.x,
-              this.measure.to.y - this.measure.from.y,
+        ? MESSAGES[this.currentLocale].measureLabel(
+            formatLength(
+              Math.hypot(
+                this.measure.to.x - this.measure.from.x,
+                this.measure.to.y - this.measure.from.y,
+              ),
+              this.currentLocale,
             ),
           )
         : undefined;
@@ -698,6 +724,6 @@ export class CadViewer implements CadViewerApi {
   }
 
   private assertAlive(): void {
-    if (this.destroyed) throw new Error("CadViewer has been destroyed.");
+    if (this.destroyed) throw viewerError("destroyed", {});
   }
 }

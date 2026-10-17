@@ -1,4 +1,4 @@
-import { abortError } from "../loaders/errors";
+import { abortError, viewerError } from "../loaders/errors";
 import type { FormatLoader, LoaderProbe, LoadOptions } from "../loaders/types";
 import type { CadDocument } from "../model/types";
 import { parseDxf } from "./parse";
@@ -29,7 +29,7 @@ export const dxfLoader: FormatLoader = {
 
   async load(bytes: Uint8Array, options: LoadOptions): Promise<CadDocument> {
     if (options.signal?.aborted) throw abortError();
-    if (isBinaryDxf(bytes)) throw new Error("Binary DXF is not supported yet.");
+    if (isBinaryDxf(bytes)) throw viewerError("dxf-binary-unsupported", {});
     options.onProgress?.({ phase: "parse" });
     const document = parseDxf(decodeDxfBytes(bytes));
     if (options.signal?.aborted) throw abortError();

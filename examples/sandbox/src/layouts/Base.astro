@@ -1,37 +1,71 @@
 ---
+import { DEFAULT_LOCALE } from "@jesusjbriceno/cad-viewer-core";
+import { LANGUAGES, messages } from "../lib/i18n";
 import "../styles/sandbox.css";
 
+type Page = "home" | "vanilla" | "vue" | "react";
+
 interface Props {
-  title: string;
-  active: "home" | "vanilla" | "vue" | "react";
+  active: Page;
 }
 
-const { title, active } = Astro.props;
+const { active } = Astro.props;
+// Static HTML is rendered in the default language; the client script applies the stored choice.
+const t = messages(DEFAULT_LOCALE);
 const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const links = [
-  { id: "home", href: base, label: "Overview" },
-  { id: "vanilla", href: `${base}vanilla/`, label: "Vanilla (core)" },
-  { id: "vue", href: `${base}vue/`, label: "Vue" },
-  { id: "react", href: `${base}react/`, label: "React" },
+const links: { id: Page; href: string }[] = [
+  { id: "home", href: base },
+  { id: "vanilla", href: `${base}vanilla/` },
+  { id: "vue", href: `${base}vue/` },
+  { id: "react", href: `${base}react/` },
 ];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={DEFAULT_LOCALE}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="data:," />
-    <title>{title} · cad-viewer sandbox</title>
+    <title>{t.titles[active]} · cad-viewer sandbox</title>
   </head>
-  <body>
+  <body data-page={active}>
     <header class="topbar">
       <a class="brand" href={base}>cad-viewer <span>sandbox</span></a>
-      <nav aria-label="Sandbox pages">
-        {links.map((link) => <a href={link.href} aria-current={link.id === active ? "page" : undefined}>{link.label}</a>)}
+      <nav aria-label={t.nav.pages} data-i18n-aria="nav.pages">
+        {
+          links.map((link) => (
+            <a href={link.href} aria-current={link.id === active ? "page" : undefined} data-i18n={`nav.${link.id}`}>
+              {t.nav[link.id]}
+            </a>
+          ))
+        }
       </nav>
+      <label class="language">
+        <span data-i18n="languageLabel">{t.languageLabel}</span>
+        <select data-language>
+          {LANGUAGES.map((language) => <option value={language.locale} lang={language.locale}>{language.label}</option>)}
+        </select>
+      </label>
       <a class="repo" href="https://github.com/jesusjbriceno/cad-viewer">GitHub</a>
     </header>
     <slot />
   </body>
 </html>
+
+<script>
+  import { changeLocale, currentLocale, messages, onLocaleChange, translatePage } from "../lib/i18n";
+
+  type Page = "home" | "vanilla" | "vue" | "react";
+  const page = (document.body.dataset.page ?? "home") as Page;
+  const select = document.querySelector<HTMLSelectElement>("[data-language]");
+
+  const apply = (locale: ReturnType<typeof currentLocale>) => {
+    translatePage(locale);
+    document.title = `${messages(locale).titles[page]} · cad-viewer sandbox`;
+    if (select) select.value = locale;
+  };
+  apply(currentLocale());
+  onLocaleChange(apply);
+  select?.addEventListener("change", () => changeLocale(select.value));
+</script>

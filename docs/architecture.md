@@ -49,6 +49,8 @@ core usable from plain JavaScript.
 | DWG via LibreDWG in a separate GPL package | The only free DWG reader; isolation keeps core MIT | A permissive DWG reader appears |
 | Canvas2D renderer behind a `Renderer` interface | Zero runtime deps, native text for every script, simple hit testing | Drawings above ~500k segments feel slow → add a WebGL renderer |
 | Wrappers as plain TypeScript (`defineComponent` + `h`, function components) | Libraries build with `tsc` + Vite, no SFC/JSX toolchain | — |
+| Stable error codes + separate translation (`CadViewerError.code`/`params`) | `error.message` stays English and unchanged for logs and existing checks, loaders and the registry need no locale, and a UI can translate from the code | Every new error must register a code and a catalog entry |
+| Built-in catalogs (`es-ES` default, `en` fallback) instead of an i18n dependency | Zero runtime deps in core, tiny surface (viewer texts and error messages), works without a bundler plugin | Plural rules beyond `es`/`en` need a real formatter later |
 | ESM only, TypeScript 6 | Modern bundlers; TS 7 native compiler not yet supported by the tooling | Tooling supports TS 7 |
 
 ## Non-goals (v0)

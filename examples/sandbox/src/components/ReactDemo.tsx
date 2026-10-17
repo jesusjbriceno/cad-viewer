@@ -1,4 +1,6 @@
+import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
 import {
+  type CadLocale,
   type CadSource,
   type CadTheme,
   CadViewer,
@@ -9,14 +11,17 @@ import {
   useCadViewerRef,
   type ViewerTool,
 } from "@jesusjbriceno/cad-viewer-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { currentLocale, messages, onLocaleChange, type SandboxMessages } from "../lib/i18n";
 import { describeMeasure, describePick, downloadBlob, LOADERS, SAMPLES } from "../lib/shared";
 
-const TOOLS: { id: ViewerTool; label: string }[] = [
-  { id: "pan", label: "Pan / select" },
-  { id: "zoom-window", label: "Zoom window" },
-  { id: "measure", label: "Measure" },
-];
+const TOOLS: ViewerTool[] = ["pan", "zoom-window", "measure"];
+
+/** Status kept as a function of the texts so a language change redraws it. */
+interface Status {
+  text: (t: SandboxMessages, locale: CadLocale) => string;
+  error: boolean;
+}
 
 export default function ReactDemo() {
   const viewer = useCadViewerRef();
@@ -29,9 +34,12 @@ export default function ReactDemo() {
   const [layouts, setLayouts] = useState<LayoutInfo[]>([]);
   const [pick, setPick] = useState<PickResult | null>(null);
   const [measured, setMeasured] = useState<MeasureResult | null>(null);
-  const [status, setStatus] = useState({ text: "Ready.", error: false });
+  const [locale, setLocale] = useState<CadLocale>(currentLocale);
+  const [status, setStatus] = useState<Status>({ text: (t) => t.ready, error: false });
   const [dragging, setDragging] = useState(false);
   const hidden = useMemo(() => new Set(hiddenLayers), [hiddenLayers]);
+  const t = messages(locale);
+  useEffect(() => onLocaleChange(setLocale), []);
 
   const toggleLayer = (name: string, visible: boolean) =>
     setHiddenLayers((current) =>
@@ -46,11 +54,11 @@ export default function ReactDemo() {
     <div className="app">
       <aside className="side">
         <section>
-          <h2>Drawing</h2>
-          <select aria-label="Sample drawings" onChange={(event) => setSrc(event.target.value)}>
+          <h2>{t.drawing}</h2>
+          <select aria-label={t.samples.label} onChange={(event) => setSrc(event.target.value)}>
             {SAMPLES.map((sample) => (
               <option key={sample.url} value={sample.url}>
-                {sample.label}
+                {t.samples[sample.key]}
               </option>
             ))}
           </select>
@@ -58,19 +66,19 @@ export default function ReactDemo() {
             <input
               type="file"
               accept=".dxf,.dwg"
-              aria-label="Open a DXF or DWG file"
+              aria-label={t.openFile}
               onChange={(event) => {
                 const file = event.target.files?.[0];
                 if (file) setSrc(file);
               }}
             />
           </div>
-          <p className="drop-hint">…or drop a .dxf / .dwg file on the drawing.</p>
+          <p className="drop-hint">{t.dropHint}</p>
         </section>
         <section>
-          <h2>Layout</h2>
+          <h2>{t.layout}</h2>
           <select
-            aria-label="Layout"
+            aria-label={t.layout}
             value={layouts.find((entry) => entry.active)?.name ?? ""}
             onChange={(event) => setLayout(event.target.value)}
           >
@@ -82,9 +90,7 @@ export default function ReactDemo() {
           </select>
         </section>
         <section>
-          <h2>
-            Layers (controlled by <code>hiddenLayers</code>)
-          </h2>
+          <h2>{t.controlledLayers("hiddenLayers")}</h2>
           <ul className="layers">
             {layers.map((layer) => (
               <li key={layer.name}>
@@ -95,7 +101,7 @@ export default function ReactDemo() {
                     onChange={(event) => toggleLayer(layer.name, event.target.checked)}
                   />
                   <span className="swatch" style={{ background: layer.color }} />
-                  <span>{layer.name}</span>
+                  <span>{layer.frozen ? `${layer.name} (${t.frozen})` : layer.name}</span>
                   <span className="count">{layer.entityCount}</span>
                 </label>
               </li>
@@ -103,60 +109,56 @@ export default function ReactDemo() {
           </ul>
           <div className="row">
             <button type="button" onClick={() => setHiddenLayers([])}>
-              Show all
+              {t.showAll}
             </button>
             <button
               type="button"
               onClick={() => setHiddenLayers(layers.map((layer) => layer.name))}
             >
-              Hide all
+              {t.hideAll}
             </button>
           </div>
         </section>
         <section>
-          <h2>Selection</h2>
-          <pre className="info">{describePick(pick)}</pre>
+          <h2>{t.selection}</h2>
+          <pre className="info">{describePick(pick, locale)}</pre>
         </section>
         <section>
-          <h2>Measure</h2>
-          <pre className="info">{describeMeasure(measured)}</pre>
+          <h2>{t.measure}</h2>
+          <pre className="info">{describeMeasure(measured, locale)}</pre>
         </section>
       </aside>
       <main className="stage">
-        <div className="toolbar" role="toolbar" aria-label="Viewer tools">
-          <button
-            type="button"
-            title="Zoom to extents (0)"
-            onClick={() => viewer.current?.zoomExtents()}
-          >
-            Fit
+        <div className="toolbar" role="toolbar" aria-label={t.toolbar}>
+          <button type="button" title={t.fitTitle} onClick={() => viewer.current?.zoomExtents()}>
+            {t.fit}
           </button>
-          <button type="button" title="Zoom in (+)" onClick={() => viewer.current?.zoomIn()}>
+          <button type="button" title={t.zoomInTitle} onClick={() => viewer.current?.zoomIn()}>
             +
           </button>
-          <button type="button" title="Zoom out (−)" onClick={() => viewer.current?.zoomOut()}>
+          <button type="button" title={t.zoomOutTitle} onClick={() => viewer.current?.zoomOut()}>
             −
           </button>
           {TOOLS.map((entry) => (
             <button
               type="button"
-              key={entry.id}
-              aria-pressed={tool === entry.id}
-              onClick={() => setTool(entry.id)}
+              key={entry}
+              aria-pressed={tool === entry}
+              onClick={() => setTool(entry)}
             >
-              {entry.label}
+              {t.tools[entry]}
             </button>
           ))}
           <span className="spacer" />
           <button type="button" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-            Theme
+            {t.theme}
           </button>
           <button type="button" onClick={exportPng}>
-            Export PNG
+            {t.exportPng}
           </button>
         </div>
         <section
-          aria-label="Drawing (drop a DXF or DWG file here)"
+          aria-label={t.dropRegion}
           className={dragging ? "viewer-host dragging" : "viewer-host"}
           onDragOver={(event) => {
             event.preventDefault();
@@ -174,20 +176,32 @@ export default function ReactDemo() {
             ref={viewer}
             src={src}
             theme={theme}
+            locale={locale}
             tool={tool}
             layout={layout}
             hiddenLayers={hiddenLayers}
             loaders={LOADERS}
-            onLoadStart={() => setStatus({ text: "Loading…", error: false })}
-            onLoadProgress={({ phase }) => setStatus({ text: `Loading… (${phase})`, error: false })}
+            onLoadStart={() => setStatus({ text: (t) => t.loading, error: false })}
+            onLoadProgress={({ phase }) =>
+              setStatus({ text: (t) => t.loadingPhase(phase), error: false })
+            }
             onLoaded={({ document, fileName }) => {
               setStatus({
-                text: `${fileName ?? "Drawing"} · ${document.format.toUpperCase()} · ${document.layers.size} layers (rendered by <CadViewer> for React)`,
+                text: (t) =>
+                  t.loadedBy({
+                    name: fileName ?? t.drawingFallback,
+                    format: document.format.toUpperCase(),
+                    layers: document.layers.size,
+                    component: "React",
+                  }),
                 error: false,
               });
               setLayouts(viewer.current?.getLayouts() ?? []);
             }}
-            onError={({ error }) => setStatus({ text: error.message, error: true })}
+            // Library errors are translated from their stable code; the English message stays for logs.
+            onError={({ error }) =>
+              setStatus({ text: (_t, current) => formatCadError(error, current), error: true })
+            }
             onLayersChange={({ layers: next }) => setLayers(next)}
             onLayoutChange={() => setLayouts(viewer.current?.getLayouts() ?? [])}
             onToolChange={({ tool: next }) => setTool(next)}
@@ -196,7 +210,7 @@ export default function ReactDemo() {
           />
         </section>
         <div className={status.error ? "status error" : "status"} role="status">
-          {status.text}
+          {status.text(t, locale)}
         </div>
       </main>
     </div>

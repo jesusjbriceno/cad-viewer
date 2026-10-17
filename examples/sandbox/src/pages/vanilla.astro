@@ -1,51 +1,55 @@
 ---
+import { DEFAULT_LOCALE } from "@jesusjbriceno/cad-viewer-core";
 import Base from "../layouts/Base.astro";
+import { messages } from "../lib/i18n";
+
+const t = messages(DEFAULT_LOCALE);
 ---
 
-<Base title="Vanilla" active="vanilla">
+<Base active="vanilla">
   <div class="app" data-sandbox>
     <aside class="side">
       <section>
-        <h2>Drawing</h2>
-        <select data-samples aria-label="Sample drawings"><option value="">Choose a sample…</option></select>
-        <div class="row"><input data-file type="file" accept=".dxf,.dwg" aria-label="Open a DXF or DWG file" /></div>
-        <p class="drop-hint">…or drop a .dxf / .dwg file on the drawing.</p>
+        <h2 data-i18n="drawing">{t.drawing}</h2>
+        <select data-samples aria-label={t.samples.label} data-i18n-aria="samples.label"></select>
+        <div class="row"><input data-file type="file" accept=".dxf,.dwg" aria-label={t.openFile} data-i18n-aria="openFile" /></div>
+        <p class="drop-hint" data-i18n="dropHint">{t.dropHint}</p>
       </section>
       <section>
-        <h2>Layout</h2>
-        <select data-layouts aria-label="Layout"></select>
+        <h2 data-i18n="layout">{t.layout}</h2>
+        <select data-layouts aria-label={t.layout} data-i18n-aria="layout"></select>
       </section>
       <section>
-        <h2>Layers</h2>
+        <h2 data-i18n="layers">{t.layers}</h2>
         <ul class="layers" data-layers></ul>
         <div class="row">
-          <button data-action="show-all">Show all</button>
-          <button data-action="hide-all">Hide all</button>
+          <button data-action="show-all" data-i18n="showAll">{t.showAll}</button>
+          <button data-action="hide-all" data-i18n="hideAll">{t.hideAll}</button>
         </div>
       </section>
       <section>
-        <h2>Selection</h2>
+        <h2 data-i18n="selection">{t.selection}</h2>
         <pre class="info" data-selection></pre>
       </section>
       <section>
-        <h2>Measure</h2>
+        <h2 data-i18n="measure">{t.measure}</h2>
         <pre class="info" data-measure></pre>
       </section>
     </aside>
     <main class="stage">
-      <div class="toolbar" role="toolbar" aria-label="Viewer tools">
-        <button data-action="fit" title="Zoom to extents (0)">Fit</button>
-        <button data-action="zoom-in" title="Zoom in (+)">+</button>
-        <button data-action="zoom-out" title="Zoom out (−)">−</button>
-        <button data-tool="pan">Pan / select</button>
-        <button data-tool="zoom-window">Zoom window</button>
-        <button data-tool="measure">Measure</button>
+      <div class="toolbar" role="toolbar" aria-label={t.toolbar} data-i18n-aria="toolbar">
+        <button data-action="fit" title={t.fitTitle} data-i18n-title="fitTitle" data-i18n="fit">{t.fit}</button>
+        <button data-action="zoom-in" title={t.zoomInTitle} data-i18n-title="zoomInTitle">+</button>
+        <button data-action="zoom-out" title={t.zoomOutTitle} data-i18n-title="zoomOutTitle">−</button>
+        <button data-tool="pan" data-i18n="tools.pan">{t.tools.pan}</button>
+        <button data-tool="zoom-window" data-i18n="tools.zoom-window">{t.tools["zoom-window"]}</button>
+        <button data-tool="measure" data-i18n="tools.measure">{t.tools.measure}</button>
         <span class="spacer"></span>
-        <button data-action="theme">Theme</button>
-        <button data-action="png">Export PNG</button>
+        <button data-action="theme" data-i18n="theme">{t.theme}</button>
+        <button data-action="png" data-i18n="exportPng">{t.exportPng}</button>
       </div>
-      <div class="viewer-host" role="region" aria-label="Drawing (drop a DXF or DWG file here)"></div>
-      <div class="status" role="status">Ready.</div>
+      <div class="viewer-host" role="region" aria-label={t.dropRegion} data-i18n-aria="dropRegion"></div>
+      <div class="status" role="status">{t.ready}</div>
     </main>
   </div>
 </Base>

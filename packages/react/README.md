@@ -27,6 +27,7 @@ export function Plan() {
         ref={viewer}
         src="/drawings/plan.dwg"
         theme="dark"
+        locale="es-ES"
         loaders={loaders}
         hiddenLayers={["Furniture"]}
         onSelect={({ pick }) => console.log(pick)}
@@ -48,6 +49,7 @@ the component (or memoize it): it is a creation-time option.
 | `src` | `string \| URL \| File \| Blob \| ArrayBuffer \| Uint8Array \| null` | yes | Changing it loads the new drawing. |
 | `fileName` | `string` | yes | Picks the format when `src` has no name (raw bytes). |
 | `theme` | `"dark" \| "light"` | yes | |
+| `locale` | `string` (default `"es-ES"`) | yes | Language of the viewer's own texts; `en` available, unsupported tags fall back to it. |
 | `tool` | `"pan" \| "zoom-window" \| "measure"` | yes | |
 | `layout` | `string` | yes | Controlled active layout, re-applied after each load. |
 | `hiddenLayers` | `string[]` | yes | Compared by content; these layers are hidden and every other layer is shown. |

@@ -1,4 +1,5 @@
 export type {
+  CadLocale,
   CadSource,
   CadTheme,
   CadViewerApi,
