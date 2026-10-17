@@ -13,6 +13,14 @@ Each page loads two sample drawings (a DXF and a DWG) and accepts your own `.dxf
 `.dwg` files via the file picker or drag & drop. Files are read locally; nothing is
 uploaded.
 
+## Language
+
+The top-right selector switches the sandbox between **Spanish (Spain)** — the default — and
+English. The choice is remembered in `localStorage` and applies to the UI *and* to the
+viewer it embeds: canvas label, measure label and error messages go through `locale` /
+`formatCadError()`. `src/lib/i18n.ts` holds the catalog; static markup uses `data-i18n`,
+`data-i18n-aria`, `data-i18n-title` and `data-locale-block`.
+
 ## Run
 
 From the repository root:

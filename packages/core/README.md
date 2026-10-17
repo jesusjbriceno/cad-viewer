@@ -41,6 +41,7 @@ No API mutates the drawing.
 
 | Option | Default | Description |
 | --- | --- | --- |
+| `locale` | `"es-ES"` | Language of the viewer's own texts. Any Spanish tag → `es-ES`, any other → `en`. |
 | `loaders` | `[]` | Extra `FormatLoader`s (DXF is built in). |
 | `theme` | `"dark"` | `"dark"` or `"light"`. |
 | `background` | theme | CSS color overriding the theme background. |
@@ -50,6 +51,48 @@ No API mutates the drawing.
 | `zoomPadding` | `0.05` | Margin on zoom-to-extents, as a fraction of the view. |
 | `pixelRatio` | `devicePixelRatio` | Backing-store resolution. |
 | `fetch`, `requestInit` | global `fetch` | Used for URL sources (e.g. auth headers). |
+
+## Languages and errors
+
+The viewer's own texts — the canvas `aria-label`, its `lang`, the measure label and
+`formatError()` — follow `locale`, **Spanish (Spain) by default** with English as the
+fallback.
+
+```ts
+const viewer = new CadViewer(element, { locale: "es-ES" });
+viewer.locale;                  // "es-ES"
+viewer.setLocale("en");         // runtime change; canvas relabels and the measure label redraws
+viewer.formatError(error);      // text for any error, in the current language
+```
+
+`setLocale()` accepts any BCP 47 tag: `resolveLocale()` maps `es`, `es-ES` and `es-MX` to
+`es-ES`, and every other language (or an unsupported tag) to `en`. The measure label uses
+the locale's decimal separator (`Distancia: 12,5` / `Distance: 12.5`).
+
+Errors carry machine-readable fields, so a UI can react without parsing prose:
+
+| Field | Meaning |
+| --- | --- |
+| `code` | Stable identifier (`"unsupported-format"`, `"parse-error"`, `"fetch-failed"`, `"aborted"`, `"unknown-layer"`, `"unknown-layout"`, `"destroyed"`, `"image-export-failed"`, `"dxf-binary-unsupported"`, `"dxf-invalid-group-code"`, `"dxf-missing-value"`, `"no-model-layout"`, `"dwg-read-failed"`). |
+| `params` | The values behind the message (`{ name }`, `{ url, status }`, `{ fileName, format, reason }`, …). |
+| `message` | English text for logs. Stable across locales. |
+
+`CadViewerError` is the base class; `CadLoadError extends CadViewerError` marks failures to
+read or parse a source. `formatCadError(error, locale)` translates either one anywhere —
+including code that runs without a viewer (a format registry, a worker, a loader):
+
+```ts
+import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
+
+try {
+  await registry.load(bytes, { fileName: "plan.dxf" });
+} catch (error) {
+  showBanner(formatCadError(error, "es-ES")); // «No se ha podido leer «plan.dxf» como dxf: …»
+}
+```
+
+Adding a language is a catalog, not a branch: extend `CadLocale`, `MESSAGES` and
+`ERROR_MESSAGES` in `src/i18n/`.
 
 ## Events
 

@@ -39,6 +39,22 @@ Viewing only — the viewer never modifies a drawing.
 - Distance measurement
 - PNG snapshot export
 
+## Languages
+
+The viewer speaks **Spanish (Spain) by default**, with English as the fallback. One option
+covers the viewer's own texts (canvas label, measure label, error messages):
+
+```ts
+new CadViewer(element, { locale: "en" });        // or "es-ES" (default), "es", "es-MX", "en-GB"
+viewer.setLocale("en");                          // change it at runtime
+viewer.formatError(error);                       // show any error in the current language
+```
+
+`locale` is also a prop of the Vue and React components, and `formatCadError(error, locale)`
+is exported for code that runs without a viewer. Library errors carry a stable `code` (plus
+`params`) and keep an English `message`, so you can branch on the code and display the text
+in the user's language. See the [core README](packages/core/README.md#languages-and-errors).
+
 ## Quick start
 
 **Vue 3**
@@ -50,7 +66,7 @@ import { CadViewer } from "@jesusjbriceno/cad-viewer-vue";
 
 <template>
   <div style="height: 600px">
-    <CadViewer src="/drawings/plan.dxf" theme="dark" @select="console.log($event.pick)" />
+    <CadViewer src="/drawings/plan.dxf" theme="dark" locale="es-ES" @select="console.log($event.pick)" />
   </div>
 </template>
 ```
@@ -62,7 +78,7 @@ import { CadViewer } from "@jesusjbriceno/cad-viewer-react";
 
 export const Plan = () => (
   <div style={{ height: 600 }}>
-    <CadViewer src="/drawings/plan.dxf" theme="dark" onSelect={({ pick }) => console.log(pick)} />
+    <CadViewer src="/drawings/plan.dxf" theme="dark" locale="es-ES" onSelect={({ pick }) => console.log(pick)} />
   </div>
 );
 ```
@@ -72,7 +88,7 @@ export const Plan = () => (
 ```ts
 import { CadViewer } from "@jesusjbriceno/cad-viewer-core";
 
-const viewer = new CadViewer(document.querySelector("#viewer")!);
+const viewer = new CadViewer(document.querySelector("#viewer")!, { locale: "es-ES" });
 await viewer.load("/drawings/plan.dxf");
 ```
 
