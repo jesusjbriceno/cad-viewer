@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE } from "@jesusjbriceno/cad-viewer-core";
 import { LANGUAGES, messages } from "../lib/i18n";
 import "../styles/sandbox.css";
 
-type Page = "home" | "vanilla" | "vue" | "react";
+type Page = "home" | "vanilla" | "vue" | "react" | "3d";
 
 interface Props {
   active: Page;
@@ -18,6 +18,7 @@ const links: { id: Page; href: string }[] = [
   { id: "vanilla", href: `${base}vanilla/` },
   { id: "vue", href: `${base}vue/` },
   { id: "react", href: `${base}react/` },
+  { id: "3d", href: `${base}3d/` },
 ];
 ---
 
@@ -56,7 +57,7 @@ const links: { id: Page; href: string }[] = [
 <script>
   import { changeLocale, currentLocale, messages, onLocaleChange, translatePage } from "../lib/i18n";
 
-  type Page = "home" | "vanilla" | "vue" | "react";
+  type Page = "home" | "vanilla" | "vue" | "react" | "3d";
   const page = (document.body.dataset.page ?? "home") as Page;
   const select = document.querySelector<HTMLSelectElement>("[data-language]");
 

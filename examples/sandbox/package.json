@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "@jesusjbriceno/cad-viewer-core": "workspace:*",
+    "@jesusjbriceno/cad-viewer-3d": "workspace:*",
     "@jesusjbriceno/cad-viewer-dwg": "workspace:*",
     "@jesusjbriceno/cad-viewer-react": "workspace:*",
     "@jesusjbriceno/cad-viewer-vue": "workspace:*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
+    "three": "^0.186.1",
     "vue": "^3.5.44"
   },
   "devDependencies": {

@@ -4,6 +4,47 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/) (`0.x`: APIs may change between minor versions).
 
+## [Unreleased]
+
+## [0.3.0] - 2026-10-17
+
+3D models: a new optional package renders **STL** and **Wavefront OBJ** meshes with
+three.js. The 2D packages are unchanged and do not depend on three.js.
+
+### Added
+
+- **`@jesusjbriceno/cad-viewer-3d`** (MIT, `three` as a **peer** dependency)
+  - `Cad3DViewer`: orbit/pan/zoom camera, fit that keeps the orientation, Z-up by default
+    (`upAxis: "y"` available), shaded or wireframe display, feature-edge overlay, dark and
+    light backgrounds, layer visibility, PNG export, typed events and `formatError()`.
+  - **STL** parser (binary and ASCII, several `solid` blocks become several parts) and
+    **OBJ** parser (`v`, `vn`, `f` with every corner syntax and negative indices, `o`/`g`/
+    `usemtl` → parts, groups and materials). Both parse in-house with no runtime dependency.
+  - `parseStl`, `parseObj`, `stlLoader`, `objLoader`, `BUILT_IN_3D_LOADERS` and
+    `OBJ_MATERIAL_PALETTE` for custom pipelines and plugin registration.
+- **`CadScene`, `CadMesh`, `CadMaterial`, `CadSceneLayer` and `Bounds3`** in the core, with
+  `createEmptyScene()`, `DEFAULT_MATERIAL`, `meshBounds()` and `sceneBounds()`. The planar
+  `CadDocument`, `Bounds`, `ViewState` and the 2D viewer are untouched.
+- **`readCadSource()`** exported from the core: the URL/File/bytes reader shared by both
+  viewers, for custom loaders.
+- **Vue and React `Cad3DViewer`** components in a separate `/3d` subpath
+  (`@jesusjbriceno/cad-viewer-vue/3d`, `@jesusjbriceno/cad-viewer-react/3d`), with the same
+  prop and event conventions as the 2D components. `cad-viewer-3d` and `three` are
+  **optional** peers, so 2D-only apps never resolve them.
+- **New error codes** (translated in both catalogs): `stl-truncated`, `stl-invalid-number`,
+  `obj-invalid-number`, `obj-invalid-index`, `webgl-unavailable`.
+- **Sandbox 3D page** with STL and OBJ samples, layer and camera panels, view presets and
+  PNG export.
+
+### Notes
+
+- OBJ `.mtl` files are not resolved in 0.3.0: each `usemtl` name gets a distinct color from
+  a fixed eight-color palette, and `mtllib` is reported in `scene.unsupported`.
+- `FormatLoader` and `FormatRegistry` are now generic (`FormatLoader<T = CadDocument>`), so a
+  3D loader is a `FormatLoader<CadScene>` while every 2D use keeps compiling unchanged.
+- Out of scope for this release: 3D measurement, section planes, face picking and a parts
+  tree.
+
 ## [0.2.0] - 2026-10-17
 
 Internationalization: **Spanish (Spain) is the default language**, English is the fallback.

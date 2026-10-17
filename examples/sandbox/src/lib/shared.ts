@@ -20,6 +20,19 @@ export const SAMPLES: Sample[] = [
   { key: "dwg", url: `${base}samples/example_2013.dwg` },
 ];
 
+export interface SampleModel {
+  /** Key of the label in the sandbox catalog (`model3d.samples.<key>`). */
+  key: "flange" | "house";
+  url: string;
+  fileName: string;
+}
+
+/** Sample 3D models copied into public/samples by scripts/prepare-assets.mjs. */
+export const MODELS: SampleModel[] = [
+  { key: "flange", url: `${base}samples/flange.stl`, fileName: "flange.stl" },
+  { key: "house", url: `${base}samples/house.obj`, fileName: "house.obj" },
+];
+
 /** Shared loader list: DWG through LibreDWG, served from public/libredwg/. */
 export const LOADERS = [createDwgLoader({ wasmUrl: `${base}libredwg/` })];
 

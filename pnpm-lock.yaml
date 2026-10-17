@@ -26,6 +26,9 @@ importers:
 
   examples/sandbox:
     dependencies:
+      '@jesusjbriceno/cad-viewer-3d':
+        specifier: workspace:*
+        version: link:../../packages/3d
       '@jesusjbriceno/cad-viewer-core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -44,6 +47,9 @@ importers:
       react-dom:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
+      three:
+        specifier: ^0.186.1
+        version: 0.186.1
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@6.0.3)

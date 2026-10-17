@@ -216,6 +216,11 @@ button[aria-pressed="true"] {
   outline-offset: -6px;
 }
 
+/* 3D page: the viewer host also labels the canvas region for screen readers. */
+.viewer-host canvas {
+  display: block;
+}
+
 .status {
   border-top: 1px solid var(--line);
   padding: 0.35rem 0.75rem;

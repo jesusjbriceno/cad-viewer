@@ -2,9 +2,11 @@
 
 [![Built with Gentle-AI](https://raw.githubusercontent.com/Gentleman-Programming/gentle-ai/main/docs/assets/brand/built-with-gentle-ai.png)](https://github.com/Gentleman-Programming/gentle-ai)
 
-A **view-only** 2D CAD viewer for the web, written in TypeScript. Open **DWG** and
-**DXF** drawings in the browser — no server, no upload — and embed the viewer as a
-**Vue** or **React** component, or use the framework-agnostic core directly.
+A **view-only** CAD viewer for the web, written in TypeScript. Open **DWG** and **DXF**
+drawings plus **STL** and **OBJ** 3D models in the browser — no server, no upload — and
+embed the viewer as a **Vue** or **React** component, or use the framework-agnostic packages
+directly. 2D and 3D are separate packages: an app that only shows 2D drawings never loads
+three.js.
 
 > **Status:** early development (`0.x`). APIs may change between minor versions.
 
@@ -14,8 +16,9 @@ A **view-only** 2D CAD viewer for the web, written in TypeScript. Open **DWG** a
 | --- | --- | --- |
 | [`@jesusjbriceno/cad-viewer-core`](packages/core) | Engine: document model, DXF parser, Canvas2D renderer, `CadViewer` class | MIT |
 | [`@jesusjbriceno/cad-viewer-dwg`](packages/dwg) | Optional DWG format plugin (LibreDWG compiled to WebAssembly) | **GPL-3.0** |
-| [`@jesusjbriceno/cad-viewer-vue`](packages/vue) | `<CadViewer>` component for Vue 3 | MIT |
-| [`@jesusjbriceno/cad-viewer-react`](packages/react) | `<CadViewer>` component for React 18/19 | MIT |
+| [`@jesusjbriceno/cad-viewer-3d`](packages/3d) | 3D model viewer: STL/OBJ parsers and `Cad3DViewer` on three.js (peer dependency) | MIT |
+| [`@jesusjbriceno/cad-viewer-vue`](packages/vue) | `<CadViewer>` component for Vue 3, and `<Cad3DViewer>` from `/3d` | MIT |
+| [`@jesusjbriceno/cad-viewer-react`](packages/react) | `<CadViewer>` component for React 18/19, and `<Cad3DViewer>` from `/3d` | MIT |
 
 ### Why is the DWG plugin GPL?
 
@@ -28,7 +31,9 @@ distribution must comply with the GPL-3.0.
 
 ## Capabilities
 
-Viewing only — the viewer never modifies a drawing.
+Viewing only — the viewer never modifies a drawing or a model.
+
+**2D drawings**
 
 - DXF (ASCII) built in; DWG through the optional plugin
 - Pan, zoom (wheel, pinch, buttons), zoom to extents, zoom to window
@@ -37,6 +42,14 @@ Viewing only — the viewer never modifies a drawing.
 - Dark and light backgrounds
 - Entity hover and pick with properties (type, layer, handle)
 - Distance measurement
+- PNG snapshot export
+
+**3D models** (`@jesusjbriceno/cad-viewer-3d`, three.js as a peer dependency)
+
+- STL (binary and ASCII) and Wavefront OBJ built in, both parsed in-house
+- Orbit, pan and zoom, fit with the current orientation, isometric framing on load
+- Layers (OBJ groups) with visibility, and triangle counts per layer
+- Shaded or wireframe, feature-edge overlay, dark and light backgrounds
 - PNG snapshot export
 
 ## Languages
