@@ -9,6 +9,7 @@ import {
   FormatRegistry,
   formatCadError,
   meshBounds,
+  readCadSource,
   sceneBounds,
 } from "../src/index";
 
@@ -86,6 +87,26 @@ describe("FormatRegistry with scene loaders", () => {
     const scene = await registry.load(new Uint8Array([0]), { fileName: "part.STL" });
     expect(scene.format).toBe("stl");
     expect(scene.meshes).toEqual([]);
+  });
+});
+
+describe("readCadSource", () => {
+  it("is exported and reads bytes, buffers and named blobs", async () => {
+    const bytes = new Uint8Array([1, 2, 3]);
+    expect(await readCadSource(bytes, {})).toEqual({ bytes });
+    expect((await readCadSource(bytes.buffer, {})).bytes).toEqual(bytes);
+    const read = await readCadSource(new File([bytes], "part.stl"), {});
+    expect(read.fileName).toBe("part.stl");
+    expect(read.bytes).toEqual(bytes);
+  });
+
+  it("reports HTTP failures with the stable fetch-failed code", async () => {
+    const fetch = async () => new Response("no", { status: 500 });
+    const error = (await readCadSource("https://x/model.obj", {
+      fetch: fetch as unknown as typeof globalThis.fetch,
+    }).catch((e: unknown) => e)) as CadViewerError;
+    expect(error.code).toBe("fetch-failed");
+    expect(error.params).toEqual({ url: "https://x/model.obj", status: 500 });
   });
 });
 

@@ -32,4 +32,10 @@ export type * from "./model/types";
 export { createEmptyScene, DEFAULT_MATERIAL, meshBounds, sceneBounds } from "./scene/scene";
 export type * from "./scene/types";
 export { CadViewer } from "./viewer/CadViewer";
+/** Reads a URL, File/Blob or bytes the way `CadViewer.load()` does (for 3D and custom viewers). */
+export {
+  type ReadOptions as ReadCadSourceOptions,
+  readSource as readCadSource,
+  type SourceBytes,
+} from "./viewer/internal/source";
 export type * from "./viewer/types";
