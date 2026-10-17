@@ -75,6 +75,41 @@ layers, layouts, picking and `exportImage()`.
 The viewer is created in `onMounted`, so the component is SSR-safe; it renders an empty
 container on the server. Wrap it in `<ClientOnly>` if you want to skip the container too.
 
+## 3D models (STL / OBJ)
+
+Install the optional 3D peers, then import the separate subpath. The default 2D entry
+does not import three.js.
+
+```bash
+pnpm add @jesusjbriceno/cad-viewer-3d three
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import { Cad3DViewer, type Cad3DViewerApi } from "@jesusjbriceno/cad-viewer-vue/3d";
+
+const model = ref<{ viewer: Cad3DViewerApi | null } | null>(null);
+</script>
+
+<template>
+  <div style="height: 600px">
+    <Cad3DViewer ref="model" src="/models/house.obj" :edges="true" :hidden-layers="['roof']" />
+  </div>
+  <button @click="model?.viewer?.zoomExtents()">Fit</button>
+</template>
+```
+
+Reactive props: `src`, `file-name`, `theme`, `locale`, `shading`
+(`"shaded" | "wireframe"`), `edges`, `hidden-layers` (re-applied after every load).
+Creation-only props: `loaders`, `background`, `up-axis` (`"z"` default or `"y"`),
+`interactive`, `zoom-padding`, `pixel-ratio`, `fetch`, `request-init`.
+
+Events: `load-start`, `load-progress`, `loaded`, `error`, `camera-change`,
+`layers-change`. Payloads and the exposed `viewer` match
+[`Cad3DViewerApi`](../3d/README.md). Register globally with `Cad3DViewerPlugin`.
+The component creates the viewer only on mount and destroys it on unmount.
+
 ## License
 
 MIT.

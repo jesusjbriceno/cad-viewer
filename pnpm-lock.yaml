@@ -95,6 +95,9 @@ importers:
         specifier: workspace:^
         version: link:../core
     devDependencies:
+      '@jesusjbriceno/cad-viewer-3d':
+        specifier: workspace:*
+        version: link:../3d
       '@testing-library/react':
         specifier: ^16.3.3
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -110,6 +113,9 @@ importers:
       react-dom:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
+      three:
+        specifier: ^0.186.1
+        version: 0.186.1
 
   packages/vue:
     dependencies:
@@ -117,9 +123,15 @@ importers:
         specifier: workspace:^
         version: link:../core
     devDependencies:
+      '@jesusjbriceno/cad-viewer-3d':
+        specifier: workspace:*
+        version: link:../3d
       '@vue/test-utils':
         specifier: ^2.5.1
         version: 2.5.1(@vue/compiler-dom@3.5.44)(@vue/server-renderer@3.5.44)(vue@3.5.44(typescript@6.0.3))
+      three:
+        specifier: ^0.186.1
+        version: 0.186.1
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@6.0.3)

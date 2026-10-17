@@ -10,6 +10,11 @@
       "@jesusjbriceno/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./3d": {
+      "@jesusjbriceno/source": "./src/3d.ts",
+      "types": "./dist/3d.d.ts",
+      "import": "./dist/3d.js"
     }
   },
   "main": "./dist/index.js",
@@ -36,7 +41,10 @@
     "dxf",
     "viewer",
     "canvas",
-    "vue"
+    "vue",
+    "3d",
+    "stl",
+    "obj"
   ],
   "publishConfig": {
     "access": "public",
@@ -44,6 +52,10 @@
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js"
+      },
+      "./3d": {
+        "types": "./dist/3d.d.ts",
+        "import": "./dist/3d.js"
       }
     }
   },
@@ -51,10 +63,22 @@
     "@jesusjbriceno/cad-viewer-core": "workspace:^"
   },
   "peerDependencies": {
-    "vue": "^3.3.0"
+    "vue": "^3.3.0",
+    "@jesusjbriceno/cad-viewer-3d": "workspace:^",
+    "three": ">=0.170.0 <1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@jesusjbriceno/cad-viewer-3d": {
+      "optional": true
+    },
+    "three": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "vue": "^3.5.44",
-    "@vue/test-utils": "^2.5.1"
+    "@vue/test-utils": "^2.5.1",
+    "@jesusjbriceno/cad-viewer-3d": "workspace:*",
+    "three": "^0.186.1"
   }
 }
