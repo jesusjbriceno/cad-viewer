@@ -54,6 +54,10 @@ export class FakeViewer {
     this.calls.push(["setTheme", theme]);
   }
 
+  setLocale(locale: string) {
+    this.calls.push(["setLocale", locale]);
+  }
+
   setTool(tool: string) {
     this.calls.push(["setTool", tool]);
   }

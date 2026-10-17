@@ -104,6 +104,20 @@ describe("<CadViewer> (Vue)", () => {
     expect(viewer().callsTo("setLayout")).toEqual([["Sheet"]]);
   });
 
+  it("passes locale at creation and applies changes without recreating the viewer", async () => {
+    const wrapper = mount(CadViewer, { props: { locale: "en" } });
+    expect(viewer().options.locale).toBe("en");
+    await wrapper.setProps({ locale: "es-ES" });
+    expect(FakeViewer.instances).toHaveLength(1);
+    expect(viewer().callsTo("setLocale")).toEqual([["es-ES"]]);
+  });
+
+  it("leaves the locale to the core default (es-ES) when the prop is absent", () => {
+    mount(CadViewer);
+    expect("locale" in viewer().options).toBe(false);
+    expect(viewer().callsTo("setLocale")).toEqual([]);
+  });
+
   it("applies hiddenLayers on change and re-applies them after each load", async () => {
     const wrapper = mount(CadViewer, { props: { hiddenLayers: ["A", "Missing"] } });
     viewer().emit("loaded", { document: {} as never });

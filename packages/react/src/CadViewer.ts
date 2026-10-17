@@ -49,6 +49,8 @@ export interface CadViewerProps
   /** Name used to pick the format when `src` has none (e.g. raw bytes). */
   fileName?: string;
   theme?: CadTheme;
+  /** Language of the viewer's own texts; default "es-ES", unsupported tags fall back to "en". */
+  locale?: string;
   tool?: ViewerTool;
   /** Controlled active layout; applied after each load. */
   layout?: string;
@@ -67,6 +69,7 @@ export interface CadViewerProps
 
 const OPTION_KEYS = [
   "theme",
+  "locale",
   "tool",
   "loaders",
   "background",
@@ -134,7 +137,7 @@ function CadViewerComponent(props: CadViewerProps, ref: ForwardedRef<CadViewerAp
     };
   }, []);
 
-  const { src, fileName, theme, tool, layout, hiddenLayers } = props;
+  const { src, fileName, theme, locale, tool, layout, hiddenLayers } = props;
   useEffect(() => {
     if (!viewer || src === null || src === undefined) return;
     // Failures are reported through onError; superseded loads are aborted silently.
@@ -143,6 +146,9 @@ function CadViewerComponent(props: CadViewerProps, ref: ForwardedRef<CadViewerAp
   useEffect(() => {
     if (viewer && theme) viewer.setTheme(theme);
   }, [viewer, theme]);
+  useEffect(() => {
+    if (viewer && locale) viewer.setLocale(locale);
+  }, [viewer, locale]);
   useEffect(() => {
     if (viewer && tool) viewer.setTool(tool);
   }, [viewer, tool]);

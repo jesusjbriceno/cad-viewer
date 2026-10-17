@@ -11,6 +11,7 @@ export const CadViewerPlugin: Plugin = {
 };
 
 export type {
+  CadLocale,
   CadSource,
   CadTheme,
   CadViewerApi,

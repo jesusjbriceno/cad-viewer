@@ -58,6 +58,8 @@ export const CadViewer = defineComponent({
     /** Name used to pick the format when `src` has none (e.g. raw bytes). */
     fileName: { type: String, default: undefined },
     theme: { type: String as PropType<CadTheme>, default: undefined },
+    /** Language of the viewer's own texts; default "es-ES", unsupported tags fall back to "en". */
+    locale: { type: String, default: undefined },
     tool: { type: String as PropType<ViewerTool>, default: undefined },
     /** Controlled active layout; applied after each load. */
     layout: { type: String, default: undefined },
@@ -105,6 +107,7 @@ export const CadViewer = defineComponent({
       const options: CadViewerOptions = { interactive: props.interactive };
       for (const key of [
         "theme",
+        "locale",
         "tool",
         "loaders",
         "background",
@@ -136,6 +139,10 @@ export const CadViewer = defineComponent({
     watch(
       () => props.theme,
       (theme) => theme && viewer.value?.setTheme(theme),
+    );
+    watch(
+      () => props.locale,
+      (locale) => locale && viewer.value?.setLocale(locale),
     );
     watch(
       () => props.tool,
