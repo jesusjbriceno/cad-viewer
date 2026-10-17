@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Vanilla" active="vanilla">
+  <div class="app" data-sandbox>
+    <aside class="side">
+      <section>
+        <h2>Drawing</h2>
+        <select data-samples aria-label="Sample drawings"><option value="">Choose a sample…</option></select>
+        <div class="row"><input data-file type="file" accept=".dxf,.dwg" aria-label="Open a DXF or DWG file" /></div>
+        <p class="drop-hint">…or drop a .dxf / .dwg file on the drawing.</p>
+      </section>
+      <section>
+        <h2>Layout</h2>
+        <select data-layouts aria-label="Layout"></select>
+      </section>
+      <section>
+        <h2>Layers</h2>
+        <ul class="layers" data-layers></ul>
+        <div class="row">
+          <button data-action="show-all">Show all</button>
+          <button data-action="hide-all">Hide all</button>
+        </div>
+      </section>
+      <section>
+        <h2>Selection</h2>
+        <pre class="info" data-selection></pre>
+      </section>
+      <section>
+        <h2>Measure</h2>
+        <pre class="info" data-measure></pre>
+      </section>
+    </aside>
+    <main class="stage">
+      <div class="toolbar" role="toolbar" aria-label="Viewer tools">
+        <button data-action="fit" title="Zoom to extents (0)">Fit</button>
+        <button data-action="zoom-in" title="Zoom in (+)">+</button>
+        <button data-action="zoom-out" title="Zoom out (−)">−</button>
+        <button data-tool="pan">Pan / select</button>
+        <button data-tool="zoom-window">Zoom window</button>
+        <button data-tool="measure">Measure</button>
+        <span class="spacer"></span>
+        <button data-action="theme">Theme</button>
+        <button data-action="png">Export PNG</button>
+      </div>
+      <div class="viewer-host" role="region" aria-label="Drawing (drop a DXF or DWG file here)"></div>
+      <div class="status" role="status">Ready.</div>
+    </main>
+  </div>
+</Base>
+
+<script>
+  import { mountVanillaSandbox } from "../components/vanilla";
+
+  const root = document.querySelector<HTMLElement>("[data-sandbox]");
+  if (root) mountVanillaSandbox(root);
+</script>

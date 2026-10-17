@@ -39,6 +39,61 @@ Viewing only — the viewer never modifies a drawing.
 - Distance measurement
 - PNG snapshot export
 
+## Quick start
+
+**Vue 3**
+
+```vue
+<script setup lang="ts">
+import { CadViewer } from "@jesusjbriceno/cad-viewer-vue";
+</script>
+
+<template>
+  <div style="height: 600px">
+    <CadViewer src="/drawings/plan.dxf" theme="dark" @select="console.log($event.pick)" />
+  </div>
+</template>
+```
+
+**React**
+
+```tsx
+import { CadViewer } from "@jesusjbriceno/cad-viewer-react";
+
+export const Plan = () => (
+  <div style={{ height: 600 }}>
+    <CadViewer src="/drawings/plan.dxf" theme="dark" onSelect={({ pick }) => console.log(pick)} />
+  </div>
+);
+```
+
+**No framework**
+
+```ts
+import { CadViewer } from "@jesusjbriceno/cad-viewer-core";
+
+const viewer = new CadViewer(document.querySelector("#viewer")!);
+await viewer.load("/drawings/plan.dxf");
+```
+
+**DWG** — add `loaders: [createDwgLoader({ wasmUrl: "/libredwg/" })]` (option or prop) from
+`@jesusjbriceno/cad-viewer-dwg`, and serve `libredwg-web.wasm`. See the
+[DWG plugin README](packages/dwg/README.md).
+
+Per-package docs: [core](packages/core/README.md) · [Vue](packages/vue/README.md) ·
+[React](packages/react/README.md) · [DWG](packages/dwg/README.md).
+
+## Sandbox
+
+A static [Astro](https://astro.build) site in [`examples/sandbox`](examples/sandbox) lets you
+try the core, the Vue component and the React component side by side, with sample DXF/DWG
+drawings or your own files (drag & drop, nothing is uploaded):
+
+```bash
+pnpm install
+pnpm dev   # http://localhost:4321
+```
+
 ## Development
 
 Requirements: Node.js ≥ 20 and pnpm 10.
@@ -49,7 +104,8 @@ pnpm test        # Vitest across all packages
 pnpm typecheck   # tsc per package
 pnpm lint        # Biome
 pnpm build       # library bundles + type declarations
-pnpm dev         # playground (vanilla, Vue and React demos)
+pnpm dev         # Astro sandbox (vanilla, Vue and React pages)
+pnpm sandbox:build
 ```
 
 Architecture and design decisions: [docs/architecture.md](docs/architecture.md).

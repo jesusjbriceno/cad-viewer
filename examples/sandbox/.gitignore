@@ -1,0 +1,4 @@
+dist/
+.astro/
+public/libredwg/
+public/samples/
