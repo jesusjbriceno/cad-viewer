@@ -126,7 +126,7 @@ sandbox's credits page.
 
 ```bash
 pnpm install
-pnpm dev   # http://localhost:4321
+pnpm dev   # http://127.0.0.1:4321
 ```
 
 ## Development
