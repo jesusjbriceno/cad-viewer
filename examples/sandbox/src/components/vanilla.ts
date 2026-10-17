@@ -1,9 +1,13 @@
 import {
+  type CadLocale,
   type CadTheme,
   CadViewer,
   type LayerInfo,
+  type MeasureResult,
+  type PickResult,
   type ViewerTool,
 } from "@jesusjbriceno/cad-viewer-core";
+import { currentLocale, messages, onLocaleChange, type SandboxMessages } from "../lib/i18n";
 import { describeMeasure, describePick, downloadBlob, LOADERS, SAMPLES } from "../lib/shared";
 
 const $ = <T extends HTMLElement>(root: ParentNode, selector: string) =>
@@ -20,18 +24,37 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   const selection = $<HTMLPreElement>(root, "[data-selection]");
   const measure = $<HTMLPreElement>(root, "[data-measure]");
 
-  const viewer = new CadViewer(host, { loaders: LOADERS });
+  let locale: CadLocale = currentLocale();
+  const viewer = new CadViewer(host, { loaders: LOADERS, locale });
   let theme: CadTheme = "dark";
+  let pick: PickResult | null = null;
+  let measured: MeasureResult | null = null;
+  // Status kept as a function of the texts so a language change can redraw it.
+  let statusText: (t: SandboxMessages) => string = (t) => t.ready;
+  let statusError = false;
 
-  const setStatus = (text: string, error = false) => {
-    status.textContent = text;
-    status.classList.toggle("error", error);
+  const renderStatus = () => {
+    status.textContent = statusText(messages(locale));
+    status.classList.toggle("error", statusError);
+  };
+  const setStatus = (text: (t: SandboxMessages) => string, error = false) => {
+    statusText = text;
+    statusError = error;
+    renderStatus();
   };
   const load = (source: string | File) => {
     viewer.load(source).catch(() => {});
   };
 
-  for (const sample of SAMPLES) samples.add(new Option(sample.label, sample.url));
+  const renderSamples = () => {
+    const t = messages(locale);
+    const selected = samples.value;
+    samples.replaceChildren(
+      new Option(t.samples.choose, ""),
+      ...SAMPLES.map((sample) => new Option(t.samples[sample.key], sample.url)),
+    );
+    samples.value = selected;
+  };
   samples.addEventListener("change", () => samples.value && load(samples.value));
   fileInput.addEventListener("change", () => {
     const file = fileInput.files?.[0];
@@ -50,6 +73,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   });
 
   const renderLayers = (layers: LayerInfo[]) => {
+    const t = messages(locale);
     layerList.replaceChildren(
       ...layers.map((layer) => {
         const item = document.createElement("li");
@@ -62,7 +86,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         swatch.className = "swatch";
         swatch.style.background = layer.color;
         const name = document.createElement("span");
-        name.textContent = layer.frozen ? `${layer.name} (frozen)` : layer.name;
+        name.textContent = layer.frozen ? `${layer.name} (${t.frozen})` : layer.name;
         const count = document.createElement("span");
         count.className = "count";
         count.textContent = String(layer.entityCount);
@@ -79,28 +103,43 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         .map((layout) => new Option(layout.name, layout.name, false, layout.active)),
     );
   };
+  const renderInfo = () => {
+    selection.textContent = describePick(pick, locale);
+    measure.textContent = describeMeasure(measured, locale);
+  };
   layouts.addEventListener("change", () => viewer.setLayout(layouts.value));
 
-  viewer.on("load-start", ({ fileName }) => setStatus(`Loading ${fileName ?? "drawing"}…`));
-  viewer.on("load-progress", ({ phase }) => setStatus(`Loading… (${phase})`));
+  viewer.on("load-start", ({ fileName }) =>
+    setStatus((t) => (fileName ? t.loadingFile(fileName) : t.loading)),
+  );
+  viewer.on("load-progress", ({ phase }) => setStatus((t) => t.loadingPhase(phase)));
   viewer.on("loaded", ({ document, fileName }) => {
     const unsupported = [...document.unsupported]
       .map(([type, count]) => `${type}×${count}`)
       .join(", ");
     setStatus(
-      `${fileName ?? "Drawing"} · ${document.format.toUpperCase()} ${document.header.version ?? ""} · ${document.layers.size} layers · ${document.blocks.size} blocks` +
-        (unsupported ? ` · not drawn: ${unsupported}` : ""),
+      (t) =>
+        t.loadedSummary({
+          name: fileName ?? t.drawingFallback,
+          format: document.format.toUpperCase(),
+          version: document.header.version ?? "",
+          layers: document.layers.size,
+          blocks: document.blocks.size,
+        }) + (unsupported ? ` · ${t.notDrawn(unsupported)}` : ""),
     );
     renderLayouts();
   });
-  viewer.on("error", ({ error }) => setStatus(error.message, true));
+  // The viewer translates library errors from their stable code into its current language.
+  viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
   viewer.on("layers-change", ({ layers }) => renderLayers(layers));
   viewer.on("layout-change", () => renderLayouts());
-  viewer.on("select", ({ pick }) => {
-    selection.textContent = describePick(pick);
+  viewer.on("select", ({ pick: next }) => {
+    pick = next;
+    renderInfo();
   });
   viewer.on("measure", (result) => {
-    measure.textContent = describeMeasure(result);
+    measured = result;
+    renderInfo();
   });
 
   const toolButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-tool]")];
@@ -129,8 +168,19 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     else if (action === "hide-all") viewer.setAllLayersVisible(false);
   });
 
-  selection.textContent = describePick(null);
-  measure.textContent = describeMeasure(null);
+  // Static labels are translated by the layout script; dynamic texts are redrawn here.
+  onLocaleChange((next) => {
+    locale = next;
+    viewer.setLocale(next);
+    renderSamples();
+    renderLayers(viewer.getLayers());
+    renderInfo();
+    renderStatus();
+  });
+
+  renderSamples();
+  renderInfo();
+  renderStatus();
   const first = SAMPLES[0];
   if (first) load(first.url);
   return viewer;
