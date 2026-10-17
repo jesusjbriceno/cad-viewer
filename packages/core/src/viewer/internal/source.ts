@@ -1,4 +1,4 @@
-import { abortError, CadLoadError } from "../../loaders/errors";
+import { abortError, loadError } from "../../loaders/errors";
 import type { CadSource } from "../types";
 
 export interface SourceBytes {
@@ -41,10 +41,9 @@ export async function readSource(source: CadSource, options: ReadOptions): Promi
   } catch (error) {
     if (options.signal?.aborted) throw abortError();
     const reason = error instanceof Error ? error.message : String(error);
-    throw new CadLoadError("fetch-failed", `Failed to fetch "${url}": ${reason}`, { cause: error });
+    throw loadError("fetch-failed", { url, reason }, error);
   }
-  if (!response.ok)
-    throw new CadLoadError("fetch-failed", `Failed to fetch "${url}": HTTP ${response.status}`);
+  if (!response.ok) throw loadError("fetch-failed", { url, status: response.status });
   const bytes = new Uint8Array(await response.arrayBuffer());
   const fileName = fileNameFromUrl(url);
   return fileName ? { bytes, fileName } : { bytes };

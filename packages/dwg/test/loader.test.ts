@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { CadLoadError } from "@jesusjbriceno/cad-viewer-core";
+import { CadLoadError, CadViewerError, formatCadError } from "@jesusjbriceno/cad-viewer-core";
 import { describe, expect, it, vi } from "vitest";
 import { createDwgLoader, type LibreDwgLike } from "../src/loader";
 
@@ -93,6 +93,16 @@ describe("createDwgLoader", () => {
       "LibreDWG could not read the file.",
     );
     expect(libredwg.dwg_free).not.toHaveBeenCalled();
+  });
+
+  it("reports an unreadable file with a stable, translatable code", async () => {
+    const libredwg = fakeLibreDwg({ dwg_read_data: vi.fn(() => 0) });
+    const error = (await createDwgLoader({ libredwg })
+      .load(fixture, {})
+      .catch((e: unknown) => e)) as CadViewerError;
+    expect(error).toBeInstanceOf(CadViewerError);
+    expect(error.code).toBe("dwg-read-failed");
+    expect(formatCadError(error, "es-ES")).toBe("LibreDWG no ha podido leer el archivo.");
   });
 
   it("creates LibreDWG once and retries after a failed initialization", async () => {

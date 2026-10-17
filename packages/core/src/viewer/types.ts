@@ -1,3 +1,4 @@
+import type { CadLocale } from "../i18n/locale";
 import type { CadLoadError } from "../loaders/errors";
 import type { FormatLoader, LoadProgress } from "../loaders/types";
 import type { Bounds, CadDocument, CadEntity, Point } from "../model/types";
@@ -68,6 +69,11 @@ export interface MeasureResult {
 export interface CadViewerOptions {
   /** Extra format loaders; DXF is always built in. */
   loaders?: FormatLoader[];
+  /**
+   * Language of the viewer's own texts (canvas label, measure label, `formatError`).
+   * Default "es-ES"; any Spanish tag maps to "es-ES", any other tag to "en".
+   */
+  locale?: string;
   /** Default "dark". */
   theme?: CadTheme;
   /** CSS color that overrides the theme background. */
@@ -121,6 +127,8 @@ export interface ExportImageOptions {
 export interface CadViewerApi {
   readonly document: CadDocument | null;
   readonly theme: CadTheme;
+  /** Resolved language of the viewer's own texts. */
+  readonly locale: CadLocale;
   readonly tool: ViewerTool;
   /** Active layout name, or null with no document. */
   readonly activeLayout: string | null;
@@ -156,7 +164,12 @@ export interface CadViewerApi {
   setLayout(name: string): void;
 
   setTheme(theme: CadTheme): void;
+  /** Changes the language of the viewer's own texts; see `CadViewerOptions.locale`. */
+  setLocale(locale: string): void;
   setTool(tool: ViewerTool): void;
+
+  /** Text of any error in the viewer's language (see `formatCadError`). */
+  formatError(error: unknown): string;
 
   /** Entity at canvas-relative CSS pixel coordinates, within a few pixels' tolerance. */
   pickAt(x: number, y: number): PickResult | null;

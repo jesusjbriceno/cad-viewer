@@ -1,6 +1,7 @@
 import {
   abortError,
   type CadDocument,
+  CadViewerError,
   type FormatLoader,
   type LoaderProbe,
   type LoadOptions,
@@ -87,7 +88,10 @@ export function createDwgLoader(options: DwgLoaderOptions = {}): FormatLoader {
         bytes.byteOffset + bytes.byteLength,
       ) as ArrayBuffer;
       const data = module.dwg_read_data(buffer, DWG_FILE_TYPE);
-      if (data === undefined || data === 0) throw new Error("LibreDWG could not read the file.");
+      if (data === undefined || data === 0)
+        throw new CadViewerError("dwg-read-failed", "LibreDWG could not read the file.", {
+          params: {},
+        });
       try {
         if (signal?.aborted) throw abortError();
         onProgress?.({ phase: "convert" });
