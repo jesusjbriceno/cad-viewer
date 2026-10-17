@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "customConditions": ["@jesusjbriceno/source"],
+    "noEmit": true
+  },
+  "include": ["src", "test", "vite.config.ts"]
+}
