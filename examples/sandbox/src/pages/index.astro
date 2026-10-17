@@ -17,12 +17,14 @@ const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL :
         <li><a href={`${base}vanilla/`}>Vanilla</a> — <code>@jesusjbriceno/cad-viewer-core</code> usado directamente, sin framework.</li>
         <li><a href={`${base}vue/`}>Vue</a> — el componente <code>&lt;CadViewer&gt;</code> de <code>@jesusjbriceno/cad-viewer-vue</code>.</li>
         <li><a href={`${base}react/`}>React</a> — el componente <code>&lt;CadViewer&gt;</code> de <code>@jesusjbriceno/cad-viewer-react</code>.</li>
+        <li><a href={`${base}3d/`}>3D</a> — <code>Cad3DViewer</code> de <code>@jesusjbriceno/cad-viewer-3d</code> con muestras STL y OBJ.</li>
       </ul>
       <h2>Qué probar</h2>
       <ul>
         <li>Arrastra para desplazar, usa la rueda o pellizca para hacer zoom, doble clic (o <kbd>0</kbd>) para encuadrar el dibujo.</li>
         <li>Activa y desactiva capas, cambia de presentación (espacio modelo / papel) y el tema de fondo.</li>
         <li>Haz clic en una entidad para inspeccionarla, usa <em>Zoom ventana</em> y <em>Medir</em>, exporta un PNG.</li>
+        <li>En la página <a href={`${base}3d/`}>3D</a>: orbita con el arrastre, encuadra, cambia entre sombreado y alambre, oculta capas (grupos del OBJ) y exporta un PNG.</li>
         <li>Cambia el idioma arriba a la derecha: el visor (etiqueta del lienzo, medición, errores) y esta interfaz pasan a español o inglés.</li>
       </ul>
       <p>
@@ -40,12 +42,14 @@ const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL :
         <li><a href={`${base}vanilla/`}>Vanilla</a> — <code>@jesusjbriceno/cad-viewer-core</code> used directly, no framework.</li>
         <li><a href={`${base}vue/`}>Vue</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-vue</code>.</li>
         <li><a href={`${base}react/`}>React</a> — the <code>&lt;CadViewer&gt;</code> component from <code>@jesusjbriceno/cad-viewer-react</code>.</li>
+        <li><a href={`${base}3d/`}>3D</a> — <code>Cad3DViewer</code> from <code>@jesusjbriceno/cad-viewer-3d</code> with STL and OBJ samples.</li>
       </ul>
       <h2>What to try</h2>
       <ul>
         <li>Drag to pan, wheel or pinch to zoom, double-click (or <kbd>0</kbd>) to fit the drawing.</li>
         <li>Toggle layers, switch layouts (model / paper space), change the background theme.</li>
         <li>Click an entity to inspect it, use <em>Zoom window</em> and <em>Measure</em>, export a PNG.</li>
+        <li>On the <a href={`${base}3d/`}>3D</a> page: drag to orbit, fit, switch between shaded and wireframe, hide layers (OBJ groups) and export a PNG.</li>
         <li>Switch the language at the top right: the viewer (canvas label, measure label, errors) and this UI change to Spanish or English.</li>
       </ul>
       <p>

@@ -8,16 +8,19 @@ function extensionOf(fileName: string | undefined): string | undefined {
   return dot < 0 ? undefined : fileName.slice(dot).toLowerCase();
 }
 
-/** Ordered set of format loaders. Extension match wins; sniffing is the fallback. */
-export class FormatRegistry {
-  private readonly loaders = new Map<string, FormatLoader>();
+/**
+ * Ordered set of format loaders. Extension match wins; sniffing is the fallback.
+ * `FormatRegistry<CadScene>` holds 3D loaders.
+ */
+export class FormatRegistry<T = CadDocument> {
+  private readonly loaders = new Map<string, FormatLoader<T>>();
 
-  constructor(loaders: Iterable<FormatLoader> = []) {
+  constructor(loaders: Iterable<FormatLoader<T>> = []) {
     for (const loader of loaders) this.register(loader);
   }
 
   /** Adds a loader, replacing any loader with the same id. */
-  register(loader: FormatLoader): void {
+  register(loader: FormatLoader<T>): void {
     this.loaders.set(loader.id, loader);
   }
 
@@ -25,11 +28,11 @@ export class FormatRegistry {
     this.loaders.delete(id);
   }
 
-  list(): FormatLoader[] {
+  list(): FormatLoader<T>[] {
     return [...this.loaders.values()];
   }
 
-  resolve(probe: LoaderProbe): FormatLoader | undefined {
+  resolve(probe: LoaderProbe): FormatLoader<T> | undefined {
     const extension = extensionOf(probe.fileName);
     if (extension) {
       for (const loader of this.loaders.values()) {
@@ -43,7 +46,7 @@ export class FormatRegistry {
   }
 
   /** Resolves a loader and runs it, normalizing every failure to `CadLoadError`. */
-  async load(bytes: Uint8Array, options: LoadOptions = {}): Promise<CadDocument> {
+  async load(bytes: Uint8Array, options: LoadOptions = {}): Promise<T> {
     if (options.signal?.aborted) throw abortError();
     const name = options.fileName !== undefined ? { fileName: options.fileName } : {};
     const loader = this.resolve({ fileName: options.fileName, bytes });

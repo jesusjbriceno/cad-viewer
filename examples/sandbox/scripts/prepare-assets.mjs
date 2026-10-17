@@ -1,4 +1,4 @@
-// Copies the LibreDWG wasm and the sample drawings into public/ before dev/build.
+// Copies the LibreDWG wasm and the sample drawings and 3D models into public/ before dev/build.
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,6 +27,8 @@ const assets = [
     join(packages, "dwg", "test", "fixtures", "example_2013.dwg"),
     join("samples", "example_2013.dwg"),
   ],
+  [join(packages, "3d", "test", "fixtures", "flange.stl"), join("samples", "flange.stl")],
+  [join(packages, "3d", "test", "fixtures", "house.obj"), join("samples", "house.obj")],
 ];
 
 for (const [from, to] of assets) {

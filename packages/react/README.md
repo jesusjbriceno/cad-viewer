@@ -75,6 +75,43 @@ picking and `exportImage()`.
 The viewer is created in an effect, so the component renders an empty container on the
 server. In the App Router, use it from a `"use client"` component.
 
+## 3D models (STL / OBJ)
+
+Install the optional 3D peers, then import the separate subpath. The default 2D entry
+does not import three.js.
+
+```bash
+pnpm add @jesusjbriceno/cad-viewer-3d three
+```
+
+```tsx
+import { Cad3DViewer, useCad3DViewerRef } from "@jesusjbriceno/cad-viewer-react/3d";
+
+export function Model() {
+  const viewer = useCad3DViewerRef();
+  return (
+    <>
+      <div style={{ height: 600 }}>
+        <Cad3DViewer ref={viewer} src="/models/house.obj" edges hiddenLayers={["roof"]} />
+      </div>
+      <button onClick={() => viewer.current?.zoomExtents()}>Fit</button>
+    </>
+  );
+}
+```
+
+Reactive props: `src`, `fileName`, `theme`, `locale`, `shading`
+(`"shaded" | "wireframe"`), `edges`, `hiddenLayers` (compared by content and
+re-applied after every load). Creation-only props: `loaders`, `background`,
+`upAxis` (`"z"` default or `"y"`), `interactive`, `zoomPadding`, `pixelRatio`,
+`fetch`, `requestInit`. Standard `div` attributes are forwarded.
+
+Callbacks: `onLoadStart`, `onLoadProgress`, `onLoaded`, `onError`,
+`onCameraChange`, `onLayersChange`; the latest callback is always used.
+Payloads and the forwarded ref match [`Cad3DViewerApi`](../3d/README.md).
+Mounting is SSR-safe and StrictMode-safe; the viewer is destroyed on unmount.
+In the Next.js App Router use a `"use client"` component.
+
 ## License
 
 MIT.

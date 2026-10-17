@@ -3,8 +3,8 @@ import { type CadLocale, resolveLocale } from "@jesusjbriceno/cad-viewer-core";
 /** Sandbox UI texts. The viewer's own texts come from the library catalogs. */
 export interface SandboxMessages {
   languageLabel: string;
-  nav: { home: string; vanilla: string; vue: string; react: string; pages: string };
-  titles: { home: string; vanilla: string; vue: string; react: string };
+  nav: { home: string; vanilla: string; vue: string; react: string; "3d": string; pages: string };
+  titles: { home: string; vanilla: string; vue: string; react: string; "3d": string };
   samples: { dxf: string; dwg: string; choose: string; label: string };
   drawing: string;
   openFile: string;
@@ -44,6 +44,31 @@ export interface SandboxMessages {
   pick: { type: string; layer: string; handle: string; block: string; at: string };
   measureHint: string;
   measureResult: { distance: string; angle: string };
+  model3d: {
+    model: string;
+    samples: { flange: string; house: string; label: string; choose: string };
+    openFile: string;
+    dropHint: string;
+    dropRegion: string;
+    display: string;
+    shaded: string;
+    wireframe: string;
+    edges: string;
+    views: string;
+    iso: string;
+    top: string;
+    front: string;
+    camera: string;
+    cameraReadout: (info: { azimuth: string; elevation: string; distance: string }) => string;
+    triangles: (count: number) => string;
+    loadedSummary: (info: {
+      name: string;
+      format: string;
+      parts: number;
+      layers: number;
+      triangles: number;
+    }) => string;
+  };
 }
 
 const es: SandboxMessages = {
@@ -53,9 +78,10 @@ const es: SandboxMessages = {
     vanilla: "Vanilla (core)",
     vue: "Vue",
     react: "React",
+    "3d": "3D",
     pages: "Páginas del sandbox",
   },
-  titles: { home: "Inicio", vanilla: "Vanilla", vue: "Vue", react: "React" },
+  titles: { home: "Inicio", vanilla: "Vanilla", vue: "Vue", react: "React", "3d": "3D" },
   samples: {
     dxf: "DXF · muestra R2000 escrita a mano (capas, bloque, presentaciones)",
     dwg: "DWG · ejemplo de LibreDWG (AutoCAD 2013) — amplía el centro",
@@ -96,6 +122,34 @@ const es: SandboxMessages = {
   pick: { type: "Tipo", layer: "Capa", handle: "Handle", block: "Bloque", at: "En" },
   measureHint: "Herramienta Medir: haz clic en dos puntos.",
   measureResult: { distance: "Distancia", angle: "Ángulo" },
+  model3d: {
+    model: "Modelo",
+    samples: {
+      flange: "STL · brida con buje (binario, 1536 triángulos)",
+      house: "OBJ · casa con grupos y materiales (paredes, tejado, puerta)",
+      label: "Modelos de muestra",
+      choose: "Elige una muestra…",
+    },
+    openFile: "Abrir un archivo STL u OBJ",
+    dropHint: "…o suelta un archivo .stl / .obj sobre el modelo.",
+    dropRegion: "Modelo 3D (suelta aquí un archivo STL u OBJ)",
+    display: "Visualización",
+    shaded: "Sombreado",
+    wireframe: "Alambre",
+    edges: "Aristas",
+    views: "Vistas",
+    iso: "Isométrica",
+    top: "Superior",
+    front: "Frontal",
+    camera: "Cámara",
+    cameraReadout: ({ azimuth, elevation, distance }) =>
+      `Azimut: ${azimuth}°
+Elevación: ${elevation}°
+Distancia: ${distance}`,
+    triangles: (count) => `${count} triángulos`,
+    loadedSummary: ({ name, format, parts, layers, triangles }) =>
+      `${name} · ${format} · ${parts} piezas · ${layers} capas · ${triangles} triángulos`,
+  },
 };
 
 const en: SandboxMessages = {
@@ -105,9 +159,10 @@ const en: SandboxMessages = {
     vanilla: "Vanilla (core)",
     vue: "Vue",
     react: "React",
+    "3d": "3D",
     pages: "Sandbox pages",
   },
-  titles: { home: "Overview", vanilla: "Vanilla", vue: "Vue", react: "React" },
+  titles: { home: "Overview", vanilla: "Vanilla", vue: "Vue", react: "React", "3d": "3D" },
   samples: {
     dxf: "DXF · hand-written R2000 sample (layers, block, layouts)",
     dwg: "DWG · LibreDWG example (AutoCAD 2013) — zoom into the center",
@@ -148,6 +203,34 @@ const en: SandboxMessages = {
   pick: { type: "Type", layer: "Layer", handle: "Handle", block: "Block", at: "At" },
   measureHint: "Measure tool: click two points.",
   measureResult: { distance: "Distance", angle: "Angle" },
+  model3d: {
+    model: "Model",
+    samples: {
+      flange: "STL · flanged hub (binary, 1536 triangles)",
+      house: "OBJ · house with groups and materials (walls, roof, door)",
+      label: "Sample models",
+      choose: "Choose a sample…",
+    },
+    openFile: "Open an STL or OBJ file",
+    dropHint: "…or drop a .stl / .obj file on the model.",
+    dropRegion: "3D model (drop an STL or OBJ file here)",
+    display: "Display",
+    shaded: "Shaded",
+    wireframe: "Wireframe",
+    edges: "Edges",
+    views: "Views",
+    iso: "Isometric",
+    top: "Top",
+    front: "Front",
+    camera: "Camera",
+    cameraReadout: ({ azimuth, elevation, distance }) =>
+      `Azimuth: ${azimuth}°
+Elevation: ${elevation}°
+Distance: ${distance}`,
+    triangles: (count) => `${count} triangles`,
+    loadedSummary: ({ name, format, parts, layers, triangles }) =>
+      `${name} · ${format} · ${parts} parts · ${layers} layers · ${triangles} triangles`,
+  },
 };
 
 const MESSAGES: Record<CadLocale, SandboxMessages> = { "es-ES": es, en };

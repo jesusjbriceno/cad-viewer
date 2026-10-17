@@ -1,0 +1,62 @@
+---
+import { DEFAULT_LOCALE } from "@jesusjbriceno/cad-viewer-core";
+import Base from "../layouts/Base.astro";
+import { messages } from "../lib/i18n";
+
+const t = messages(DEFAULT_LOCALE);
+---
+
+<Base active="3d">
+  <div class="app" data-sandbox>
+    <aside class="side">
+      <section>
+        <h2 data-i18n="model3d.model">{t.model3d.model}</h2>
+        <select data-models aria-label={t.model3d.samples.label} data-i18n-aria="model3d.samples.label"></select>
+        <div class="row">
+          <input data-file type="file" accept=".stl,.obj" aria-label={t.model3d.openFile} data-i18n-aria="model3d.openFile" />
+        </div>
+        <p class="drop-hint" data-i18n="model3d.dropHint">{t.model3d.dropHint}</p>
+      </section>
+      <section>
+        <h2 data-i18n="layers">{t.layers}</h2>
+        <ul class="layers" data-layers></ul>
+        <div class="row">
+          <button data-action="show-all" data-i18n="showAll">{t.showAll}</button>
+          <button data-action="hide-all" data-i18n="hideAll">{t.hideAll}</button>
+        </div>
+      </section>
+      <section>
+        <h2 data-i18n="model3d.camera">{t.model3d.camera}</h2>
+        <pre class="info" data-camera></pre>
+      </section>
+    </aside>
+    <main class="stage">
+      <div class="toolbar" role="toolbar" aria-label={t.toolbar} data-i18n-aria="toolbar">
+        <button data-action="fit" title={t.fitTitle} data-i18n-title="fitTitle" data-i18n="fit">{t.fit}</button>
+        <span class="spacer"></span>
+        <button data-action="iso" data-i18n="model3d.iso">{t.model3d.iso}</button>
+        <button data-action="top" data-i18n="model3d.top">{t.model3d.top}</button>
+        <button data-action="front" data-i18n="model3d.front">{t.model3d.front}</button>
+        <button data-action="shading" aria-pressed="false" data-i18n="model3d.shaded">{t.model3d.shaded}</button>
+        <button data-action="edges" aria-pressed="true" data-i18n="model3d.edges">{t.model3d.edges}</button>
+        <button data-action="theme" data-i18n="theme">{t.theme}</button>
+        <button data-action="png" data-i18n="exportPng">{t.exportPng}</button>
+      </div>
+      <div
+        class="viewer-host"
+        role="region"
+        aria-label={t.model3d.dropRegion}
+        data-i18n-aria="model3d.dropRegion"
+      >
+      </div>
+      <div class="status" role="status">{t.ready}</div>
+    </main>
+  </div>
+</Base>
+
+<script>
+  import { mountModel3DSandbox } from "../components/model3d";
+
+  const root = document.querySelector<HTMLElement>("[data-sandbox]");
+  if (root) mountModel3DSandbox(root);
+</script>

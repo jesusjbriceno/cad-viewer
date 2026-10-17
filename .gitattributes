@@ -2,4 +2,5 @@
 *.dwg binary
 *.dxf -text
 *.png binary
+*.stl binary
 *.wasm binary

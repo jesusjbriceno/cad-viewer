@@ -1,0 +1,61 @@
+{
+  "name": "@jesusjbriceno/cad-viewer-3d",
+  "version": "0.3.0",
+  "description": "View-only 3D model viewer (STL, OBJ) for the cad-viewer family, rendered with three.js.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "@jesusjbriceno/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusjbriceno/cad-viewer.git",
+    "directory": "packages/3d"
+  },
+  "homepage": "https://github.com/jesusjbriceno/cad-viewer#readme",
+  "bugs": "https://github.com/jesusjbriceno/cad-viewer/issues",
+  "keywords": [
+    "cad",
+    "3d",
+    "stl",
+    "obj",
+    "viewer",
+    "three",
+    "webgl"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@jesusjbriceno/cad-viewer-core": "workspace:^"
+  },
+  "peerDependencies": {
+    "three": ">=0.170.0 <1.0.0"
+  },
+  "devDependencies": {
+    "three": "^0.186.1",
+    "@types/three": "^0.186.0"
+  }
+}
