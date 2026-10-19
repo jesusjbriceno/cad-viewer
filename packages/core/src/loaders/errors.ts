@@ -25,6 +25,7 @@ export interface CadErrorParams {
   "obj-invalid-number": { line: number };
   "obj-invalid-index": { index: string; line: number };
   "webgl-unavailable": NoParams;
+  "scene-json-invalid": { path: string };
 }
 
 /** Stable identifier of a library error; use it for logic, never `message`. */

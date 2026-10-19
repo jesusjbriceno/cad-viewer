@@ -18,6 +18,13 @@ export {
   type SceneSummary,
   summarizeScene,
 } from "./inspect";
+export {
+  type CadMaterialJson,
+  type CadMeshJson,
+  type CadSceneJson,
+  sceneFromJson,
+  sceneToJson,
+} from "./json";
 export { BUILT_IN_3D_LOADERS } from "./loaders/builtin";
 export { OBJ_MATERIAL_PALETTE, objLoader, parseObj } from "./loaders/obj";
 export { parseStl, stlLoader } from "./loaders/stl";

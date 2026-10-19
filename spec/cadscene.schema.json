@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jesusjbriceno/cad-viewer/spec/cadscene.schema.json",
+  "title": "CadScene",
+  "description": "Language-neutral 3D scene produced by any converter and consumed by @cadscene/3d. Typed arrays are plain number arrays; Maps are plain objects. Unknown properties are allowed so a converter can annotate its output.",
+  "type": "object",
+  "required": ["format", "layers", "materials", "meshes", "bounds", "unsupported", "metadata"],
+  "properties": {
+    "format": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Loader or converter id, e.g. \"obj\", \"stl\", \"dwg-acis\"."
+    },
+    "units": {
+      "type": "string",
+      "description": "Unit symbol when the source declares one, e.g. \"mm\"."
+    },
+    "layers": {
+      "type": "object",
+      "description": "Layers by name.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "visible"],
+        "properties": {
+          "name": { "type": "string" },
+          "visible": { "type": "boolean" }
+        }
+      }
+    },
+    "materials": {
+      "type": "object",
+      "description": "Materials by key; every mesh.material must exist here.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "color"],
+        "properties": {
+          "name": { "type": "string" },
+          "color": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777215,
+            "description": "0xRRGGBB"
+          },
+          "opacity": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "meshes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "layer", "material", "positions"],
+        "properties": {
+          "name": { "type": "string" },
+          "layer": { "type": "string" },
+          "material": { "type": "string" },
+          "positions": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "xyz triplets: a whole number of vertices. Without indices the length must also be a multiple of 9 (whole triangles)."
+          },
+          "normals": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Same length as positions when present."
+          },
+          "indices": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0 },
+            "description": "Triangle corners; length a multiple of 3, every value below positions.length / 3."
+          }
+        }
+      }
+    },
+    "bounds": {
+      "description": "Union of the meshes, or null when the scene has no geometry.",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["minX", "minY", "minZ", "maxX", "maxY", "maxZ"],
+          "properties": {
+            "minX": { "type": "number" },
+            "minY": { "type": "number" },
+            "minZ": { "type": "number" },
+            "maxX": { "type": "number" },
+            "maxY": { "type": "number" },
+            "maxZ": { "type": "number" }
+          }
+        }
+      ]
+    },
+    "unsupported": {
+      "type": "object",
+      "description": "Source statements or entity kinds the converter could not represent, by kind.",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

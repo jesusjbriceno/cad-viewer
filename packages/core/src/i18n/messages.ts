@@ -48,6 +48,7 @@ const en: Messages = {
     "obj-invalid-index": ({ index, line }) =>
       `Invalid vertex index "${index}" in OBJ at line ${line}.`,
     "webgl-unavailable": () => "WebGL is not available in this browser.",
+    "scene-json-invalid": ({ path }) => `Invalid CadScene JSON at "${path}".`,
   },
 };
 
@@ -81,6 +82,7 @@ const esES: Messages = {
     "obj-invalid-index": ({ index, line }) =>
       `Índice de vértice «${index}» no válido en el OBJ en la línea ${line}.`,
     "webgl-unavailable": () => "WebGL no está disponible en este navegador.",
+    "scene-json-invalid": ({ path }) => `JSON de CadScene no válido en «${path}».`,
   },
 };
 
