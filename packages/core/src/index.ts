@@ -8,6 +8,15 @@ export {
   resolveLocale,
   SUPPORTED_LOCALES,
 } from "./i18n";
+export type {
+  DocumentSummary,
+  EntityDetails,
+  EntityFilter,
+  EntityInfo,
+  LayoutSummary,
+  PropertyValue,
+} from "./inspect";
+export { collectEntities, describeEntity, summarizeDocument } from "./inspect";
 export {
   abortError,
   type CadErrorCode,

@@ -2,6 +2,7 @@ import {
   type CadLocale,
   type CadTheme,
   CadViewer,
+  describeEntity,
   type LayerInfo,
   type MeasureResult,
   type PickResult,
@@ -23,6 +24,8 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   const layerList = $<HTMLUListElement>(root, "[data-layers]");
   const selection = $<HTMLPreElement>(root, "[data-selection]");
   const measure = $<HTMLPreElement>(root, "[data-measure]");
+  const summary = $<HTMLPreElement>(root, "[data-summary]");
+  const properties = $<HTMLPreElement>(root, "[data-properties]");
 
   let locale: CadLocale = currentLocale();
   const viewer = new CadViewer(host, { loaders: LOADERS, locale });
@@ -103,10 +106,50 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         .map((layout) => new Option(layout.name, layout.name, false, layout.active)),
     );
   };
+  // The hint only makes sense while the measure tool is active; otherwise a click selects.
+  const renderMeasure = () => {
+    const t = messages(locale);
+    if (measured) measure.textContent = describeMeasure(measured, locale);
+    else measure.textContent = viewer.tool === "measure" ? t.measureHint : t.measureInactive;
+  };
   const renderInfo = () => {
     selection.textContent = describePick(pick, locale);
-    measure.textContent = describeMeasure(measured, locale);
+    renderMeasure();
   };
+  // Model information: what the drawing contains, and the properties of the picked entity.
+  const renderModelInfo = () => {
+    const t = messages(locale);
+    const stats = viewer.getSummary();
+    if (!stats) {
+      summary.textContent = t.info.empty;
+      properties.textContent = t.info.empty;
+      return;
+    }
+    const unsupported = [...(viewer.document?.unsupported ?? [])]
+      .map(([kind, count]) => `${kind}×${count}`)
+      .join(", ");
+    const drawable = stats.entityCount - (stats.countsByType.unsupported ?? 0);
+    let note = "";
+    if (unsupported && drawable === 0) note = t.info.nothingDrawable(unsupported);
+    else if (unsupported) note = t.notDrawn(unsupported);
+    const line = t.info.summary2d({
+      format: stats.format.toUpperCase(),
+      version: stats.version,
+      units: stats.units,
+      entities: stats.entityCount,
+      layers: stats.layerCount,
+      blocks: stats.blockCount,
+      layouts: stats.layouts.length,
+    });
+    summary.textContent = note ? `${line} · ${note}` : line;
+    properties.textContent =
+      pick && viewer.document
+        ? Object.entries(describeEntity(pick.entity, viewer.document).properties)
+            .map(([key, value]) => `${key}: ${String(value)}`)
+            .join("\n")
+        : t.noSelection;
+  };
+
   layouts.addEventListener("change", () => viewer.setLayout(layouts.value));
 
   viewer.on("load-start", ({ fileName }) =>
@@ -128,14 +171,24 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         }) + (unsupported ? ` · ${t.notDrawn(unsupported)}` : ""),
     );
     renderLayouts();
+    renderModelInfo();
   });
   // The viewer translates library errors from their stable code into its current language.
-  viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
+  viewer.on("error", ({ error }) => {
+    const code = "code" in error ? error.code : undefined;
+    setStatus(
+      () =>
+        viewer.formatError(error) +
+        (code === "unsupported-format" ? ` ${messages(locale).formatsHint}` : ""),
+      true,
+    );
+  });
   viewer.on("layers-change", ({ layers }) => renderLayers(layers));
   viewer.on("layout-change", () => renderLayouts());
   viewer.on("select", ({ pick: next }) => {
     pick = next;
     renderInfo();
+    renderModelInfo();
   });
   viewer.on("measure", (result) => {
     measured = result;
@@ -147,7 +200,10 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     for (const button of toolButtons)
       button.setAttribute("aria-pressed", String(button.dataset.tool === tool));
   };
-  viewer.on("tool-change", ({ tool }) => syncTools(tool));
+  viewer.on("tool-change", ({ tool }) => {
+    syncTools(tool);
+    renderMeasure();
+  });
   syncTools(viewer.tool);
 
   root.addEventListener("click", (event) => {
@@ -175,13 +231,17 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     renderSamples();
     renderLayers(viewer.getLayers());
     renderInfo();
+    renderModelInfo();
     renderStatus();
   });
 
   renderSamples();
   renderInfo();
+  renderModelInfo();
   renderStatus();
-  const first = SAMPLES[0];
-  if (first) load(first.url);
+  // `?sample=<url>` opens any drawing, including local ones under /samples-local/.
+  const requested = new URLSearchParams(location.search).get("sample");
+  const initial = requested ?? SAMPLES[0]?.url;
+  if (initial) load(initial);
   return viewer;
 }

@@ -9,6 +9,14 @@ export type {
   CadTheme,
   FormatLoader,
 } from "@jesusjbriceno/cad-viewer-core";
+export {
+  describePart,
+  type PartDetails,
+  type PartInfo,
+  partsOf,
+  type SceneSummary,
+  summarizeScene,
+} from "./inspect";
 export { BUILT_IN_3D_LOADERS } from "./loaders/builtin";
 export { OBJ_MATERIAL_PALETTE, objLoader, parseObj } from "./loaders/obj";
 export { parseStl, stlLoader } from "./loaders/stl";

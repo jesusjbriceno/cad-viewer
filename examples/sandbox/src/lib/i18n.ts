@@ -51,7 +51,32 @@ export interface SandboxMessages {
   noSelection: string;
   pick: { type: string; layer: string; handle: string; block: string; at: string };
   measureHint: string;
+  measureInactive: string;
+  formatsHint: string;
   measureResult: { distance: string; angle: string };
+  info: {
+    title: string;
+    properties: string;
+    empty: string;
+    summary2d: (i: {
+      format: string;
+      version: string | undefined;
+      units: string | undefined;
+      entities: number;
+      layers: number;
+      blocks: number;
+      layouts: number;
+    }) => string;
+    nothingDrawable: (list: string) => string;
+    summary3d: (i: {
+      format: string;
+      parts: number;
+      layers: number;
+      triangles: number;
+      vertices: number;
+      materials: number;
+    }) => string;
+  };
   credits: {
     title: string;
     intro: string;
@@ -64,6 +89,7 @@ export interface SandboxMessages {
   };
   model3d: {
     model: string;
+    formatsHint: string;
     samples: {
       flange: string;
       house: string;
@@ -149,7 +175,20 @@ const es: SandboxMessages = {
   noSelection: "Nada seleccionado. Haz clic en una entidad.",
   pick: { type: "Tipo", layer: "Capa", handle: "Handle", block: "Bloque", at: "En" },
   measureHint: "Herramienta Medir: haz clic en dos puntos.",
+  measureInactive: "Pulsa «Medir» y haz clic en dos puntos para medir una distancia.",
+  formatsHint: "Este visor abre DXF y, con el plugin DWG, DWG.",
   measureResult: { distance: "Distancia", angle: "Ángulo" },
+  info: {
+    title: "Información",
+    properties: "Propiedades",
+    empty: "Carga un dibujo o un modelo para ver su información.",
+    summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
+      `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entidades · ${layers} capas · ${blocks} bloques · ${layouts} presentaciones`,
+    nothingDrawable: (list) =>
+      `Nada representable en este dibujo: ${list}. El visor 2D solo dibuja geometría plana.`,
+    summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
+      `${format} · ${parts} piezas · ${layers} capas · ${triangles} triángulos · ${vertices} vértices · ${materials} materiales`,
+  },
   credits: {
     title: "Créditos de las muestras",
     intro:
@@ -163,6 +202,7 @@ const es: SandboxMessages = {
   },
   model3d: {
     model: "Modelo",
+    formatsHint: "El visor 3D abre STL y OBJ. Si es un DWG, ábrelo en la página 2D.",
     samples: {
       flange: "STL · brida con buje (binario, 1536 triángulos)",
       house: "OBJ · casa con grupos y materiales (paredes, tejado, puerta)",
@@ -246,7 +286,20 @@ const en: SandboxMessages = {
   noSelection: "Nothing selected. Click an entity.",
   pick: { type: "Type", layer: "Layer", handle: "Handle", block: "Block", at: "At" },
   measureHint: "Measure tool: click two points.",
+  measureInactive: "Press «Measure» and click two points to measure a distance.",
+  formatsHint: "This viewer opens DXF and, with the DWG plugin, DWG.",
   measureResult: { distance: "Distance", angle: "Angle" },
+  info: {
+    title: "Information",
+    properties: "Properties",
+    empty: "Load a drawing or a model to see its information.",
+    summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
+      `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entities · ${layers} layers · ${blocks} blocks · ${layouts} layouts`,
+    nothingDrawable: (list) =>
+      `Nothing representable in this drawing: ${list}. The 2D viewer only draws planar geometry.`,
+    summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
+      `${format} · ${parts} parts · ${layers} layers · ${triangles} triangles · ${vertices} vertices · ${materials} materials`,
+  },
   credits: {
     title: "Sample credits",
     intro:
@@ -260,6 +313,7 @@ const en: SandboxMessages = {
   },
   model3d: {
     model: "Model",
+    formatsHint: "The 3D viewer opens STL and OBJ. If this is a DWG, open it on the 2D page.",
     samples: {
       flange: "STL · flanged hub (binary, 1536 triangles)",
       house: "OBJ · house with groups and materials (walls, roof, door)",

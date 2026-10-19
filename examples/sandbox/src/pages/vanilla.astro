@@ -29,6 +29,11 @@ const t = messages(DEFAULT_LOCALE);
         </div>
       </section>
       <section>
+        <h2 data-i18n="info.title">{t.info.title}</h2>
+        <pre class="info" data-summary></pre>
+        <pre class="info" data-properties></pre>
+      </section>
+      <section>
         <h2 data-i18n="selection">{t.selection}</h2>
         <pre class="info" data-selection></pre>
       </section>
@@ -59,5 +64,7 @@ const t = messages(DEFAULT_LOCALE);
   import { mountVanillaSandbox } from "../components/vanilla";
 
   const root = document.querySelector<HTMLElement>("[data-sandbox]");
-  if (root) mountVanillaSandbox(root);
+  // Sandbox convenience: the viewer is reachable from the browser console
+  // (`viewer.getSummary()`, `viewer.getEntities()`, `viewer.getParts()`).
+  if (root) Object.assign(window, { viewer: mountVanillaSandbox(root) });
 </script>

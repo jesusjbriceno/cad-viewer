@@ -44,6 +44,12 @@ Viewing only — the viewer never modifies a drawing or a model.
 - Distance measurement
 - PNG snapshot export
 
+**Model information** (2D and 3D)
+
+- `getSummary()`: format, version, units, counts, layers, blocks, layouts and bounds
+- `getEntities()` / `getParts()`: plain-data lists, filterable, with per-item details
+- `describeEntity()`: per-type properties with exact measurements (length, radius, area, …)
+
 **3D models** (`@jesusjbriceno/cad-viewer-3d`, three.js as a peer dependency)
 
 - STL (binary and ASCII) and Wavefront OBJ built in, both parsed in-house

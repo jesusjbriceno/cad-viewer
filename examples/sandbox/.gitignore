@@ -2,3 +2,4 @@ dist/
 .astro/
 public/libredwg/
 public/samples/
+public/samples-local/

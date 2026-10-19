@@ -25,6 +25,8 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
   const fileInput = $<HTMLInputElement>(root, "[data-file]");
   const layerList = $<HTMLUListElement>(root, "[data-layers]");
   const camera = $<HTMLPreElement>(root, "[data-camera]");
+  const summary = $<HTMLPreElement>(root, "[data-summary]");
+  const parts = $<HTMLUListElement>(root, "[data-parts]");
 
   let locale: CadLocale = currentLocale();
   const viewer = new Cad3DViewer(host, { locale });
@@ -98,6 +100,34 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
     );
   };
 
+  // Model information: what the scene contains, and one row per part.
+  const renderInfo = () => {
+    const t = messages(locale);
+    const stats = viewer.getSummary();
+    summary.textContent = stats
+      ? t.info.summary3d({
+          format: stats.format.toUpperCase(),
+          parts: stats.meshCount,
+          layers: stats.layerCount,
+          triangles: stats.triangles,
+          vertices: stats.vertices,
+          materials: stats.materialCount,
+        })
+      : t.info.empty;
+    parts.replaceChildren(
+      ...viewer.getParts().map((part) => {
+        const item = document.createElement("li");
+        const name = document.createElement("span");
+        name.textContent = part.name;
+        const detail = document.createElement("span");
+        detail.className = "count";
+        detail.textContent = `${part.layer} · ${part.material} · ${t.model3d.triangles(part.triangles)}`;
+        item.append(name, detail);
+        return item;
+      }),
+    );
+  };
+
   const renderCamera = () => {
     const t = messages(locale);
     const state = viewer.getCamera();
@@ -127,11 +157,24 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
       }),
     );
     renderLayers(viewer.getLayers());
+    renderInfo();
     renderCamera();
   });
   // The viewer translates library errors from their stable code into its current language.
-  viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
-  viewer.on("layers-change", ({ layers }) => renderLayers(layers));
+  viewer.on("error", ({ error }) => {
+    // Turn "no loader" into guidance instead of a dead end.
+    const code = "code" in error ? error.code : undefined;
+    setStatus(
+      () =>
+        viewer.formatError(error) +
+        (code === "unsupported-format" ? ` ${messages(locale).model3d.formatsHint}` : ""),
+      true,
+    );
+  });
+  viewer.on("layers-change", ({ layers }) => {
+    renderLayers(layers);
+    renderInfo();
+  });
   viewer.on("camera-change", () => renderCamera());
 
   root.addEventListener("click", (event) => {
@@ -165,19 +208,30 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
     viewer.setLocale(next);
     renderSamples();
     renderLayers(viewer.getLayers());
+    renderInfo();
     renderCamera();
     renderStatus();
   });
 
   renderSamples();
+  renderInfo();
   renderCamera();
   renderStatus();
   // `?model=<sample file name>` deep-links one sample, e.g. /3d/?model=house.obj.
   const requested = new URLSearchParams(location.search).get("model");
-  const initial = MODELS.find((model) => model.fileName === requested) ?? MODELS[0];
-  if (initial) {
-    samples.value = initial.url;
-    load(initial.url, initial.fileName);
+  const known = MODELS.find((model) => model.fileName === requested);
+  // `?model=` accepts a sample file name or any URL/path (e.g. /samples-local/part.stl).
+  if (known) {
+    samples.value = known.url;
+    load(known.url, known.fileName);
+  } else if (requested) {
+    load(requested, requested.split("/").pop() || undefined);
+  } else {
+    const initial = MODELS[0];
+    if (initial) {
+      samples.value = initial.url;
+      load(initial.url, initial.fileName);
+    }
   }
   return viewer;
 }

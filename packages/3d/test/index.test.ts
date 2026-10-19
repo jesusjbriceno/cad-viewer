@@ -9,10 +9,13 @@ describe("@jesusjbriceno/cad-viewer-3d public API", () => {
         "Cad3DViewer",
         "ISOMETRIC",
         "OBJ_MATERIAL_PALETTE",
+        "describePart",
         "objLoader",
         "parseObj",
         "parseStl",
+        "partsOf",
         "stlLoader",
+        "summarizeScene",
       ].sort(),
     );
     expect(api.BUILT_IN_3D_LOADERS.map((loader) => loader.id)).toEqual(["stl", "obj"]);

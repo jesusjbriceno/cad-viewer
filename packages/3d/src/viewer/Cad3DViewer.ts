@@ -22,6 +22,14 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MESSAGES_3D } from "../i18n";
+import {
+  describePart,
+  type PartDetails,
+  type PartInfo,
+  partsOf,
+  type SceneSummary,
+  summarizeScene,
+} from "../inspect";
 import { BUILT_IN_3D_LOADERS } from "../loaders/builtin";
 import { type BuiltScene, buildThreeScene, type Shading } from "../render/buildScene";
 import {
@@ -337,6 +345,27 @@ export class Cad3DViewer implements Cad3DViewerApi {
   }
 
   // ── Layers and display ───────────────────────────────────────────────────
+
+  /** Model information: parts, layers, triangles, vertices, materials and bounds. */
+  getSummary(): SceneSummary | null {
+    return this.currentScene ? summarizeScene(this.currentScene) : null;
+  }
+
+  /** Lists every part with the viewer's current layer visibility. */
+  getParts(): PartInfo[] {
+    const scene = this.currentScene;
+    if (!scene) return [];
+    const visible = new Map(this.getLayers().map((layer) => [layer.name, layer.visible]));
+    return partsOf(scene, (layer) => visible.get(layer) ?? true);
+  }
+
+  /** Reads one part with its material colour and geometry flags. */
+  getPart(id: number): PartDetails | null {
+    const scene = this.currentScene;
+    if (!scene) return null;
+    const visible = new Map(this.getLayers().map((layer) => [layer.name, layer.visible]));
+    return describePart(scene, id, (layer) => visible.get(layer) ?? true);
+  }
 
   getLayers(): Layer3DInfo[] {
     const scene = this.currentScene;

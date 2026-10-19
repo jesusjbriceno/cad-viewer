@@ -42,6 +42,11 @@ Explicitly still out of scope: STEP/IGES (LGPL kernel) and IFC (MPL kernel) as i
   started but nothing could connect; the browser showed a misleading `DNS_PROBE_FINISHED_NXDOMAIN`.
   Fixed in `examples/sandbox/astro.config.mjs` with `server.host = SANDBOX_HOST ?? "127.0.0.1"`.
   Open **http://127.0.0.1:4321** (or `localhost`, which now falls back to IPv4).
+- **Astro keeps one dev server per project** (`examples/sandbox/.astro/dev.json`) and refuses a
+  second one even on another port. Stop it with `astro dev stop`; killing the pnpm wrapper leaves
+  an orphan that keeps the port and the stale `dev.json`, so the human's own `pnpm dev` fails with
+  "Another astro dev server is already running". When an agent needs to hand over something
+  clickable, serve the built site instead (`npx serve examples/sandbox/dist -l 4322`): no lock.
 - `pnpm install` takes ~3 minutes here: run it in the background.
 - Rewriting JSON from Python on Windows writes CRLF and breaks `pnpm lint`; `biome check --write`
   normalises it.

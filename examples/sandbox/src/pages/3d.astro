@@ -19,6 +19,11 @@ const t = messages(DEFAULT_LOCALE);
         <p class="drop-hint"><a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/credits/`} data-i18n="samples.credits">{t.samples.credits}</a></p>
       </section>
       <section>
+        <h2 data-i18n="info.title">{t.info.title}</h2>
+        <pre class="info" data-summary></pre>
+        <ul class="layers" data-parts></ul>
+      </section>
+      <section>
         <h2 data-i18n="layers">{t.layers}</h2>
         <ul class="layers" data-layers></ul>
         <div class="row">
@@ -59,5 +64,7 @@ const t = messages(DEFAULT_LOCALE);
   import { mountModel3DSandbox } from "../components/model3d";
 
   const root = document.querySelector<HTMLElement>("[data-sandbox]");
-  if (root) mountModel3DSandbox(root);
+  // Sandbox convenience: the viewer is reachable from the browser console
+  // (`viewer.getSummary()`, `viewer.getEntities()`, `viewer.getParts()`).
+  if (root) Object.assign(window, { viewer: mountModel3DSandbox(root) });
 </script>

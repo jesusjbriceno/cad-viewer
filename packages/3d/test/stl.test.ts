@@ -240,6 +240,13 @@ describe("stlLoader", () => {
     );
   });
 
+  it("canLoad rejects a binary that declares zero triangles", () => {
+    // Any file of 84+ bytes whose bytes 80..83 are zero used to be claimed as an empty STL,
+    // which made a DWG load as "0 triangles" instead of failing as unsupported.
+    const zeroTriangles = new Uint8Array(200);
+    expect(stlLoader.canLoad({ bytes: zeroTriangles })).toBe(false);
+  });
+
   it("loads bytes into a scene and reports the parse phase", () => {
     const onProgress = vi.fn();
     const options: LoadOptions = { onProgress };

@@ -8,6 +8,20 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **Model information API** — the library now exposes what a drawing or model *contains*, not
+  just its picture. In the core: `summarizeDocument()` (format, version, units, entity and
+  type counts, layers, blocks, layouts, saved extents), `collectEntities()` (plain-data entity
+  list, filterable by layer and type) and `describeEntity()` (per-type properties with exact
+  measurements: line and polyline length, circle radius/diameter/area, arc length). On the
+  viewer: `CadViewer.getSummary()` and `getEntities()`.
+- **The same for 3D** in `cad-viewer-3d`: `summarizeScene()` (parts, layers, triangles,
+  vertices, materials, bounds), `partsOf()` and `describePart()`, plus
+  `Cad3DViewer.getSummary()`, `getParts()` and `getPart(id)`.
+- **Sandbox inspector panels**: the 2D page shows the drawing summary and the picked entity's
+  properties, and the 3D page shows the scene summary and one row per part with its layer,
+  material and triangle count.
+
+
 - **Real third-party sample assets** for the sandbox, both 2D and 3D: a pump-house plan and a
   bolt-circle plate (DXF) and a torus knot as binary STL and as OBJ, all **CC0**. Each file is
   recorded with its author, license, source URL and SHA-256 in
@@ -16,6 +30,16 @@ All notable changes to this project are documented here. The format follows
 - **`sandbox` Vitest project** (`examples/sandbox/test/samples.test.ts`): every bundled asset
   must be listed, keep its recorded size and hash, appear in `SOURCES.md`, and still parse with
   its loader (layers and entities for DXF, triangles and bounds for STL/OBJ).
+
+### Fixed
+
+- **A binary file could be claimed as an empty STL.** Binary STL sniffing accepted any file of
+  84+ bytes whose bytes 80–83 declare zero triangles, so a DWG loaded as "STL · 0 triángulos"
+  instead of being rejected. Sniffing now requires at least one triangle; a real `.stl` with no
+  geometry still loads through its extension, and unsupported files report `unsupported-format`.
+- **The sandbox `?model=` link only accepted known sample names** and silently fell back to the
+  first model. It now accepts any path or URL (`/3d/?model=/samples-local/part.stl`), matching
+  the 2D `?sample=` link.
 
 ### Notes
 

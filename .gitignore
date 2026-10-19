@@ -11,3 +11,6 @@ coverage/
 .engram/
 .vitest/
 .scratch/
+
+# Exclude local-bash.ps1
+local-bash.ps1

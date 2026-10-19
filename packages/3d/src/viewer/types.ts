@@ -7,6 +7,7 @@ import type {
   FormatLoader,
   LoadProgress,
 } from "@jesusjbriceno/cad-viewer-core";
+import type { PartDetails, PartInfo, SceneSummary } from "../inspect";
 import type { Shading } from "../render/buildScene";
 import type { OrbitState, UpAxis, Vec3Like } from "../render/camera";
 
@@ -93,6 +94,13 @@ export interface Cad3DViewerApi {
   zoomExtents(): void;
   getCamera(): OrbitState;
   setCamera(update: CameraUpdate): void;
+
+  /** Model information: parts, layers, triangles, vertices, materials and bounds; null before a load. */
+  getSummary(): SceneSummary | null;
+  /** Every part with the viewer's current layer visibility. */
+  getParts(): PartInfo[];
+  /** One part with its material colour and geometry flags; null for an unknown id. */
+  getPart(id: number): PartDetails | null;
 
   getLayers(): Layer3DInfo[];
   setLayerVisible(name: string, visible: boolean): void;

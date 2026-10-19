@@ -2,6 +2,13 @@ import { dxfLoader } from "../dxf";
 import { formatCadError, formatLength } from "../i18n/format";
 import { type CadLocale, resolveLocale } from "../i18n/locale";
 import { MESSAGES } from "../i18n/messages";
+import {
+  collectEntities,
+  type DocumentSummary,
+  type EntityFilter,
+  type EntityInfo,
+  summarizeDocument,
+} from "../inspect";
 import { abortError, CadLoadError, viewerError } from "../loaders/errors";
 import { FormatRegistry } from "../loaders/registry";
 import { colorToCss } from "../model/colors";
@@ -346,6 +353,16 @@ export class CadViewer implements CadViewerApi {
   }
 
   // ── Layers and layouts ───────────────────────────────────────────────────
+
+  /** Model information: counts, layers, blocks, layouts and the saved extents. */
+  getSummary(): DocumentSummary | null {
+    return this.document ? summarizeDocument(this.document) : null;
+  }
+
+  /** Lists the entities of one layout (model space by default) as plain data. */
+  getEntities(filter: EntityFilter = {}): EntityInfo[] {
+    return this.document ? collectEntities(this.document, filter) : [];
+  }
 
   getLayers(): LayerInfo[] {
     if (!this.currentDocument) return [];
