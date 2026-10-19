@@ -126,7 +126,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
       entities: stats.entityCount,
       layers: stats.layerCount,
       blocks: stats.blockCount,
-      layouts: stats.layoutCount,
+      layouts: stats.layouts.length,
     });
     properties.textContent =
       pick && viewer.document

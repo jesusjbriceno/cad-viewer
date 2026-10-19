@@ -44,7 +44,10 @@ describe("summarizeDocument", () => {
       countsByType: { line: 2, circle: 1 },
       layerCount: 1,
       blockCount: 1,
-      layoutCount: 2,
+      layouts: [
+        { name: "Model", isModel: true, entityCount: 3 },
+        { name: "Layout1", isModel: false, entityCount: 0 },
+      ],
       bounds: null,
     });
   });

@@ -26,6 +26,12 @@ export interface EntityFilter {
   type?: CadEntityType;
 }
 
+export interface LayoutSummary {
+  name: string;
+  isModel: boolean;
+  entityCount: number;
+}
+
 /** What a drawing contains, without exposing the document itself. */
 export interface DocumentSummary {
   format: string;
@@ -37,7 +43,8 @@ export interface DocumentSummary {
   countsByType: Partial<Record<CadEntityType, number>>;
   layerCount: number;
   blockCount: number;
-  layoutCount: number;
+  /** Per-layout entity counts: a drawing can keep most of its content in a paper-space layout. */
+  layouts: LayoutSummary[];
   /** Extents saved in the header (`$EXTMIN`/`$EXTMAX`); null when missing. Use `viewer.getExtents()` for the rendered extents. */
   bounds: Bounds | null;
 }
@@ -107,8 +114,14 @@ function info(entity: CadEntity, document?: CadDocument): EntityInfo {
 /** Summarizes a drawing: counts, layers, blocks, layouts and the saved extents. */
 export function summarizeDocument(document: CadDocument): DocumentSummary {
   const countsByType: Partial<Record<CadEntityType, number>> = {};
+  const layouts: LayoutSummary[] = [];
   let entityCount = 0;
   for (const layout of document.layouts) {
+    layouts.push({
+      name: layout.name,
+      isModel: layout.isModel,
+      entityCount: layout.entities.length,
+    });
     for (const entity of layout.entities) {
       entityCount += 1;
       countsByType[entity.type] = (countsByType[entity.type] ?? 0) + 1;
@@ -124,7 +137,7 @@ export function summarizeDocument(document: CadDocument): DocumentSummary {
     countsByType,
     layerCount: document.layers.size,
     blockCount: document.blocks.size,
-    layoutCount: document.layouts.length,
+    layouts,
     bounds: document.header.extents ?? null,
   };
 }

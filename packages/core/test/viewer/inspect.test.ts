@@ -19,7 +19,7 @@ describe("CadViewer model information", () => {
       entityCount: 1,
       countsByType: { line: 1 },
       layerCount: 1,
-      layoutCount: 1,
+      layouts: [{ name: "Model", isModel: true, entityCount: 1 }],
     });
   });
 

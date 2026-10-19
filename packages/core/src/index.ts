@@ -13,6 +13,7 @@ export type {
   EntityDetails,
   EntityFilter,
   EntityInfo,
+  LayoutSummary,
   PropertyValue,
 } from "./inspect";
 export { collectEntities, describeEntity, summarizeDocument } from "./inspect";
