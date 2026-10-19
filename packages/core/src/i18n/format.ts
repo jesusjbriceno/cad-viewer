@@ -14,6 +14,7 @@ const REQUIRED_PARAMS: Partial<Record<CadErrorCode, readonly string[]>> = {
   "stl-invalid-number": ["line"],
   "obj-invalid-number": ["line"],
   "obj-invalid-index": ["index", "line"],
+  "scene-json-invalid": ["path"],
 };
 
 /**

@@ -16,6 +16,8 @@ describe("@cadscene/3d public API", () => {
         "parseStl",
         "partsOf",
         "sceneFromDocument",
+        "sceneFromJson",
+        "sceneToJson",
         "stlLoader",
         "summarizeScene",
       ].sort(),
