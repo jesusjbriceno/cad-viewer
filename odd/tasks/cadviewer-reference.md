@@ -97,3 +97,31 @@ exists and is better: `mlightcad/cad-viewer` (MIT), which we already used for th
    the host draws itself?
 4. Whether the compare view is a **component/mode** of `CadViewer` or a separate function that
    builds a diff `CadDocument`.
+
+## Follow-up: 3D inside DWG — what the references actually do
+
+Question raised by the user after hitting a DWG whose model space is 15 `3DSOLID` entities:
+does CADViewer solve 3D solids inside DWG, and if so how? Sources read on 2026-10-19 (their
+public documentation, product pages and community threads; no bundle was analysed).
+
+| Product | Licence / model | 3D inside DWG |
+| --- | --- | --- |
+| **CADViewer (Tailormade)** | Commercial, per-server; Pro front-end + AutoXchange converter | **No 3D orbit of `3DSOLID`.** The client is an SVG/JavaScript 2D vector viewer; DWG/DXF/DWF/DGN/PDF are converted **server-side** by AutoXchange into a 2D display format. Their JSDoc exposes a `cvjs_resizeWindow_3D` helper, but nothing documents mesh/solid rendering. In their own community thread a user asks for 3D CAD formats (SolidWorks/Solid Edge) and the answer points at 2D CAD viewing. |
+| **mlightcad/cad-viewer** | MIT, browser + WASM, no server | 2D today; its FAQ says 3D viewing is planned. It is the code reference we already used. |
+| **ViewSoft (Rasterex engine)** | Commercial SDK, self-hosted, per seat | Offers "optional 3D viewing" plus layer control and entity property access — the closest to what was admired, but closed and paid. |
+| **Autodesk Web / APS** | Commercial cloud | Full 3D, via server-side Model Derivative conversion (DWG → SVF), not client-side parsing. |
+
+**Conclusion:** no permissively licensed, browser-only, no-server viewer renders DWG ACIS
+solids. The industry answer is server-side or cloud conversion, which is exactly the model we
+rejected on purpose. `3DSOLID` is out of reach without a B-rep kernel (commercial) or a
+conversion service; `3DFACE` is the only 3D entity our parsers already carry, and it is
+currently flattened into a planar `solid`.
+
+### Implication for cad-viewer
+
+1. Do not chase CADViewer here: it solves the problem by avoiding it (2D conversion server).
+2. The only increment consistent with MIT + zero server is **`3DFACE` → `CadScene`** (triangulate
+   the quads, keep Z, show in `Cad3DViewer`). It gives 3D to drawings that use faces; it does not
+   cover ACIS.
+3. `3DSOLID` stays documented as unsupported unless a kernel or a service is accepted, which is a
+   product and licensing decision, not an implementation detail.
