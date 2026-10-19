@@ -46,8 +46,8 @@ imports three.js.
           │
           ▼
       Cad3DViewer           WebGLRenderer, orbit camera, layers, PNG, events
-       ├── <Cad3DViewer> Vue 3   (@jesusjbriceno/cad-viewer-vue/3d)
-       └── <Cad3DViewer> React   (@jesusjbriceno/cad-viewer-react/3d)
+       ├── <Cad3DViewer> Vue 3   (@cadscene/vue/3d)
+       └── <Cad3DViewer> React   (@cadscene/react/3d)
 ```
 
 ## Packages and boundaries
@@ -63,7 +63,7 @@ imports three.js.
 Rule: **core never imports a format plugin, a framework or three.js.** Plugins register a
 `FormatLoader`; wrappers create a `CadViewer` (2D) or a `Cad3DViewer` (3D). This keeps the
 GPL code opt-in, three.js out of 2D bundles, and the core usable from plain JavaScript.
-A 2D-only app resolves `@jesusjbriceno/cad-viewer-vue` and never the `/3d` subpath, so
+A 2D-only app resolves `@cadscene/vue` and never the `/3d` subpath, so
 `three` is never bundled.
 
 ## Two viewers, one set of conventions

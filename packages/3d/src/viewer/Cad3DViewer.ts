@@ -10,7 +10,7 @@ import {
   formatCadError,
   readCadSource,
   resolveLocale,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import {
   Color,
   DirectionalLight,

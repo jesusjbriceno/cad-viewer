@@ -5,7 +5,7 @@ import {
   formatCadError,
   type LoadOptions,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import { describe, expect, it, vi } from "vitest";
 import { parseStl, stlLoader } from "../src/loaders/stl";
 

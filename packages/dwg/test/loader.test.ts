@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { CadLoadError, CadViewerError, formatCadError } from "@jesusjbriceno/cad-viewer-core";
+import { CadLoadError, CadViewerError, formatCadError } from "@cadscene/core";
 import { describe, expect, it, vi } from "vitest";
 import { createDwgLoader, type LibreDwgLike } from "../src/loader";
 

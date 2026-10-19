@@ -1,6 +1,6 @@
-# @jesusjbriceno/cad-viewer-dwg
+# @cadscene/dwg
 
-DWG support for [`@jesusjbriceno/cad-viewer-core`](../core): a format loader that reads
+DWG support for [`@cadscene/core`](../core): a format loader that reads
 `.dwg` files in the browser with [LibreDWG](https://www.gnu.org/software/libredwg/)
 compiled to WebAssembly ([`@mlightcad/libredwg-web`](https://github.com/mlightcad/libredwg-web)).
 
@@ -14,14 +14,14 @@ compiled to WebAssembly ([`@mlightcad/libredwg-web`](https://github.com/mlightca
 ## Install
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-core @jesusjbriceno/cad-viewer-dwg
+pnpm add @cadscene/core @cadscene/dwg
 ```
 
 ## Usage
 
 ```ts
-import { CadViewer } from "@jesusjbriceno/cad-viewer-core";
-import { createDwgLoader } from "@jesusjbriceno/cad-viewer-dwg";
+import { CadViewer } from "@cadscene/core";
+import { createDwgLoader } from "@cadscene/dwg";
 
 const viewer = new CadViewer(document.querySelector("#viewer")!, {
   loaders: [createDwgLoader({ wasmUrl: "/libredwg/" })],

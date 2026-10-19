@@ -8,7 +8,7 @@ import {
   type LoaderProbe,
   type LoadOptions,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 
 /**
  * Fixed 8-color palette for OBJ `usemtl` materials. `.mtl` files are not

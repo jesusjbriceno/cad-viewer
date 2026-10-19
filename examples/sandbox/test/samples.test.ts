@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
-import { objLoader, stlLoader } from "@jesusjbriceno/cad-viewer-3d";
-import { dxfLoader } from "@jesusjbriceno/cad-viewer-core";
+import { objLoader, stlLoader } from "@cadscene/3d";
+import { dxfLoader } from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 
 const dir = new URL("../samples/", import.meta.url);

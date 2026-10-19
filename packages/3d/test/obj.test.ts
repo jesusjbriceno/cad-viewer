@@ -5,7 +5,7 @@ import {
   DEFAULT_MATERIAL,
   formatCadError,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 import { OBJ_MATERIAL_PALETTE, objLoader, parseObj } from "../src/loaders/obj";
 

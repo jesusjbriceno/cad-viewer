@@ -1,13 +1,13 @@
 {
-  "name": "@jesusjbriceno/cad-viewer-dwg",
+  "name": "@cadscene/dwg",
   "version": "0.3.0",
-  "description": "DWG format plugin for @jesusjbriceno/cad-viewer-core, powered by LibreDWG (GPL-3.0).",
+  "description": "DWG format plugin for @cadscene/core, powered by LibreDWG (GPL-3.0).",
   "license": "GPL-3.0-only",
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": {
-      "@jesusjbriceno/source": "./src/index.ts",
+      "@cadscene/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
@@ -48,12 +48,12 @@
     }
   },
   "peerDependencies": {
-    "@jesusjbriceno/cad-viewer-core": "workspace:^"
+    "@cadscene/core": "workspace:^"
   },
   "dependencies": {
     "@mlightcad/libredwg-web": "^0.8.0"
   },
   "devDependencies": {
-    "@jesusjbriceno/cad-viewer-core": "workspace:*"
+    "@cadscene/core": "workspace:*"
   }
 }

@@ -4,7 +4,7 @@ import { createApp, defineComponent, h, nextTick, ref } from "vue";
 import { CAD_3D_VIEWER_EVENTS } from "../src/Cad3DViewer";
 import { Fake3DViewer } from "./fake3DViewer";
 
-vi.mock("@jesusjbriceno/cad-viewer-3d", async () => ({
+vi.mock("@cadscene/3d", async () => ({
   Cad3DViewer: (await import("./fake3DViewer")).Fake3DViewer,
 }));
 

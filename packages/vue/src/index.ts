@@ -23,4 +23,4 @@ export type {
   PickResult,
   ViewerTool,
   ViewState,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";

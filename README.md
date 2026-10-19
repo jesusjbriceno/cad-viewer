@@ -14,11 +14,11 @@ three.js.
 
 | Package | What it is | License |
 | --- | --- | --- |
-| [`@jesusjbriceno/cad-viewer-core`](packages/core) | Engine: document model, DXF parser, Canvas2D renderer, `CadViewer` class | MIT |
-| [`@jesusjbriceno/cad-viewer-dwg`](packages/dwg) | Optional DWG format plugin (LibreDWG compiled to WebAssembly) | **GPL-3.0** |
-| [`@jesusjbriceno/cad-viewer-3d`](packages/3d) | 3D model viewer: STL/OBJ parsers and `Cad3DViewer` on three.js (peer dependency) | MIT |
-| [`@jesusjbriceno/cad-viewer-vue`](packages/vue) | `<CadViewer>` component for Vue 3, and `<Cad3DViewer>` from `/3d` | MIT |
-| [`@jesusjbriceno/cad-viewer-react`](packages/react) | `<CadViewer>` component for React 18/19, and `<Cad3DViewer>` from `/3d` | MIT |
+| [`@cadscene/core`](packages/core) | Engine: document model, DXF parser, Canvas2D renderer, `CadViewer` class | MIT |
+| [`@cadscene/dwg`](packages/dwg) | Optional DWG format plugin (LibreDWG compiled to WebAssembly) | **GPL-3.0** |
+| [`@cadscene/3d`](packages/3d) | 3D model viewer: STL/OBJ parsers and `Cad3DViewer` on three.js (peer dependency) | MIT |
+| [`@cadscene/vue`](packages/vue) | `<CadViewer>` component for Vue 3, and `<Cad3DViewer>` from `/3d` | MIT |
+| [`@cadscene/react`](packages/react) | `<CadViewer>` component for React 18/19, and `<Cad3DViewer>` from `/3d` | MIT |
 
 ### Why is the DWG plugin GPL?
 
@@ -50,7 +50,7 @@ Viewing only — the viewer never modifies a drawing or a model.
 - `getEntities()` / `getParts()`: plain-data lists, filterable, with per-item details
 - `describeEntity()`: per-type properties with exact measurements (length, radius, area, …)
 
-**3D models** (`@jesusjbriceno/cad-viewer-3d`, three.js as a peer dependency)
+**3D models** (`@cadscene/3d`, three.js as a peer dependency)
 
 - STL (binary and ASCII) and Wavefront OBJ built in, both parsed in-house
 - Orbit, pan and zoom, fit with the current orientation, isometric framing on load
@@ -80,7 +80,7 @@ in the user's language. See the [core README](packages/core/README.md#languages-
 
 ```vue
 <script setup lang="ts">
-import { CadViewer } from "@jesusjbriceno/cad-viewer-vue";
+import { CadViewer } from "@cadscene/vue";
 </script>
 
 <template>
@@ -93,7 +93,7 @@ import { CadViewer } from "@jesusjbriceno/cad-viewer-vue";
 **React**
 
 ```tsx
-import { CadViewer } from "@jesusjbriceno/cad-viewer-react";
+import { CadViewer } from "@cadscene/react";
 
 export const Plan = () => (
   <div style={{ height: 600 }}>
@@ -105,14 +105,14 @@ export const Plan = () => (
 **No framework**
 
 ```ts
-import { CadViewer } from "@jesusjbriceno/cad-viewer-core";
+import { CadViewer } from "@cadscene/core";
 
 const viewer = new CadViewer(document.querySelector("#viewer")!, { locale: "es-ES" });
 await viewer.load("/drawings/plan.dxf");
 ```
 
 **DWG** — add `loaders: [createDwgLoader({ wasmUrl: "/libredwg/" })]` (option or prop) from
-`@jesusjbriceno/cad-viewer-dwg`, and serve `libredwg-web.wasm`. See the
+`@cadscene/dwg`, and serve `libredwg-web.wasm`. See the
 [DWG plugin README](packages/dwg/README.md).
 
 Per-package docs: [core](packages/core/README.md) · [Vue](packages/vue/README.md) ·

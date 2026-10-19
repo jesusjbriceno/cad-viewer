@@ -6,7 +6,7 @@ import type {
   CadTheme,
   FormatLoader,
   LoadProgress,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import type { PartDetails, PartInfo, SceneSummary } from "../inspect";
 import type { Shading } from "../render/buildScene";
 import type { OrbitState, UpAxis, Vec3Like } from "../render/camera";

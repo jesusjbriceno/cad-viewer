@@ -1,4 +1,4 @@
-import type { CadLocale } from "@jesusjbriceno/cad-viewer-core";
+import type { CadLocale } from "@cadscene/core";
 
 /** Texts of the 3D viewer itself; error texts come from the core catalog. */
 export interface Viewer3DMessages {

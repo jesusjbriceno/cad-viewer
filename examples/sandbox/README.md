@@ -5,9 +5,9 @@ integration, all with the same toolbar, layer panel, selection and measurement i
 
 | Page | What it exercises |
 | --- | --- |
-| `/vanilla/` | `@jesusjbriceno/cad-viewer-core` directly, no framework |
-| `/vue/` | `<CadViewer>` from `@jesusjbriceno/cad-viewer-vue` (Astro island, `client:only`) |
-| `/react/` | `<CadViewer>` from `@jesusjbriceno/cad-viewer-react` (Astro island, `client:only`) |
+| `/vanilla/` | `@cadscene/core` directly, no framework |
+| `/vue/` | `<CadViewer>` from `@cadscene/vue` (Astro island, `client:only`) |
+| `/react/` | `<CadViewer>` from `@cadscene/react` (Astro island, `client:only`) |
 
 Each page loads two sample drawings (a DXF and a DWG) and accepts your own `.dxf` /
 `.dwg` files via the file picker or drag & drop. Files are read locally; nothing is

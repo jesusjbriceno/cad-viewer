@@ -1,4 +1,4 @@
-# @jesusjbriceno/cad-viewer-3d
+# @cadscene/3d
 
 View-only **3D** model viewer for the cad-viewer family. Opens **STL** (binary and ASCII)
 and **Wavefront OBJ** files in the browser and renders them with
@@ -8,7 +8,7 @@ modified: layers, shading and camera are viewer state only.
 ## Install
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-3d three
+pnpm add @cadscene/3d three
 ```
 
 `three` is a **peer dependency** (`>=0.170.0 <1.0.0`): your app provides it, the package
@@ -17,7 +17,7 @@ never bundles its own copy, and the 2D packages do not depend on it.
 ## Usage
 
 ```ts
-import { Cad3DViewer } from "@jesusjbriceno/cad-viewer-3d";
+import { Cad3DViewer } from "@cadscene/3d";
 
 const viewer = new Cad3DViewer(document.querySelector("#viewer")!, { theme: "dark" });
 viewer.on("loaded", ({ scene }) => console.log(scene.meshes.length, "parts"));
@@ -31,8 +31,8 @@ Vue and React components live in the component packages, behind a `/3d` subpath,
 2D-only apps never import three.js:
 
 ```ts
-import { Cad3DViewer } from "@jesusjbriceno/cad-viewer-vue/3d";
-import { Cad3DViewer } from "@jesusjbriceno/cad-viewer-react/3d";
+import { Cad3DViewer } from "@cadscene/vue/3d";
+import { Cad3DViewer } from "@cadscene/react/3d";
 ```
 
 ## Capabilities (0.3.0)
@@ -85,7 +85,7 @@ left behind).
 ## Writing a 3D format plugin
 
 ```ts
-import { createEmptyScene, sceneBounds, type CadScene, type FormatLoader } from "@jesusjbriceno/cad-viewer-core";
+import { createEmptyScene, sceneBounds, type CadScene, type FormatLoader } from "@cadscene/core";
 
 export const plyLoader: FormatLoader<CadScene> = {
   id: "ply",

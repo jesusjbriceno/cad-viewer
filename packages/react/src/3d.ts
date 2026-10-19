@@ -10,5 +10,5 @@ export type {
   OrbitState,
   Shading,
   UpAxis,
-} from "@jesusjbriceno/cad-viewer-3d";
+} from "@cadscene/3d";
 export { Cad3DViewer, type Cad3DViewerProps, useCad3DViewerRef } from "./Cad3DViewer";

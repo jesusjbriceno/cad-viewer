@@ -7,7 +7,7 @@ import {
   createEmptyScene,
   DEFAULT_MATERIAL,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 
 export interface FaceSceneOptions {
   /** Layout name; defaults to the model layout. */

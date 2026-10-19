@@ -3,7 +3,7 @@ import type {
   Cad3DViewerEvents,
   Cad3DViewerOptions,
   Layer3DInfo,
-} from "@jesusjbriceno/cad-viewer-3d";
+} from "@cadscene/3d";
 import { vi } from "vitest";
 
 /** Stand-in for the 3D Cad3DViewer: records construction, calls and lets tests emit events. */

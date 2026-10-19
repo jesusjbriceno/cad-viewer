@@ -1,9 +1,4 @@
-import {
-  type CadMaterial,
-  type CadMesh,
-  type CadScene,
-  DEFAULT_MATERIAL,
-} from "@jesusjbriceno/cad-viewer-core";
+import { type CadMaterial, type CadMesh, type CadScene, DEFAULT_MATERIAL } from "@cadscene/core";
 import {
   BufferAttribute,
   BufferGeometry,

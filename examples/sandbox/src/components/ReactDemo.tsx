@@ -1,4 +1,4 @@
-import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
+import { formatCadError } from "@cadscene/core";
 import {
   type CadLocale,
   type CadSource,
@@ -10,7 +10,7 @@ import {
   type PickResult,
   useCadViewerRef,
   type ViewerTool,
-} from "@jesusjbriceno/cad-viewer-react";
+} from "@cadscene/react";
 import { useEffect, useMemo, useState } from "react";
 import { currentLocale, messages, onLocaleChange, type SandboxMessages } from "../lib/i18n";
 import { describeMeasure, describePick, downloadBlob, LOADERS, SAMPLES } from "../lib/shared";

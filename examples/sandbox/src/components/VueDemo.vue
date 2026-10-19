@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
-import type { CadLocale, CadSource, CadTheme, CadViewerApi, CadViewerEvents, LayerInfo, LayoutInfo, MeasureResult, PickResult, ViewerTool } from "@jesusjbriceno/cad-viewer-vue";
-import { CadViewer } from "@jesusjbriceno/cad-viewer-vue";
+import { formatCadError } from "@cadscene/core";
+import type { CadLocale, CadSource, CadTheme, CadViewerApi, CadViewerEvents, LayerInfo, LayoutInfo, MeasureResult, PickResult, ViewerTool } from "@cadscene/vue";
+import { CadViewer } from "@cadscene/vue";
 import { computed, onBeforeUnmount, ref } from "vue";
 import { currentLocale, messages, onLocaleChange, type SandboxMessages } from "../lib/i18n";
 import { describeMeasure, describePick, downloadBlob, LOADERS, SAMPLES } from "../lib/shared";

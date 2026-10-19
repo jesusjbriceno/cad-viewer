@@ -1,4 +1,4 @@
-# @jesusjbriceno/cad-viewer-vue
+# @cadscene/vue
 
 Vue 3 component for the view-only CAD viewer: open **DXF** (built in) and **DWG** (with
 the optional [GPL-3.0 plugin](../dwg/README.md)) drawings in the browser.
@@ -6,9 +6,9 @@ the optional [GPL-3.0 plugin](../dwg/README.md)) drawings in the browser.
 ## Install
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-vue @jesusjbriceno/cad-viewer-core
+pnpm add @cadscene/vue @cadscene/core
 # optional, GPL-3.0:
-pnpm add @jesusjbriceno/cad-viewer-dwg
+pnpm add @cadscene/dwg
 ```
 
 ## Usage
@@ -16,8 +16,8 @@ pnpm add @jesusjbriceno/cad-viewer-dwg
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { CadViewer, type CadViewerApi, type PickResult } from "@jesusjbriceno/cad-viewer-vue";
-import { createDwgLoader } from "@jesusjbriceno/cad-viewer-dwg"; // optional
+import { CadViewer, type CadViewerApi, type PickResult } from "@cadscene/vue";
+import { createDwgLoader } from "@cadscene/dwg"; // optional
 
 const loaders = [createDwgLoader({ wasmUrl: "/libredwg/" })];
 const viewer = ref<{ viewer: CadViewerApi | null } | null>(null);
@@ -81,13 +81,13 @@ Install the optional 3D peers, then import the separate subpath. The default 2D 
 does not import three.js.
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-3d three
+pnpm add @cadscene/3d three
 ```
 
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { Cad3DViewer, type Cad3DViewerApi } from "@jesusjbriceno/cad-viewer-vue/3d";
+import { Cad3DViewer, type Cad3DViewerApi } from "@cadscene/vue/3d";
 
 const model = ref<{ viewer: Cad3DViewerApi | null } | null>(null);
 </script>
