@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/) (`0.x`: APIs may change between minor versions).
 
-## [Unreleased]
+## [0.4.0] - 2026-10-19
 
 ### Added
 
@@ -20,8 +20,10 @@ All notable changes to this project are documented here. The format follows
 - **Sandbox inspector panels**: the 2D page shows the drawing summary and the picked entity's
   properties, and the 3D page shows the scene summary and one row per part with its layer,
   material and triangle count.
-
-
+- **3D faces from a drawing** in `cad-viewer-3d`: `sceneFromDocument()` turns the `3DFACE`
+  entities of a DXF/DWG into a `CadScene` (one mesh per layer, two triangles per quad, heights
+  preserved) and `has3dFaces()` lets a host offer "view in 3D". Planar `SOLID`/`TRACE` fills are
+  ignored; `3DSOLID` (ACIS) stays out of scope and needs a converter.
 - **Real third-party sample assets** for the sandbox, both 2D and 3D: a pump-house plan and a
   bolt-circle plate (DXF) and a torus knot as binary STL and as OBJ, all **CC0**. Each file is
   recorded with its author, license, source URL and SHA-256 in
@@ -30,6 +32,13 @@ All notable changes to this project are documented here. The format follows
 - **`sandbox` Vitest project** (`examples/sandbox/test/samples.test.ts`): every bundled asset
   must be listed, keep its recorded size and hash, appear in `SOURCES.md`, and still parse with
   its loader (layers and entities for DXF, triangles and bounds for STL/OBJ).
+
+### Changed
+
+- **The packages moved to the `@cadscene` scope**: `@cadscene/core`, `@cadscene/dwg`,
+  `@cadscene/3d`, `@cadscene/vue` and `@cadscene/react` (previously under a personal scope),
+  together with the `@cadscene/source` export condition. Nothing had been published to npm yet,
+  so no package needs a deprecation notice or a redirect.
 
 ### Fixed
 

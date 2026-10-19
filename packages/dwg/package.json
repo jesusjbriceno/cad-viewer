@@ -1,6 +1,6 @@
 {
   "name": "@cadscene/dwg",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "DWG format plugin for @cadscene/core, powered by LibreDWG (GPL-3.0).",
   "license": "GPL-3.0-only",
   "type": "module",

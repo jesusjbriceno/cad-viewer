@@ -1,6 +1,6 @@
 {
   "name": "@cadscene/react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React component for the view-only CAD viewer (DWG/DXF).",
   "license": "MIT",
   "type": "module",
