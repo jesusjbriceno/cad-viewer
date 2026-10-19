@@ -9,6 +9,7 @@ export type {
   CadTheme,
   FormatLoader,
 } from "@jesusjbriceno/cad-viewer-core";
+export { type FaceSceneOptions, has3dFaces, sceneFromDocument } from "./fromDocument";
 export { BUILT_IN_3D_LOADERS } from "./loaders/builtin";
 export { OBJ_MATERIAL_PALETTE, objLoader, parseObj } from "./loaders/obj";
 export { parseStl, stlLoader } from "./loaders/stl";

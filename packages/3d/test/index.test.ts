@@ -9,9 +9,11 @@ describe("@jesusjbriceno/cad-viewer-3d public API", () => {
         "Cad3DViewer",
         "ISOMETRIC",
         "OBJ_MATERIAL_PALETTE",
+        "has3dFaces",
         "objLoader",
         "parseObj",
         "parseStl",
+        "sceneFromDocument",
         "stlLoader",
       ].sort(),
     );
