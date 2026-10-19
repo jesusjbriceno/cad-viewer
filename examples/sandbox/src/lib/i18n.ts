@@ -51,6 +51,7 @@ export interface SandboxMessages {
   noSelection: string;
   pick: { type: string; layer: string; handle: string; block: string; at: string };
   measureHint: string;
+  measureInactive: string;
   measureResult: { distance: string; angle: string };
   info: {
     title: string;
@@ -65,6 +66,7 @@ export interface SandboxMessages {
       blocks: number;
       layouts: number;
     }) => string;
+    nothingDrawable: (list: string) => string;
     summary3d: (i: {
       format: string;
       parts: number;
@@ -171,6 +173,7 @@ const es: SandboxMessages = {
   noSelection: "Nada seleccionado. Haz clic en una entidad.",
   pick: { type: "Tipo", layer: "Capa", handle: "Handle", block: "Bloque", at: "En" },
   measureHint: "Herramienta Medir: haz clic en dos puntos.",
+  measureInactive: "Pulsa «Medir» y haz clic en dos puntos para medir una distancia.",
   measureResult: { distance: "Distancia", angle: "Ángulo" },
   info: {
     title: "Información",
@@ -178,6 +181,8 @@ const es: SandboxMessages = {
     empty: "Carga un dibujo o un modelo para ver su información.",
     summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
       `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entidades · ${layers} capas · ${blocks} bloques · ${layouts} presentaciones`,
+    nothingDrawable: (list) =>
+      `Nada representable en este dibujo: ${list}. El visor 2D solo dibuja geometría plana.`,
     summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
       `${format} · ${parts} piezas · ${layers} capas · ${triangles} triángulos · ${vertices} vértices · ${materials} materiales`,
   },
@@ -277,6 +282,7 @@ const en: SandboxMessages = {
   noSelection: "Nothing selected. Click an entity.",
   pick: { type: "Type", layer: "Layer", handle: "Handle", block: "Block", at: "At" },
   measureHint: "Measure tool: click two points.",
+  measureInactive: "Press «Measure» and click two points to measure a distance.",
   measureResult: { distance: "Distance", angle: "Angle" },
   info: {
     title: "Information",
@@ -284,6 +290,8 @@ const en: SandboxMessages = {
     empty: "Load a drawing or a model to see its information.",
     summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
       `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entities · ${layers} layers · ${blocks} blocks · ${layouts} layouts`,
+    nothingDrawable: (list) =>
+      `Nothing representable in this drawing: ${list}. The 2D viewer only draws planar geometry.`,
     summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
       `${format} · ${parts} parts · ${layers} layers · ${triangles} triangles · ${vertices} vertices · ${materials} materials`,
   },

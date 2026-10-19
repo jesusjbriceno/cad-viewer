@@ -106,9 +106,15 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         .map((layout) => new Option(layout.name, layout.name, false, layout.active)),
     );
   };
+  // The hint only makes sense while the measure tool is active; otherwise a click selects.
+  const renderMeasure = () => {
+    const t = messages(locale);
+    if (measured) measure.textContent = describeMeasure(measured, locale);
+    else measure.textContent = viewer.tool === "measure" ? t.measureHint : t.measureInactive;
+  };
   const renderInfo = () => {
     selection.textContent = describePick(pick, locale);
-    measure.textContent = describeMeasure(measured, locale);
+    renderMeasure();
   };
   // Model information: what the drawing contains, and the properties of the picked entity.
   const renderModelInfo = () => {
@@ -119,7 +125,14 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
       properties.textContent = t.info.empty;
       return;
     }
-    summary.textContent = t.info.summary2d({
+    const unsupported = [...(viewer.document?.unsupported ?? [])]
+      .map(([kind, count]) => `${kind}×${count}`)
+      .join(", ");
+    const drawable = stats.entityCount - (stats.countsByType.unsupported ?? 0);
+    let note = "";
+    if (unsupported && drawable === 0) note = t.info.nothingDrawable(unsupported);
+    else if (unsupported) note = t.notDrawn(unsupported);
+    const line = t.info.summary2d({
       format: stats.format.toUpperCase(),
       version: stats.version,
       units: stats.units,
@@ -128,6 +141,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
       blocks: stats.blockCount,
       layouts: stats.layouts.length,
     });
+    summary.textContent = note ? `${line} · ${note}` : line;
     properties.textContent =
       pick && viewer.document
         ? Object.entries(describeEntity(pick.entity, viewer.document).properties)
@@ -178,7 +192,10 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     for (const button of toolButtons)
       button.setAttribute("aria-pressed", String(button.dataset.tool === tool));
   };
-  viewer.on("tool-change", ({ tool }) => syncTools(tool));
+  viewer.on("tool-change", ({ tool }) => {
+    syncTools(tool);
+    renderMeasure();
+  });
   syncTools(viewer.tool);
 
   root.addEventListener("click", (event) => {
