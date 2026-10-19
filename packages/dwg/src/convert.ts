@@ -22,7 +22,7 @@ import {
   type TextHAlign,
   type TextVAlign,
   type Vec3,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import type { DwgDatabase } from "@mlightcad/libredwg-web";
 
 /**

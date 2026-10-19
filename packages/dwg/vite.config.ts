@@ -13,9 +13,7 @@ export default defineConfig({
     include: ["test/**/*.test.ts"],
     // Tests run against the core sources, never a stale build.
     alias: {
-      "@jesusjbriceno/cad-viewer-core": fileURLToPath(
-        new URL("../core/src/index.ts", import.meta.url),
-      ),
+      "@cadscene/core": fileURLToPath(new URL("../core/src/index.ts", import.meta.url)),
     },
   },
 });

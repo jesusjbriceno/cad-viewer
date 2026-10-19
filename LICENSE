@@ -23,6 +23,6 @@ SOFTWARE.
 ---
 
 This license covers every package in this repository EXCEPT
-`packages/dwg` (`@jesusjbriceno/cad-viewer-dwg`), which is licensed under the
+`packages/dwg` (`@cadscene/dwg`), which is licensed under the
 GNU General Public License v3.0 because it links LibreDWG. See
 `packages/dwg/LICENSE`.

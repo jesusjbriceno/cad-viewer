@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as api from "../src/index";
 
-describe("@jesusjbriceno/cad-viewer-3d public API", () => {
+describe("@cadscene/3d public API", () => {
   it("exports the viewer, the built-in loaders and the camera helpers", () => {
     expect(Object.keys(api).sort()).toEqual(
       [

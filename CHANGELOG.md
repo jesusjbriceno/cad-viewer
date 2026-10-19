@@ -54,7 +54,7 @@ three.js. The 2D packages are unchanged and do not depend on three.js.
 
 ### Added
 
-- **`@jesusjbriceno/cad-viewer-3d`** (MIT, `three` as a **peer** dependency)
+- **`@cadscene/3d`** (MIT, `three` as a **peer** dependency)
   - `Cad3DViewer`: orbit/pan/zoom camera, fit that keeps the orientation, Z-up by default
     (`upAxis: "y"` available), shaded or wireframe display, feature-edge overlay, dark and
     light backgrounds, layer visibility, PNG export, typed events and `formatError()`.
@@ -69,7 +69,7 @@ three.js. The 2D packages are unchanged and do not depend on three.js.
 - **`readCadSource()`** exported from the core: the URL/File/bytes reader shared by both
   viewers, for custom loaders.
 - **Vue and React `Cad3DViewer`** components in a separate `/3d` subpath
-  (`@jesusjbriceno/cad-viewer-vue/3d`, `@jesusjbriceno/cad-viewer-react/3d`), with the same
+  (`@cadscene/vue/3d`, `@cadscene/react/3d`), with the same
   prop and event conventions as the 2D components. `cad-viewer-3d` and `three` are
   **optional** peers, so 2D-only apps never resolve them.
 - **New error codes** (translated in both catalogs): `stl-truncated`, `stl-invalid-number`,
@@ -125,7 +125,7 @@ First public release: a view-only 2D CAD viewer for the web.
 
 ### Added
 
-- **`@jesusjbriceno/cad-viewer-core`** (MIT)
+- **`@cadscene/core`** (MIT)
   - Neutral `CadDocument` model and a `FormatLoader` plugin API with a `FormatRegistry`.
   - Built-in ASCII DXF parser (all versions; UTF-8 and ANSI code pages): lines, circles,
     arcs, ellipses, (LW)polylines with bulges and widths, splines/NURBS, points, texts,
@@ -137,10 +137,10 @@ First public release: a view-only 2D CAD viewer for the web.
   - `CadViewer`: pan, wheel/pinch zoom, zoom to extents, zoom window, layer visibility,
     layout switching, dark/light themes, hover and click picking, distance measurement,
     PNG export, typed events and abortable loading from URLs, files or bytes.
-- **`@jesusjbriceno/cad-viewer-dwg`** (GPL-3.0): optional DWG loader backed by LibreDWG
+- **`@cadscene/dwg`** (GPL-3.0): optional DWG loader backed by LibreDWG
   (`@mlightcad/libredwg-web`), loaded lazily.
-- **`@jesusjbriceno/cad-viewer-vue`**: `<CadViewer>` component and `CadViewerPlugin` for Vue 3.
-- **`@jesusjbriceno/cad-viewer-react`**: `<CadViewer>` component and `useCadViewerRef` for
+- **`@cadscene/vue`**: `<CadViewer>` component and `CadViewerPlugin` for Vue 3.
+- **`@cadscene/react`**: `<CadViewer>` component and `useCadViewerRef` for
   React 18/19.
 - Astro sandbox (`examples/sandbox`) with vanilla, Vue and React pages, sample drawings and
   drag & drop of local files.

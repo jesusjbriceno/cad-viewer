@@ -6,7 +6,7 @@ import type {
   PolylineEntity,
   TextEntity,
   ViewportEntity,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 import { convertDwgDatabase } from "../src/convert";
 

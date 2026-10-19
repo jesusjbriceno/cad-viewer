@@ -1,4 +1,4 @@
-# @jesusjbriceno/cad-viewer-react
+# @cadscene/react
 
 React (18/19) component for the view-only CAD viewer: open **DXF** (built in) and
 **DWG** (with the optional [GPL-3.0 plugin](../dwg/README.md)) drawings in the browser.
@@ -6,16 +6,16 @@ React (18/19) component for the view-only CAD viewer: open **DXF** (built in) an
 ## Install
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-react @jesusjbriceno/cad-viewer-core
+pnpm add @cadscene/react @cadscene/core
 # optional, GPL-3.0:
-pnpm add @jesusjbriceno/cad-viewer-dwg
+pnpm add @cadscene/dwg
 ```
 
 ## Usage
 
 ```tsx
-import { CadViewer, useCadViewerRef } from "@jesusjbriceno/cad-viewer-react";
-import { createDwgLoader } from "@jesusjbriceno/cad-viewer-dwg"; // optional
+import { CadViewer, useCadViewerRef } from "@cadscene/react";
+import { createDwgLoader } from "@cadscene/dwg"; // optional
 
 const loaders = [createDwgLoader({ wasmUrl: "/libredwg/" })];
 
@@ -81,11 +81,11 @@ Install the optional 3D peers, then import the separate subpath. The default 2D 
 does not import three.js.
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-3d three
+pnpm add @cadscene/3d three
 ```
 
 ```tsx
-import { Cad3DViewer, useCad3DViewerRef } from "@jesusjbriceno/cad-viewer-react/3d";
+import { Cad3DViewer, useCad3DViewerRef } from "@cadscene/react/3d";
 
 export function Model() {
   const viewer = useCad3DViewerRef();

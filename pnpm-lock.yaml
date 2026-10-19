@@ -26,19 +26,19 @@ importers:
 
   examples/sandbox:
     dependencies:
-      '@jesusjbriceno/cad-viewer-3d':
+      '@cadscene/3d':
         specifier: workspace:*
         version: link:../../packages/3d
-      '@jesusjbriceno/cad-viewer-core':
+      '@cadscene/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@jesusjbriceno/cad-viewer-dwg':
+      '@cadscene/dwg':
         specifier: workspace:*
         version: link:../../packages/dwg
-      '@jesusjbriceno/cad-viewer-react':
+      '@cadscene/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@jesusjbriceno/cad-viewer-vue':
+      '@cadscene/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       react:
@@ -75,7 +75,7 @@ importers:
 
   packages/3d:
     dependencies:
-      '@jesusjbriceno/cad-viewer-core':
+      '@cadscene/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
@@ -94,17 +94,17 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0
     devDependencies:
-      '@jesusjbriceno/cad-viewer-core':
+      '@cadscene/core':
         specifier: workspace:*
         version: link:../core
 
   packages/react:
     dependencies:
-      '@jesusjbriceno/cad-viewer-core':
+      '@cadscene/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
-      '@jesusjbriceno/cad-viewer-3d':
+      '@cadscene/3d':
         specifier: workspace:*
         version: link:../3d
       '@testing-library/react':
@@ -128,11 +128,11 @@ importers:
 
   packages/vue:
     dependencies:
-      '@jesusjbriceno/cad-viewer-core':
+      '@cadscene/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
-      '@jesusjbriceno/cad-viewer-3d':
+      '@cadscene/3d':
         specifier: workspace:*
         version: link:../3d
       '@vue/test-utils':

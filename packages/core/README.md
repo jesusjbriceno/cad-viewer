@@ -1,4 +1,4 @@
-# @jesusjbriceno/cad-viewer-core
+# @cadscene/core
 
 Framework-agnostic, **view-only** 2D CAD viewer engine for the browser. Reads **DXF**
 out of the box (any ASCII version), renders on a `<canvas>` with zero runtime
@@ -8,13 +8,13 @@ dependencies, and accepts format plugins such as the optional
 ## Install
 
 ```bash
-pnpm add @jesusjbriceno/cad-viewer-core
+pnpm add @cadscene/core
 ```
 
 ## Usage
 
 ```ts
-import { CadViewer } from "@jesusjbriceno/cad-viewer-core";
+import { CadViewer } from "@cadscene/core";
 
 const viewer = new CadViewer(document.querySelector("#viewer")!, { theme: "dark" });
 viewer.on("select", ({ pick }) => console.log(pick?.type, pick?.layer));
@@ -82,7 +82,7 @@ read or parse a source. `formatCadError(error, locale)` translates either one an
 including code that runs without a viewer (a format registry, a worker, a loader):
 
 ```ts
-import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
+import { formatCadError } from "@cadscene/core";
 
 try {
   await registry.load(bytes, { fileName: "plan.dxf" });
@@ -104,7 +104,7 @@ unsubscribe function. A newer `load()` aborts an older one; aborted loads reject
 ## Writing a format plugin
 
 ```ts
-import type { FormatLoader } from "@jesusjbriceno/cad-viewer-core";
+import type { FormatLoader } from "@cadscene/core";
 
 export const myLoader: FormatLoader = {
   id: "my",

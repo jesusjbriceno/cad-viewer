@@ -1,4 +1,4 @@
-import type { CadScene, FormatLoader } from "@jesusjbriceno/cad-viewer-core";
+import type { CadScene, FormatLoader } from "@cadscene/core";
 import { objLoader } from "./obj";
 import { stlLoader } from "./stl";
 

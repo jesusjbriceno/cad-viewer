@@ -1,9 +1,4 @@
-import {
-  type Bounds3,
-  type CadMesh,
-  type CadScene,
-  meshBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+import { type Bounds3, type CadMesh, type CadScene, meshBounds } from "@cadscene/core";
 
 /** One part of a 3D model, as plain data. */
 export interface PartInfo {

@@ -10,7 +10,7 @@ import {
   type FormatLoader,
   type Shading,
   type UpAxis,
-} from "@jesusjbriceno/cad-viewer-3d";
+} from "@cadscene/3d";
 import {
   defineComponent,
   h,

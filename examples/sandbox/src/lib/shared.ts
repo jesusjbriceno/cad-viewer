@@ -1,5 +1,5 @@
-import type { CadLocale, MeasureResult, PickResult } from "@jesusjbriceno/cad-viewer-core";
-import { createDwgLoader } from "@jesusjbriceno/cad-viewer-dwg";
+import type { CadLocale, MeasureResult, PickResult } from "@cadscene/core";
+import { createDwgLoader } from "@cadscene/dwg";
 import { messages } from "./i18n";
 
 const base = import.meta.env.BASE_URL.endsWith("/")

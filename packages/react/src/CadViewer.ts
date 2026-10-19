@@ -8,7 +8,7 @@ import {
   CadViewer as CoreViewer,
   type FormatLoader,
   type ViewerTool,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import {
   createElement,
   type ForwardedRef,

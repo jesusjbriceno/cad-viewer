@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "customConditions": ["@jesusjbriceno/source"],
+    "customConditions": ["@cadscene/source"],
     "noEmit": true
   },
   "include": ["src", "test", "vite.config.ts"]

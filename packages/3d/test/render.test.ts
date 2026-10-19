@@ -1,4 +1,4 @@
-import { type CadMesh, type CadScene, createEmptyScene } from "@jesusjbriceno/cad-viewer-core";
+import { type CadMesh, type CadScene, createEmptyScene } from "@cadscene/core";
 import {
   type BufferGeometry,
   LineBasicMaterial,

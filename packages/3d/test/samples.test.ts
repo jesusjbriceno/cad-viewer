@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { formatCadError } from "@jesusjbriceno/cad-viewer-core";
+import { formatCadError } from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 import { OBJ_MATERIAL_PALETTE, objLoader } from "../src/loaders/obj";
 import { stlLoader } from "../src/loaders/stl";

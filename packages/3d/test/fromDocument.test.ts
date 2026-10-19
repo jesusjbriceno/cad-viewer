@@ -4,7 +4,7 @@ import {
   createEmptyDocument,
   createModelLayout,
   dxfLoader,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 import { has3dFaces, sceneFromDocument } from "../src/fromDocument";
 

@@ -1,9 +1,4 @@
-import {
-  type CadMesh,
-  type CadScene,
-  createEmptyScene,
-  DEFAULT_MATERIAL,
-} from "@jesusjbriceno/cad-viewer-core";
+import { type CadMesh, type CadScene, createEmptyScene, DEFAULT_MATERIAL } from "@cadscene/core";
 import { describe, expect, it } from "vitest";
 import { describePart, partsOf, summarizeScene } from "../src/inspect";
 

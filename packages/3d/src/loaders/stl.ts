@@ -9,7 +9,7 @@ import {
   type LoaderProbe,
   type LoadOptions,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 
 /** Bytes before the first triangle (80-byte header plus uint32 triangle count). */
 const BINARY_PREFIX = 84;

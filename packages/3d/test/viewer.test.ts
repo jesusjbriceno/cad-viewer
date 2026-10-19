@@ -8,7 +8,7 @@ import {
   type FormatLoader,
   formatCadError,
   sceneBounds,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import { Color, type PerspectiveCamera, type Scene } from "three";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fitDistance, ISOMETRIC } from "../src/render/camera";

@@ -1,5 +1,5 @@
 {
-  "name": "@jesusjbriceno/cad-viewer-3d",
+  "name": "@cadscene/3d",
   "version": "0.3.0",
   "description": "View-only 3D model viewer (STL, OBJ) for the cad-viewer family, rendered with three.js.",
   "license": "MIT",
@@ -7,7 +7,7 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "@jesusjbriceno/source": "./src/index.ts",
+      "@cadscene/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
@@ -49,7 +49,7 @@
     }
   },
   "dependencies": {
-    "@jesusjbriceno/cad-viewer-core": "workspace:^"
+    "@cadscene/core": "workspace:^"
   },
   "peerDependencies": {
     "three": ">=0.170.0 <1.0.0"

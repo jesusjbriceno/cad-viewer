@@ -20,10 +20,10 @@ export default defineConfig({
     resolve: {
       // Work on the package sources directly: no build step, instant reloads.
       alias: {
-        "@jesusjbriceno/cad-viewer-core": source("core"),
-        "@jesusjbriceno/cad-viewer-dwg": source("dwg"),
-        "@jesusjbriceno/cad-viewer-vue": source("vue"),
-        "@jesusjbriceno/cad-viewer-react": source("react"),
+        "@cadscene/core": source("core"),
+        "@cadscene/dwg": source("dwg"),
+        "@cadscene/vue": source("vue"),
+        "@cadscene/react": source("react"),
       },
       // The wrappers resolve vue/react from their own folders: keep a single copy.
       dedupe: ["vue", "react", "react-dom"],

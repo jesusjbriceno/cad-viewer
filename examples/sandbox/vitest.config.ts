@@ -8,12 +8,8 @@ export default defineConfig({
     include: ["test/**/*.test.ts"],
     // Tests run against the package sources, never a stale build.
     alias: {
-      "@jesusjbriceno/cad-viewer-core": fileURLToPath(
-        new URL("../../packages/core/src/index.ts", import.meta.url),
-      ),
-      "@jesusjbriceno/cad-viewer-3d": fileURLToPath(
-        new URL("../../packages/3d/src/index.ts", import.meta.url),
-      ),
+      "@cadscene/core": fileURLToPath(new URL("../../packages/core/src/index.ts", import.meta.url)),
+      "@cadscene/3d": fileURLToPath(new URL("../../packages/3d/src/index.ts", import.meta.url)),
     },
   },
 });

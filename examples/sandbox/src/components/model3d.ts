@@ -1,10 +1,5 @@
-import {
-  Cad3DViewer,
-  type Cad3DViewerApi,
-  type Layer3DInfo,
-  type Shading,
-} from "@jesusjbriceno/cad-viewer-3d";
-import type { CadLocale, CadTheme } from "@jesusjbriceno/cad-viewer-core";
+import { Cad3DViewer, type Cad3DViewerApi, type Layer3DInfo, type Shading } from "@cadscene/3d";
+import type { CadLocale, CadTheme } from "@cadscene/core";
 import { currentLocale, messages, onLocaleChange, type SandboxMessages } from "../lib/i18n";
 import { downloadBlob, MODELS } from "../lib/shared";
 

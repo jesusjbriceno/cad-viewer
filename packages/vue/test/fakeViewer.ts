@@ -1,8 +1,4 @@
-import type {
-  CadViewerEventName,
-  CadViewerEvents,
-  CadViewerOptions,
-} from "@jesusjbriceno/cad-viewer-core";
+import type { CadViewerEventName, CadViewerEvents, CadViewerOptions } from "@cadscene/core";
 import { vi } from "vitest";
 
 /** Stand-in for the core CadViewer: records construction, calls and lets tests emit events. */

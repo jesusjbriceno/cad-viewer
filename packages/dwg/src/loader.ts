@@ -5,7 +5,7 @@ import {
   type FormatLoader,
   type LoaderProbe,
   type LoadOptions,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";
 import type { DwgDatabase } from "@mlightcad/libredwg-web";
 import { convertDwgDatabase } from "./convert";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@jesusjbriceno/cad-viewer-core",
+  "name": "@cadscene/core",
   "version": "0.3.0",
   "description": "Framework-agnostic, view-only 2D CAD viewer engine (DXF built in, pluggable formats).",
   "license": "MIT",
@@ -7,7 +7,7 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "@jesusjbriceno/source": "./src/index.ts",
+      "@cadscene/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }

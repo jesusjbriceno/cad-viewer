@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createApp, defineComponent, h, nextTick, ref } from "vue";
 import { FakeViewer } from "./fakeViewer";
 
-vi.mock("@jesusjbriceno/cad-viewer-core", async () => ({
+vi.mock("@cadscene/core", async () => ({
   CadViewer: (await import("./fakeViewer")).FakeViewer,
 }));
 

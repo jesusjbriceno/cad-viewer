@@ -22,7 +22,7 @@ export type {
   Shading,
   UpAxis,
   Vec3Like,
-} from "@jesusjbriceno/cad-viewer-3d";
+} from "@cadscene/3d";
 export type {
   Bounds3,
   CadLocale,
@@ -33,4 +33,4 @@ export type {
   CadSource,
   CadTheme,
   FormatLoader,
-} from "@jesusjbriceno/cad-viewer-core";
+} from "@cadscene/core";

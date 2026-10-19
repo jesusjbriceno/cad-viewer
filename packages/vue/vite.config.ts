@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: (_format, name) => `${name}.js`,
     },
     sourcemap: true,
-    rollupOptions: { external: (id) => /^(vue|three(\/|$)|@jesusjbriceno\/)/.test(id) },
+    rollupOptions: { external: (id) => /^(vue|three(\/|$)|@cadscene\/)/.test(id) },
   },
   test: {
     name: "vue",
@@ -19,10 +19,8 @@ export default defineConfig({
     include: ["test/**/*.test.ts"],
     // Tests run against the core sources, never a stale build.
     alias: {
-      "@jesusjbriceno/cad-viewer-core": fileURLToPath(
-        new URL("../core/src/index.ts", import.meta.url),
-      ),
-      "@jesusjbriceno/cad-viewer-3d": fileURLToPath(new URL("../3d/src/index.ts", import.meta.url)),
+      "@cadscene/core": fileURLToPath(new URL("../core/src/index.ts", import.meta.url)),
+      "@cadscene/3d": fileURLToPath(new URL("../3d/src/index.ts", import.meta.url)),
     },
   },
 });

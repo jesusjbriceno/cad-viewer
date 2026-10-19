@@ -1,4 +1,4 @@
-import { type CadLocale, resolveLocale } from "@jesusjbriceno/cad-viewer-core";
+import { type CadLocale, resolveLocale } from "@cadscene/core";
 
 /** Sandbox UI texts. The viewer's own texts come from the library catalogs. */
 export interface SandboxMessages {
