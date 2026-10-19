@@ -11,6 +11,10 @@ const source = (pkg) =>
 export default defineConfig({
   output: "static",
   base: process.env.SANDBOX_BASE ?? "/",
+  // Bind IPv4 loopback explicitly. Bare "localhost" resolves to ::1 first, and on machines
+  // where IPv6 loopback is blocked the dev server starts but nothing can connect to it.
+  // Use SANDBOX_HOST=0.0.0.0 to expose the sandbox on the LAN.
+  server: { host: process.env.SANDBOX_HOST ?? "127.0.0.1" },
   integrations: [vue(), react()],
   vite: {
     resolve: {

@@ -66,6 +66,40 @@ GPL code opt-in, three.js out of 2D bundles, and the core usable from plain Java
 A 2D-only app resolves `@jesusjbriceno/cad-viewer-vue` and never the `/3d` subpath, so
 `three` is never bundled.
 
+## Two viewers, one set of conventions
+
+There is **no single viewer that opens every format**. 2D drawings and 3D models have separate
+classes, separate models and separate packages, while sharing their conventions so they do not
+feel like two unrelated libraries.
+
+| | 2D | 3D |
+| --- | --- | --- |
+| Class | `CadViewer` (core) | `Cad3DViewer` (`cad-viewer-3d`) |
+| Model | `CadDocument` — planar: `Bounds` is XY, `ViewState` is centre + scale | `CadScene` — `CadMesh` with positions, optional normals and indices, `Bounds3` |
+| Backend | Canvas2D, zero runtime dependencies | WebGL through three.js (optional peer) |
+| Formats | DXF built in, DWG through the optional GPL plugin, plus registered loaders | STL and OBJ built in, plus registered `FormatLoader<CadScene>` loaders |
+| Wrappers | `<CadViewer>` | `<Cad3DViewer>` from the `/3d` subpath |
+| Shared | error `code` + `params` with `formatCadError()`/`formatError()`, `es-ES`/`en` catalogs, layers, typed events, PNG export, `CadSource` and `readCadSource()` |
+
+Both viewers take a **container element** and create their own `<canvas>` inside it; neither uses
+an iframe. Giving the container a size is the only layout requirement.
+
+Why separate: the planar model is 2D by contract, so adding a 3D camera and Z bounds to it would
+have forced every 2D call site to change (see the decisions table). Keeping three.js out of the
+2D packages also means an app that only shows drawings never pays for WebGL.
+
+**Not implemented:** a wrapper that sniffs the file and mounts the right viewer. Today the host
+application decides, which is a few lines:
+
+```ts
+const is3D = /\.(stl|obj)$/i.test(file.name);
+const viewer = is3D ? new Cad3DViewer(element) : new CadViewer(element);
+await viewer.load(file);
+```
+
+A future `auto` wrapper would reuse both registries' `canLoad` hooks to pick the viewer and
+expose a shared subset (`load`, layers, theme, PNG) without merging the models.
+
 ## Decisions
 
 | Decision | Why | Revisit when |

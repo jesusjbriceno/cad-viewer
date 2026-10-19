@@ -1,0 +1,57 @@
+---
+import { DEFAULT_LOCALE } from "@jesusjbriceno/cad-viewer-core";
+import Base from "../layouts/Base.astro";
+import { messages } from "../lib/i18n";
+import manifest from "../../samples/samples.json";
+
+const t = messages(DEFAULT_LOCALE);
+const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const files = manifest.files;
+---
+
+<Base active="home">
+  <main class="overview">
+    <h1 data-i18n="credits.title">{t.credits.title}</h1>
+    <p data-i18n="credits.intro">{t.credits.intro}</p>
+    <table class="credits">
+      <thead>
+        <tr>
+          <th data-i18n="credits.file">{t.credits.file}</th>
+          <th data-i18n="credits.author">{t.credits.author}</th>
+          <th data-i18n="credits.license">{t.credits.license}</th>
+          <th data-i18n="credits.source">{t.credits.source}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          files.map((entry) => (
+            <tr>
+              <td>
+                <code>{entry.file}</code>
+                <br />
+                <small>{entry.title}</small>
+              </td>
+              <td>{entry.author}</td>
+              <td>
+                <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="license">
+                  {entry.license}
+                </a>
+              </td>
+              <td>
+                <a href={entry.sourcePage} rel="noopener">
+                  {new URL(entry.sourcePage).host}
+                </a>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <p>
+      <span data-i18n="credits.synthetic">{t.credits.synthetic}</span>
+      <code>sample-r2000.dxf</code>, <code>example_2013.dwg</code>, <code>flange.stl</code>,
+      <code>house.obj</code>.
+    </p>
+    <p><a href={base} data-i18n="credits.back">{t.credits.back}</a></p>
+  </main>
+</Base>

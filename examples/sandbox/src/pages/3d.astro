@@ -16,6 +16,7 @@ const t = messages(DEFAULT_LOCALE);
           <input data-file type="file" accept=".stl,.obj" aria-label={t.model3d.openFile} data-i18n-aria="model3d.openFile" />
         </div>
         <p class="drop-hint" data-i18n="model3d.dropHint">{t.model3d.dropHint}</p>
+        <p class="drop-hint"><a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/credits/`} data-i18n="samples.credits">{t.samples.credits}</a></p>
       </section>
       <section>
         <h2 data-i18n="layers">{t.layers}</h2>

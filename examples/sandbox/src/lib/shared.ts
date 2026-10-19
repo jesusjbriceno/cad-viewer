@@ -8,7 +8,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
 export interface Sample {
   /** Key of the label in the sandbox catalog (`samples.<key>`). */
-  key: "dxf" | "dwg";
+  key: "dxf" | "dwg" | "pumpHouse" | "plate";
   url: string;
 }
 
@@ -18,11 +18,14 @@ export const SAMPLES: Sample[] = [
   // This test drawing contains a block inserted at scale ~3000: the regular content is the
   // small cluster at the center after "Fit" (zoom window into it).
   { key: "dwg", url: `${base}samples/example_2013.dwg` },
+  // Real third-party assets (CC0); see samples/SOURCES.md for provenance.
+  { key: "pumpHouse", url: `${base}samples/pump-house-plan.dxf` },
+  { key: "plate", url: `${base}samples/bolt-circle-plate.dxf` },
 ];
 
 export interface SampleModel {
   /** Key of the label in the sandbox catalog (`model3d.samples.<key>`). */
-  key: "flange" | "house";
+  key: "flange" | "house" | "torusStl" | "torusObj";
   url: string;
   fileName: string;
 }
@@ -31,7 +34,13 @@ export interface SampleModel {
 export const MODELS: SampleModel[] = [
   { key: "flange", url: `${base}samples/flange.stl`, fileName: "flange.stl" },
   { key: "house", url: `${base}samples/house.obj`, fileName: "house.obj" },
+  // Real third-party assets (CC0); see samples/SOURCES.md for provenance.
+  { key: "torusStl", url: `${base}samples/torus-knot.stl`, fileName: "torus-knot.stl" },
+  { key: "torusObj", url: `${base}samples/torus-knot.obj`, fileName: "torus-knot.obj" },
 ];
+
+/** Attribution file for the real third-party assets, as published in public/samples/. */
+export const SAMPLE_CREDITS_URL = `${base}samples/SOURCES.md`;
 
 /** Shared loader list: DWG through LibreDWG, served from public/libredwg/. */
 export const LOADERS = [createDwgLoader({ wasmUrl: `${base}libredwg/` })];

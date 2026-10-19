@@ -6,6 +6,23 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Real third-party sample assets** for the sandbox, both 2D and 3D: a pump-house plan and a
+  bolt-circle plate (DXF) and a torus knot as binary STL and as OBJ, all **CC0**. Each file is
+  recorded with its author, license, source URL and SHA-256 in
+  `examples/sandbox/samples/samples.json`, listed in `SOURCES.md`, and shown on a new **credits
+  page** in the sandbox.
+- **`sandbox` Vitest project** (`examples/sandbox/test/samples.test.ts`): every bundled asset
+  must be listed, keep its recorded size and hash, appear in `SOURCES.md`, and still parse with
+  its loader (layers and entities for DXF, triangles and bounds for STL/OBJ).
+
+### Notes
+
+- The licensing rule for future samples is written down: CC0 or CC BY only, attributed through
+  the manifest and the credits page. GPL and CC BY-SA assets would need their own isolated
+  directory and an explicit decision.
+
 ## [0.3.0] - 2026-10-17
 
 3D models: a new optional package renders **STL** and **Wavefront OBJ** meshes with
