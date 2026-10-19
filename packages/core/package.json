@@ -1,6 +1,6 @@
 {
   "name": "@cadscene/core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Framework-agnostic, view-only 2D CAD viewer engine (DXF built in, pluggable formats).",
   "license": "MIT",
   "type": "module",
