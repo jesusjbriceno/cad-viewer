@@ -25,6 +25,8 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
   const fileInput = $<HTMLInputElement>(root, "[data-file]");
   const layerList = $<HTMLUListElement>(root, "[data-layers]");
   const camera = $<HTMLPreElement>(root, "[data-camera]");
+  const summary = $<HTMLPreElement>(root, "[data-summary]");
+  const parts = $<HTMLUListElement>(root, "[data-parts]");
 
   let locale: CadLocale = currentLocale();
   const viewer = new Cad3DViewer(host, { locale });
@@ -98,6 +100,34 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
     );
   };
 
+  // Model information: what the scene contains, and one row per part.
+  const renderInfo = () => {
+    const t = messages(locale);
+    const stats = viewer.getSummary();
+    summary.textContent = stats
+      ? t.info.summary3d({
+          format: stats.format.toUpperCase(),
+          parts: stats.meshCount,
+          layers: stats.layerCount,
+          triangles: stats.triangles,
+          vertices: stats.vertices,
+          materials: stats.materialCount,
+        })
+      : t.info.empty;
+    parts.replaceChildren(
+      ...viewer.getParts().map((part) => {
+        const item = document.createElement("li");
+        const name = document.createElement("span");
+        name.textContent = part.name;
+        const detail = document.createElement("span");
+        detail.className = "count";
+        detail.textContent = `${part.layer} · ${part.material} · ${t.model3d.triangles(part.triangles)}`;
+        item.append(name, detail);
+        return item;
+      }),
+    );
+  };
+
   const renderCamera = () => {
     const t = messages(locale);
     const state = viewer.getCamera();
@@ -127,11 +157,15 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
       }),
     );
     renderLayers(viewer.getLayers());
+    renderInfo();
     renderCamera();
   });
   // The viewer translates library errors from their stable code into its current language.
   viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
-  viewer.on("layers-change", ({ layers }) => renderLayers(layers));
+  viewer.on("layers-change", ({ layers }) => {
+    renderLayers(layers);
+    renderInfo();
+  });
   viewer.on("camera-change", () => renderCamera());
 
   root.addEventListener("click", (event) => {
@@ -165,11 +199,13 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
     viewer.setLocale(next);
     renderSamples();
     renderLayers(viewer.getLayers());
+    renderInfo();
     renderCamera();
     renderStatus();
   });
 
   renderSamples();
+  renderInfo();
   renderCamera();
   renderStatus();
   // `?model=<sample file name>` deep-links one sample, e.g. /3d/?model=house.obj.

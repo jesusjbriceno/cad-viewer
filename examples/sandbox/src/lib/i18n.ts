@@ -52,6 +52,28 @@ export interface SandboxMessages {
   pick: { type: string; layer: string; handle: string; block: string; at: string };
   measureHint: string;
   measureResult: { distance: string; angle: string };
+  info: {
+    title: string;
+    properties: string;
+    empty: string;
+    summary2d: (i: {
+      format: string;
+      version: string | undefined;
+      units: string | undefined;
+      entities: number;
+      layers: number;
+      blocks: number;
+      layouts: number;
+    }) => string;
+    summary3d: (i: {
+      format: string;
+      parts: number;
+      layers: number;
+      triangles: number;
+      vertices: number;
+      materials: number;
+    }) => string;
+  };
   credits: {
     title: string;
     intro: string;
@@ -150,6 +172,15 @@ const es: SandboxMessages = {
   pick: { type: "Tipo", layer: "Capa", handle: "Handle", block: "Bloque", at: "En" },
   measureHint: "Herramienta Medir: haz clic en dos puntos.",
   measureResult: { distance: "Distancia", angle: "Ángulo" },
+  info: {
+    title: "Información",
+    properties: "Propiedades",
+    empty: "Carga un dibujo o un modelo para ver su información.",
+    summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
+      `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entidades · ${layers} capas · ${blocks} bloques · ${layouts} presentaciones`,
+    summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
+      `${format} · ${parts} piezas · ${layers} capas · ${triangles} triángulos · ${vertices} vértices · ${materials} materiales`,
+  },
   credits: {
     title: "Créditos de las muestras",
     intro:
@@ -247,6 +278,15 @@ const en: SandboxMessages = {
   pick: { type: "Type", layer: "Layer", handle: "Handle", block: "Block", at: "At" },
   measureHint: "Measure tool: click two points.",
   measureResult: { distance: "Distance", angle: "Angle" },
+  info: {
+    title: "Information",
+    properties: "Properties",
+    empty: "Load a drawing or a model to see its information.",
+    summary2d: ({ format, version, units, entities, layers, blocks, layouts }) =>
+      `${format}${version ? ` ${version}` : ""}${units ? ` · ${units}` : ""} · ${entities} entities · ${layers} layers · ${blocks} blocks · ${layouts} layouts`,
+    summary3d: ({ format, parts, layers, triangles, vertices, materials }) =>
+      `${format} · ${parts} parts · ${layers} layers · ${triangles} triangles · ${vertices} vertices · ${materials} materials`,
+  },
   credits: {
     title: "Sample credits",
     intro:

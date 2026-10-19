@@ -1,4 +1,5 @@
 import type { CadLocale } from "../i18n/locale";
+import type { DocumentSummary, EntityFilter, EntityInfo } from "../inspect";
 import type { CadLoadError } from "../loaders/errors";
 import type { FormatLoader, LoadProgress } from "../loaders/types";
 import type { Bounds, CadDocument, CadEntity, Point } from "../model/types";
@@ -167,6 +168,11 @@ export interface CadViewerApi {
   /** Changes the language of the viewer's own texts; see `CadViewerOptions.locale`. */
   setLocale(locale: string): void;
   setTool(tool: ViewerTool): void;
+
+  /** Model information: counts, layers, blocks, layouts and saved extents; null before a load. */
+  getSummary(): DocumentSummary | null;
+  /** Entities of one layout (model space by default) as plain data, optionally filtered. */
+  getEntities(filter?: EntityFilter): EntityInfo[];
 
   /** Text of any error in the viewer's language (see `formatCadError`). */
   formatError(error: unknown): string;

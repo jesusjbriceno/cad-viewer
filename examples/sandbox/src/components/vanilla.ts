@@ -2,6 +2,7 @@ import {
   type CadLocale,
   type CadTheme,
   CadViewer,
+  describeEntity,
   type LayerInfo,
   type MeasureResult,
   type PickResult,
@@ -23,6 +24,8 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   const layerList = $<HTMLUListElement>(root, "[data-layers]");
   const selection = $<HTMLPreElement>(root, "[data-selection]");
   const measure = $<HTMLPreElement>(root, "[data-measure]");
+  const summary = $<HTMLPreElement>(root, "[data-summary]");
+  const properties = $<HTMLPreElement>(root, "[data-properties]");
 
   let locale: CadLocale = currentLocale();
   const viewer = new CadViewer(host, { loaders: LOADERS, locale });
@@ -107,6 +110,32 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     selection.textContent = describePick(pick, locale);
     measure.textContent = describeMeasure(measured, locale);
   };
+  // Model information: what the drawing contains, and the properties of the picked entity.
+  const renderModelInfo = () => {
+    const t = messages(locale);
+    const stats = viewer.getSummary();
+    if (!stats) {
+      summary.textContent = t.info.empty;
+      properties.textContent = t.info.empty;
+      return;
+    }
+    summary.textContent = t.info.summary2d({
+      format: stats.format.toUpperCase(),
+      version: stats.version,
+      units: stats.units,
+      entities: stats.entityCount,
+      layers: stats.layerCount,
+      blocks: stats.blockCount,
+      layouts: stats.layoutCount,
+    });
+    properties.textContent =
+      pick && viewer.document
+        ? Object.entries(describeEntity(pick.entity, viewer.document).properties)
+            .map(([key, value]) => `${key}: ${String(value)}`)
+            .join("\n")
+        : t.noSelection;
+  };
+
   layouts.addEventListener("change", () => viewer.setLayout(layouts.value));
 
   viewer.on("load-start", ({ fileName }) =>
@@ -128,6 +157,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
         }) + (unsupported ? ` · ${t.notDrawn(unsupported)}` : ""),
     );
     renderLayouts();
+    renderModelInfo();
   });
   // The viewer translates library errors from their stable code into its current language.
   viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
@@ -136,6 +166,7 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   viewer.on("select", ({ pick: next }) => {
     pick = next;
     renderInfo();
+    renderModelInfo();
   });
   viewer.on("measure", (result) => {
     measured = result;
@@ -175,11 +206,13 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     renderSamples();
     renderLayers(viewer.getLayers());
     renderInfo();
+    renderModelInfo();
     renderStatus();
   });
 
   renderSamples();
   renderInfo();
+  renderModelInfo();
   renderStatus();
   const first = SAMPLES[0];
   if (first) load(first.url);

@@ -8,6 +8,20 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **Model information API** — the library now exposes what a drawing or model *contains*, not
+  just its picture. In the core: `summarizeDocument()` (format, version, units, entity and
+  type counts, layers, blocks, layouts, saved extents), `collectEntities()` (plain-data entity
+  list, filterable by layer and type) and `describeEntity()` (per-type properties with exact
+  measurements: line and polyline length, circle radius/diameter/area, arc length). On the
+  viewer: `CadViewer.getSummary()` and `getEntities()`.
+- **The same for 3D** in `cad-viewer-3d`: `summarizeScene()` (parts, layers, triangles,
+  vertices, materials, bounds), `partsOf()` and `describePart()`, plus
+  `Cad3DViewer.getSummary()`, `getParts()` and `getPart(id)`.
+- **Sandbox inspector panels**: the 2D page shows the drawing summary and the picked entity's
+  properties, and the 3D page shows the scene summary and one row per part with its layer,
+  material and triangle count.
+
+
 - **Real third-party sample assets** for the sandbox, both 2D and 3D: a pump-house plan and a
   bolt-circle plate (DXF) and a torus knot as binary STL and as OBJ, all **CC0**. Each file is
   recorded with its author, license, source URL and SHA-256 in
