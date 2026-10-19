@@ -214,7 +214,9 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
   renderInfo();
   renderModelInfo();
   renderStatus();
-  const first = SAMPLES[0];
-  if (first) load(first.url);
+  // `?sample=<url>` opens any drawing, including local ones under /samples-local/.
+  const requested = new URLSearchParams(location.search).get("sample");
+  const initial = requested ?? SAMPLES[0]?.url;
+  if (initial) load(initial);
   return viewer;
 }
