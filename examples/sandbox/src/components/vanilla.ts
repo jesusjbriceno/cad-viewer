@@ -174,7 +174,15 @@ export function mountVanillaSandbox(root: HTMLElement): CadViewer {
     renderModelInfo();
   });
   // The viewer translates library errors from their stable code into its current language.
-  viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
+  viewer.on("error", ({ error }) => {
+    const code = "code" in error ? error.code : undefined;
+    setStatus(
+      () =>
+        viewer.formatError(error) +
+        (code === "unsupported-format" ? ` ${messages(locale).formatsHint}` : ""),
+      true,
+    );
+  });
   viewer.on("layers-change", ({ layers }) => renderLayers(layers));
   viewer.on("layout-change", () => renderLayouts());
   viewer.on("select", ({ pick: next }) => {

@@ -52,6 +52,7 @@ export interface SandboxMessages {
   pick: { type: string; layer: string; handle: string; block: string; at: string };
   measureHint: string;
   measureInactive: string;
+  formatsHint: string;
   measureResult: { distance: string; angle: string };
   info: {
     title: string;
@@ -88,6 +89,7 @@ export interface SandboxMessages {
   };
   model3d: {
     model: string;
+    formatsHint: string;
     samples: {
       flange: string;
       house: string;
@@ -174,6 +176,7 @@ const es: SandboxMessages = {
   pick: { type: "Tipo", layer: "Capa", handle: "Handle", block: "Bloque", at: "En" },
   measureHint: "Herramienta Medir: haz clic en dos puntos.",
   measureInactive: "Pulsa «Medir» y haz clic en dos puntos para medir una distancia.",
+  formatsHint: "Este visor abre DXF y, con el plugin DWG, DWG.",
   measureResult: { distance: "Distancia", angle: "Ángulo" },
   info: {
     title: "Información",
@@ -199,6 +202,7 @@ const es: SandboxMessages = {
   },
   model3d: {
     model: "Modelo",
+    formatsHint: "El visor 3D abre STL y OBJ. Si es un DWG, ábrelo en la página 2D.",
     samples: {
       flange: "STL · brida con buje (binario, 1536 triángulos)",
       house: "OBJ · casa con grupos y materiales (paredes, tejado, puerta)",
@@ -283,6 +287,7 @@ const en: SandboxMessages = {
   pick: { type: "Type", layer: "Layer", handle: "Handle", block: "Block", at: "At" },
   measureHint: "Measure tool: click two points.",
   measureInactive: "Press «Measure» and click two points to measure a distance.",
+  formatsHint: "This viewer opens DXF and, with the DWG plugin, DWG.",
   measureResult: { distance: "Distance", angle: "Angle" },
   info: {
     title: "Information",
@@ -308,6 +313,7 @@ const en: SandboxMessages = {
   },
   model3d: {
     model: "Model",
+    formatsHint: "The 3D viewer opens STL and OBJ. If this is a DWG, open it on the 2D page.",
     samples: {
       flange: "STL · flanged hub (binary, 1536 triangles)",
       house: "OBJ · house with groups and materials (walls, roof, door)",

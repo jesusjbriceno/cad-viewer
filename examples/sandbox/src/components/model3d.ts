@@ -161,7 +161,16 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
     renderCamera();
   });
   // The viewer translates library errors from their stable code into its current language.
-  viewer.on("error", ({ error }) => setStatus(() => viewer.formatError(error), true));
+  viewer.on("error", ({ error }) => {
+    // Turn "no loader" into guidance instead of a dead end.
+    const code = "code" in error ? error.code : undefined;
+    setStatus(
+      () =>
+        viewer.formatError(error) +
+        (code === "unsupported-format" ? ` ${messages(locale).model3d.formatsHint}` : ""),
+      true,
+    );
+  });
   viewer.on("layers-change", ({ layers }) => {
     renderLayers(layers);
     renderInfo();
