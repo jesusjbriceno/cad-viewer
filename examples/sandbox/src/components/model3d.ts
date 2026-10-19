@@ -210,10 +210,19 @@ export function mountModel3DSandbox(root: HTMLElement): Cad3DViewerApi {
   renderStatus();
   // `?model=<sample file name>` deep-links one sample, e.g. /3d/?model=house.obj.
   const requested = new URLSearchParams(location.search).get("model");
-  const initial = MODELS.find((model) => model.fileName === requested) ?? MODELS[0];
-  if (initial) {
-    samples.value = initial.url;
-    load(initial.url, initial.fileName);
+  const known = MODELS.find((model) => model.fileName === requested);
+  // `?model=` accepts a sample file name or any URL/path (e.g. /samples-local/part.stl).
+  if (known) {
+    samples.value = known.url;
+    load(known.url, known.fileName);
+  } else if (requested) {
+    load(requested, requested.split("/").pop() || undefined);
+  } else {
+    const initial = MODELS[0];
+    if (initial) {
+      samples.value = initial.url;
+      load(initial.url, initial.fileName);
+    }
   }
   return viewer;
 }

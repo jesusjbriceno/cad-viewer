@@ -50,10 +50,12 @@ function declaredTriangleCount(bytes: Uint8Array): number {
 
 /** Binary shape: the count field plus `count` full triangles fit in the file. */
 function isBinaryStl(bytes: Uint8Array): boolean {
-  return (
-    bytes.length >= BINARY_PREFIX &&
-    BINARY_PREFIX + BYTES_PER_TRIANGLE * declaredTriangleCount(bytes) <= bytes.length
-  );
+  if (bytes.length < BINARY_PREFIX) return false;
+  const count = declaredTriangleCount(bytes);
+  // A declared count of zero matches almost any binary of 84+ bytes (a DWG was claimed as an
+  // empty STL), so sniffing requires real geometry; an .stl file with zero triangles still
+  // loads through the extension path.
+  return count > 0 && BINARY_PREFIX + BYTES_PER_TRIANGLE * count <= bytes.length;
 }
 
 /** Printable header text up to the first NUL, trimmed (may be empty). */

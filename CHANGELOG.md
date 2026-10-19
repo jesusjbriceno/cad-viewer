@@ -31,6 +31,16 @@ All notable changes to this project are documented here. The format follows
   must be listed, keep its recorded size and hash, appear in `SOURCES.md`, and still parse with
   its loader (layers and entities for DXF, triangles and bounds for STL/OBJ).
 
+### Fixed
+
+- **A binary file could be claimed as an empty STL.** Binary STL sniffing accepted any file of
+  84+ bytes whose bytes 80–83 declare zero triangles, so a DWG loaded as "STL · 0 triángulos"
+  instead of being rejected. Sniffing now requires at least one triangle; a real `.stl` with no
+  geometry still loads through its extension, and unsupported files report `unsupported-format`.
+- **The sandbox `?model=` link only accepted known sample names** and silently fell back to the
+  first model. It now accepts any path or URL (`/3d/?model=/samples-local/part.stl`), matching
+  the 2D `?sample=` link.
+
 ### Notes
 
 - The licensing rule for future samples is written down: CC0 or CC BY only, attributed through
