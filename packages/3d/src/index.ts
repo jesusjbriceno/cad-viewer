@@ -9,6 +9,7 @@ export type {
   CadTheme,
   FormatLoader,
 } from "@jesusjbriceno/cad-viewer-core";
+export { type FaceSceneOptions, has3dFaces, sceneFromDocument } from "./fromDocument";
 export {
   describePart,
   type PartDetails,
