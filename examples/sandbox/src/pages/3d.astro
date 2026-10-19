@@ -64,5 +64,7 @@ const t = messages(DEFAULT_LOCALE);
   import { mountModel3DSandbox } from "../components/model3d";
 
   const root = document.querySelector<HTMLElement>("[data-sandbox]");
-  if (root) mountModel3DSandbox(root);
+  // Sandbox convenience: the viewer is reachable from the browser console
+  // (`viewer.getSummary()`, `viewer.getEntities()`, `viewer.getParts()`).
+  if (root) Object.assign(window, { viewer: mountModel3DSandbox(root) });
 </script>
